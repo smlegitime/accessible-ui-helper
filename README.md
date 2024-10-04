@@ -30,7 +30,6 @@ Team members:
 - [Stephanie Olaiya](https://github.com/)
 - [Jiecheng Chen](https://github.com/)
 - [Brandon Woodard](https://github.com/)
-- [Zhinuo Wang](https://github.com/)
 - [Zheng Que](https://github.com/)
 
 ## License
