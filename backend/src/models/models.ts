@@ -12,15 +12,28 @@ enum FileType {
     Css,
     Js
 }
+
+enum Framework {
+    VanillaProject, // we will likely leverage as use case
+    React,
+    Angular,
+    Vue
+}
+
 interface Page {
     readonly pageId: string;
-    filename: string;
+    filePath: string; // full/file/path/file.extension
     viewport: {
         width: number,
         height: number
     };
     pageContent: {
         fileType: FileType.Html | FileType.Css | FileType.Js;
+        framework: string | Framework;
+        body: {
+            originalVersion: string; // original code
+            transpiledVersion: string; // code converted into vanilla version
+        }
     };
 }
 
@@ -48,7 +61,8 @@ interface ScannedResult {
 // Type that the LLM module manipulates
 interface LlmPrompt {
     template: string;
-    examples: Array<string>;
+    examples: Array<string>; // stringified version of ScannedResult.scannedResult
+    pageId: string; // Reference to project pages with pageIds
 }
 
 // Type outputted the generate fix outputs
@@ -65,7 +79,7 @@ interface GeneratedFixPage {
 // Type that the export module manipulates
 interface ExportPackage {
     isScannedReport: boolean;
-    contents: string;
-    encoding: string;
+    contents: string; //encoded version of what's in the file
+    encoding?: string;
     outputPath: string;
 }
