@@ -13,8 +13,10 @@
   "dependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/jsdom": "^21.1.7",
     "cors": "^2.8.5",
     "express": "^4.21.0",
+    "jsdom": "^25.0.1",
     "nodemon": "^3.1.7",
     "typescript": "^5.6.2"
   },
