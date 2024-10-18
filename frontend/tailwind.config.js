@@ -75,3 +75,4 @@ module.exports = {
   },
   plugins: [require("tailwindcss-animate")],
 }
+/** @type {import('tailwindcss').Config} */
