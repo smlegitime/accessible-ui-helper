@@ -4,7 +4,7 @@
 
 ### Completed version 1 of the rendered page design
 
-#### Page navigation currently only listens for tag (<a>) clicks for navigation.  We need to think about other ways users might use to navigate to different pages.
+#### Page navigation currently only listens for tag <a> clicks for navigation.  We need to think about other ways users might use to navigate to different pages.
 
 #### Currently, only HTML files are being rendered. We need to include CSS and JavaScript in the htmlContent for rendering. But how we decide which CSS and JS files should be included within  htmlContent.
 
