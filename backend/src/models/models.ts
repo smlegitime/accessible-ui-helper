@@ -1,7 +1,7 @@
 /**
- * Initial models for the back-end components
- *
- * @author Sybille Légitime
+ * Description: Initial models for the backend components
+ * Created: Sybille Légitime
+ * Created date: Oct 10, 2024 | Updated date: Oct 18, 2024
  */
 
 // Output Type of input processor
