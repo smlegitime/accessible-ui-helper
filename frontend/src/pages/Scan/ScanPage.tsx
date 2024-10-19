@@ -1,155 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-// Interfaces to define the structure of file data, violations, scanned results, and generated fixes
-interface FileData {
-  type: string;
-  content: string;
-}
-
-interface FileSystem {
-  [key: string]: FileData;
-}
-
-interface AccViolation {
-  readonly id: string;
-  impact: string;
-  tags: Array<string>;
-  description: string;
-  help: string;
-  helpUrl: string;
-  nodes: Object;
-}
-
-interface ScannedResult {
-  readonly pageId: string;
-  scannedResult: {
-    codeBlock: string;
-    violation: AccViolation;
-  }
-}
-
-interface GeneratedFixPage {
-  pageId: string;
-  fixResults: Array<{
-    scannedResult: ScannedResult;
-    newCodeBlock: string;
-  }>;
-}
-
-// Sample file system object representing static HTML, CSS, and JS files
-const fileSystem: FileSystem = {
-  'index.html': {
-    type: 'html',
-    content: `<html>
-      <head><link rel="stylesheet" href="style.css"></head>
-      <body>
-        <h1>Home Page</h1>
-        <img src="image.jpg">
-        <button id="btn">Click Me</button>
-        <a href="about.html">Go to About</a>
-        <script src="script.js"></script>
-      </body>
-    </html>`
-  },
-  'style.css': {
-    type: 'css',
-    content: `body { font-family: Arial; } img { width: 100px; }`
-  },
-  'script.js': {
-    type: 'js',
-    content: `document.getElementById('btn').addEventListener('click', function() {
-      alert('Button clicked!');
-    });`
-  },
-  'about.html': {
-    type: 'html',
-    content: `<html>
-      <head><link rel="stylesheet" href="about-style.css"></head>
-      <body>
-        <h1>About Us</h1>
-        <p>This is the about page.</p>
-        <a href="index.html">Go to Home</a>
-        <script src="about-script.js"></script>
-      </body>
-    </html>`
-  },
-  'about-style.css': {
-    type: 'css',
-    content: `h1 { color: red; }`
-  },
-  'about-script.js': {
-    type: 'js',
-    content: `console.log('About page loaded');`
-  }
-};
-
-// Sample accessibility fix suggestions for different pages
-const generatedFixPages: GeneratedFixPage[] = [
-  {
-    pageId: "index.html",
-    fixResults: [
-      {
-        scannedResult: {
-          pageId: "index.html",
-          scannedResult: {
-            codeBlock: "<img src='image.jpg'>",
-            violation: {
-              id: "v1",
-              impact: "high",
-              tags: ["images", "accessibility"],
-              description: "Image missing alt attribute",
-              help: "Ensure that every image has an alt attribute.",
-              helpUrl: "https://www.w3.org/",
-              nodes: {}
-            }
-          }
-        },
-        newCodeBlock: "<img src='image.jpg' alt='Description of the image'>"
-      },
-      {
-        scannedResult: {
-          pageId: "index.html",
-          scannedResult: {
-            codeBlock: "<button id='btn'>Click Me</button>",
-            violation: {
-              id: "v2",
-              impact: "medium",
-              tags: ["buttons", "focus"],
-              description: "Button has no focus indicator",
-              help: "Ensure that the button has a focus indicator.",
-              helpUrl: "https://www.w3.org/",
-              nodes: {}
-            }
-          }
-        },
-        newCodeBlock: "<button id='btn' style='outline: 2px solid blue;'>Click Me</button>"
-      }
-    ]
-  },
-  {
-    pageId: "about.html",
-    fixResults: [
-      {
-        scannedResult: {
-          pageId: "about.html",
-          scannedResult: {
-            codeBlock: "<h1>About Us</h1>",
-            violation: {
-              id: "v3",
-              impact: "low",
-              tags: ["contrast", "headers"],
-              description: "Heading should have a better contrast",
-              help: "Ensure that headings have a higher contrast ratio.",
-              helpUrl: "https://www.w3.org/",
-              nodes: {}
-            }
-          }
-        },
-        newCodeBlock: "<h1 style='color: #000000; background-color: #ffffff;'>About Us</h1>"
-      }
-    ]
-  }
-];
+import {ScannedResult} from '../../interfaces/scanInterfaces';
+import {generatedFixPagesBasic} from '../../mocks/generatedFixPageMocks';
+import {fileSystemBasic} from '../../mocks/fileSystemMocks';
 
 
 // React component for the accessibility scanner interface
@@ -171,7 +23,7 @@ const Scan: React.FC = () => {
   const loadPageContent = (pageId: string) => {
 
 
-    let htmlContent = fileSystem[pageId].content;
+    let htmlContent = fileSystemBasic[pageId].content;
     
 
     // Inject script for navigation and highlighting functionality
@@ -272,7 +124,7 @@ const Scan: React.FC = () => {
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
-  const currentPageFixResults = generatedFixPages.find(p => p.pageId === currentPageId)?.fixResults || [];
+  const currentPageFixResults = generatedFixPagesBasic.find(p => p.pageId === currentPageId)?.fixResults || [];
 
   return (
     <div className="flex h-screen bg-gray-300 text-gray-800">

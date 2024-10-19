@@ -3,7 +3,8 @@ import './App.css';
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Home} from './pages/Home/index';
-import Scan from './pages/Scan/ScanPage';
+// import Scan from './pages/Scan/ScanPage';
+import {Scan} from './pages/Scan/index'
 
 function App() {
   const [message, setMessage] = useState('');
