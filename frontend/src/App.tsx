@@ -3,16 +3,16 @@ import './App.css';
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Home} from './pages/Home/index';
-import { Scan } from './pages/Scan/index';
+import Scan from './pages/Scan/ScanPage';
 
 function App() {
   const [message, setMessage] = useState('');
    
-  useEffect(() => {
-      axios.get('http://localhost:8000/')
-          .then(response => setMessage(response.data))
-          .catch(error => console.error(error));
-  }, []);
+  // useEffect(() => {
+  //     axios.get('http://localhost:8000/')
+  //         .then(response => setMessage(response.data))
+  //         .catch(error => console.error(error));
+  // }, []);
 
   console.log(message)
   return (
