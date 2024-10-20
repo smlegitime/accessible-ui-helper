@@ -1,4 +1,6 @@
+import { GeneratedFixPage } from "@/src/interfaces/scanInterfaces";
 import { ClientOptions, loadSandpackClient, SandboxSetup, SandpackClient } from "@codesandbox/sandpack-client";
+import { fixCodeType } from "./Resizable";
 
 export class CodeSandBox {
     content: SandboxSetup
@@ -6,29 +8,32 @@ export class CodeSandBox {
         this.content = sandboxSetup;
     }
 
+    private client : SandpackClient | null = null; 
     createCodeSandboxIframe = async (iframe: HTMLIFrameElement) => {
         // Optional options
-        const options: ClientOptions = {};
+        const options: ClientOptions = {
+            showErrorScreen: true,
+            showLoadingScreen: true,
+        };
         // Properly load and mount the bundler                    
         const client = await loadSandpackClient(
             iframe,
             this.content,
             options
         );
+        this.client = client
         return { iframe: iframe, client: client }
     }
 
-    updateSandbox = (client: SandpackClient) => {
-        client.updateSandbox({
-            files: {
-                "/index.js": {
-                    code: `console.log('New Text!')`,
-                },
-            },
-            entry: "/index.js",
-            dependencies: {
-                uuid: "latest",
-            },
-        });
+    updateSandboxIframe = async(
+        fixes: fixCodeType, 
+        ) => {
+        this.client?.updateSandbox({
+            files: fixes, 
+            entry: 'index.html'
+        })
+        console.log('updated')
     }
 }
+
+

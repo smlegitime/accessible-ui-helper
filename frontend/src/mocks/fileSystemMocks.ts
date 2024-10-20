@@ -10,13 +10,10 @@ export const fileSystemBasic: FileCollection = {
         </head>
         <body>
           <h1>Home Page</h1>
-          <img src="image.jpg">
           <button id="btn">Click Me</button>
-          <button id="go-to-about">Go to About</button>
           <div id="count"></div>
-          <a href="/about.html">Go to About</a>
+          <a href="about.html">Go to About</a>
           <script src="script.js"></script>
-          <script src="index.js"></script>
         </body>
       </html>`,
   },
@@ -50,9 +47,25 @@ export const fileSystemBasic: FileCollection = {
     type: "js",
     content: `console.log('About page loaded');`,
   },
-  "index.js": {
-    type: "js",
-    content: `console.log(require('uuid'));`,
+  "package.json": {
+    type: "package.json",
+    content: `
+  {
+      "name": "html-css-js",
+      "version": "1.0.0",
+      "description": "",
+      "main": "index.html",
+      "scripts": {
+        "start": "parcel index.html --open",
+        "build": "parcel build index.html"
+      },
+      "dependencies": {},
+      "devDependencies": {
+        "@babel/core": "7.2.0",
+        "parcel-bundler": "^1.6.1"
+      },
+      "keywords": []
+    }`,
   },
 };
 

@@ -1,5 +1,5 @@
 export interface OrganizedFile {
-  [key: string]: { code: string };
+  [key: string]: { code: string; readOnly?: boolean };
 }
 
 export interface CodeSandBoxAPIInput {
