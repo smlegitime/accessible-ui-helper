@@ -7,21 +7,20 @@ import {Home} from './pages/Home/index';
 import {Scan} from './pages/Scan/index'
 
 function App() {
-  const [message, setMessage] = useState('');
-   
+  const HomePage =  <Home />
+  const ScanPage = <Scan />
   // useEffect(() => {
   //     axios.get('http://localhost:8000/')
   //         .then(response => setMessage(response.data))
   //         .catch(error => console.error(error));
   // }, []);
 
-  console.log(message)
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/scan" element={<Scan />} />
+          <Route path="/" element={HomePage} />
+          <Route path="/scan" element={ScanPage} />
         </Routes>
       </BrowserRouter>
     </div>

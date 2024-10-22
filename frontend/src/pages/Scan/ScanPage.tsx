@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {ScannedResult} from '../../interfaces/scanInterfaces';
+import {PageScannedResult} from '../../interfaces/scanInterfaces';
 import {generatedFixPagesBasic} from '../../mocks/generatedFixPageMocks';
 import {fileSystemBasic} from '../../mocks/fileSystemMocks';
 
@@ -8,7 +8,7 @@ import {fileSystemBasic} from '../../mocks/fileSystemMocks';
 const Scan: React.FC = () => {
   const [currentPageId, setCurrentPageId] = useState<string>("index.html");
   const [iframeContent, setIframeContent] = useState<string | null>(null);
-  const [selectedViolation, setSelectedViolation] = useState<ScannedResult | null>(null);
+  const [selectedViolation, setSelectedViolation] = useState<PageScannedResult | null>(null);
   const [highlightedSelector, setHighlightedSelector] = useState<string | null>(null);
   const [leftPanelWidth, setLeftPanelWidth] = useState(33);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -76,7 +76,7 @@ const Scan: React.FC = () => {
   }, []);
 
     // Highlight selected accessibility violation in the iframe content
-  const highlightViolation = (violation: ScannedResult) => {
+  const highlightViolation = (violation: PageScannedResult) => {
     if (iframeRef.current && iframeRef.current.contentWindow) {
       const selector = generateSelector(violation.scannedResult.codeBlock);
       iframeRef.current.contentWindow.postMessage(
