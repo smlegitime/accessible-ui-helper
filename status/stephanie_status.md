@@ -8,6 +8,7 @@ that describes how they want their files to be rendered.
 
 ## Date: October 19th
 - In order to render static files on code sandbox, need the following as part of the file collection:
+  ```
         "package.json": {
             type: "package.json",
             content: `
@@ -35,7 +36,11 @@ that describes how they want their files to be rendered.
             axe.run().then((results) => {console.log(results);
             window.parent.postMessage({ type: 'axeResults', results }, '*')
             });`
-  - Also for each HTML file, add the following script files:
+        ```
+
+- Also for each HTML file, add the following script files:
+        ```
           <script src="node_modules/axe-core/axe.min.js"></script>
           <script src="axe-script.js"></script>
+          ```
   
