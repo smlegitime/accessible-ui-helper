@@ -14,6 +14,8 @@ export const fileSystemBasic: FileCollection = {
           <div id="count"></div>
           <a href="about.html">Go to About</a>
           <script src="script.js"></script>
+          <script src="node_modules/axe-core/axe.min.js"></script>
+          <script src="axe-script.js"></script>
         </body>
       </html>`,
   },
@@ -59,14 +61,23 @@ export const fileSystemBasic: FileCollection = {
         "start": "parcel index.html --open",
         "build": "parcel build index.html"
       },
-      "dependencies": {},
+      "dependencies": {"axe-core": "^4.10.1"},
       "devDependencies": {
         "@babel/core": "7.2.0",
-        "parcel-bundler": "^1.6.1"
+        "parcel-bundler": "^1.6.1",
+        "axe-core": "^4.10.1"
       },
       "keywords": []
     }`,
   },
+  "axe-script.js": {
+    type: 'js',
+    content: `
+    axe.run().then((results) =>
+    window.parent.postMessage({ type: 'axeResults', results }, '*')
+    );`
+  }
+  
 };
 
 export const codeSandBoxSetUpInitial = {

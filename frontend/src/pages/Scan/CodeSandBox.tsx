@@ -1,6 +1,5 @@
-import { GeneratedFixPage } from "@/src/interfaces/scanInterfaces";
 import { ClientOptions, loadSandpackClient, SandboxSetup, SandpackClient } from "@codesandbox/sandpack-client";
-import { fixCodeType } from "./Resizable";
+import { fixCodeType } from "./index";
 
 export class CodeSandBox {
     content: SandboxSetup

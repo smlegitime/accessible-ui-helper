@@ -1,9 +1,8 @@
 import { OrganizedFile } from "@/src/interfaces/codeSandBoxInterfaces"
 import { CodeSandBox } from "./CodeSandBox"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { FileCollection } from "@/src/interfaces/scanInterfaces"
-import { fixCodeType } from "./Resizable"
-import { SandpackClient } from "@codesandbox/sandpack-client"
+import { fixCodeType } from "./index"
 
 
 export function View({ fileCollectionData, generatedPageFixes }: { fileCollectionData: FileCollection, generatedPageFixes: fixCodeType }) {
