@@ -71,13 +71,12 @@ export const fileSystemBasic: FileCollection = {
     }`,
   },
   "axe-script.js": {
-    type: 'js',
+    type: "js",
     content: `
     axe.run().then((results) =>
     window.parent.postMessage({ type: 'axeResults', results }, '*')
-    );`
-  }
-  
+    );`,
+  },
 };
 
 export const codeSandBoxSetUpInitial = {

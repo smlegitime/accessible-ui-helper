@@ -48,11 +48,15 @@ export function Scan() {
       <div className='h-full'>
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={25}>
-            <AccessiblityPanel setGeneratedPageFixes={setGeneratedPageFixes} />
+            <AccessiblityPanel
+              setGeneratedPageFixes={setGeneratedPageFixes}
+              scanResults={accessibilityResults} />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}>
-            <View fileCollectionData={fileSystemBasic} generatedPageFixes={generatedPageFixes} />
+            <View
+              fileCollectionData={fileSystemBasic}
+              generatedPageFixes={generatedPageFixes} />
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>

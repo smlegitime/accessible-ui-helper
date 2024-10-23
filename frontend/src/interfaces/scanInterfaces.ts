@@ -2,30 +2,30 @@
 enum FileType {
   Html,
   Css,
-  Js
+  Js,
 }
 
 enum Framework {
   VanillaProject, // we will likely leverage as use case
   React,
   Angular,
-  Vue
+  Vue,
 }
 
 interface Page {
   readonly pageId: string;
   filePath: string; // full/file/path/file.extension
   viewport: {
-      width: number,
-      height: number
+    width: number;
+    height: number;
   };
   pageContent: {
-      fileType: FileType.Html | FileType.Css | FileType.Js;
-      framework: string | Framework;
-      body: {
-          originalVersion: string; // original code
-          transpiledVersion: string; // code converted into vanilla version
-      }
+    fileType: FileType.Html | FileType.Css | FileType.Js;
+    framework: string | Framework;
+    body: {
+      originalVersion: string; // original code
+      transpiledVersion: string; // code converted into vanilla version
+    };
   };
 }
 
@@ -65,10 +65,8 @@ export interface GeneratedFixPage {
 }
 
 export interface AccessibilityResults {
-  passes: AccViolation[]
-  violations: AccViolation[]
-  inapplicable: AccViolation[]
-  incomplete: AccViolation[]
+  passes: AccViolation[];
+  violations: AccViolation[];
+  inapplicable: AccViolation[];
+  incomplete: AccViolation[];
 }
-
-
