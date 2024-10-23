@@ -1,13 +1,15 @@
 /**
  * Description: File that assigns the Express app to an HTTP server
  * Created: Sybille Légitime
- * Created date: Oct 18, 2024 | Updated date:
+ * Created date: Oct 18, 2024 | Updated date: Oct 22, 2024
  */
 
-import app from './index'
+import app from './index';
+import config from './config/config';
 
-const PORT = process.env.PORT || 8000;
+const HOST = config.host;
+const PORT = config.port;
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
     console.log(`Server is running on port ${PORT}`)
 });
