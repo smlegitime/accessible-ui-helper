@@ -38,12 +38,14 @@ export const fileSystemBasic: FileCollection = {
           <p>This is the about page.</p>
           <a href="index.html">Go to Home</a>
           <script src="about-script.js"></script>
+          <script src="node_modules/axe-core/axe.min.js"></script>
+          <script src="axe-script.js"></script>
         </body>
       </html>`,
   },
   "about-style.css": {
     type: "css",
-    content: `h1 { color: red; }`,
+    content: `h1 { color: yellow; }`,
   },
   "about-script.js": {
     type: "js",
