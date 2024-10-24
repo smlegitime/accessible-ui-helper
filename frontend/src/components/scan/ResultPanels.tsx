@@ -15,7 +15,7 @@ export function PassesPanel({ resultsToDisplay }: { resultsToDisplay: AccViolati
                     <AccordionItem key={`passes-item-${i}`} value={`item-${i}`} className="mb-1 bg-green-900 rounded">
                         <AccordionTrigger>
                             <div className="p-3 inline-flex">
-                                <h3 className="text-white text-center">{result.id}</h3>
+                                <h3 className="text-white text-center">{result.help}</h3>
                             </div>
                         </AccordionTrigger>
                         <AccordionContent>
@@ -52,7 +52,7 @@ export function ViolationsPanel({ resultsToDisplay }: { resultsToDisplay: AccVio
                     <AccordionItem key={`violation-item-${i}`} value={`item-${i}`} className="mb-1 bg-red-900 rounded">
                         <AccordionTrigger>
                             <div className="w-full p-3 inline-flex justify-between">
-                                <h3 className="text-white text-center">{result.id}</h3>
+                                <h3 className="text-white text-center">{result.help}</h3>
                                 <Badge variant="default" className={`${impactColor(result.impact)}`}>
                                     {result.impact}
                                 </Badge>
