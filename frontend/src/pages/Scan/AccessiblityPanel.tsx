@@ -13,8 +13,8 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }: { setG
       </div>
       {/* Accessibilty Scan results panel */}
       <div className="p-3">
-        <Accordion type="single" collapsible className="w-full mb-2 space-y-2">
-          <AccordionItem value="item-1">
+        <Accordion type="single" collapsible className="w-full mb-2 space-y-2" defaultValue="violations-block">
+          <AccordionItem value="passes-block">
             <AccordionTrigger className="border-solid border-2 border-white rounded bg-slate-800">
               <h2 className="text-white ml-2"> Passes </h2>
             </AccordionTrigger>
@@ -22,7 +22,7 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }: { setG
               <PassesPanel resultsToDisplay={scanResults.passes} />
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-2">
+          <AccordionItem value="violations-block">
             <AccordionTrigger className="border-solid border-2 border-white rounded bg-slate-800">
               <h2 className="text-white ml-2"> Violations </h2></AccordionTrigger>
             <AccordionContent>
