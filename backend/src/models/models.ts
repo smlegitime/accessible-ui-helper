@@ -60,9 +60,11 @@ interface ScannedResult {
 
 // Type that the LLM module manipulates
 interface LlmPrompt {
-    template: string;
-    examples: Array<string>; // stringified version of ScannedResult.scannedResult
-    pageId: string; // Reference to project pages with pageIds
+    violation: AccViolation; //contains what needs to be fixed
+    fileCollection: FileCollection;  //contains all files that need to be fixed
+    //template: string;
+    //examples: Array<string>; // stringified version of ScannedResult.scannedResult
+    //pageId: string; // Reference to project pages with pageIds
 }
 
 // Type outputted the generate fix outputs
