@@ -1,31 +1,31 @@
 // Interfaces to define the structure of file data, violations, scanned results, and generated fixes
-enum FileType {
-  Html,
-  Css,
-  Js,
+export enum FileType {
+  Html = 'Html',
+  Css = 'Css',
+  Js = 'Js',
+  Other = 'Other'
+}
+export enum Framework {
+  VanillaProject = 'VanillaProject', 
+  React = 'React',
+  Angular = 'Angular',
+  Vue = 'Vue'
 }
 
-enum Framework {
-  VanillaProject, // we will likely leverage as use case
-  React,
-  Angular,
-  Vue,
-}
-
-interface Page {
+export interface Page {
   readonly pageId: string;
-  filePath: string; // full/file/path/file.extension
+  filePath: string; 
   viewport: {
-    width: number;
-    height: number;
+    width: number,
+    height: number
   };
   pageContent: {
-    fileType: FileType.Html | FileType.Css | FileType.Js;
+    fileType: FileType;
     framework: string | Framework;
     body: {
-      originalVersion: string; // original code
-      transpiledVersion: string; // code converted into vanilla version
-    };
+      originalVersion: string; 
+      transpiledVersion: string; 
+    }
   };
 }
 

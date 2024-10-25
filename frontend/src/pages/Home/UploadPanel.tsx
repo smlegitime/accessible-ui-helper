@@ -1,36 +1,14 @@
 import React from 'react';
 import { useState } from 'react';
-import { Button } from "../../components/ui/button";
+import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { FileType, Framework, Page } from '../../interfaces/scanInterfaces';
 
-// what about other types of files like png, mp4
-enum FileType {
-  Html = 'Html',
-  Css = 'Css',
-  Js = 'Js'
-}
-enum Framework {
-  VanillaProject = 'VanillaProject', 
-  React = 'React',
-  Angular = 'Angular',
-  Vue = 'Vue'
-}
-
-interface Page {
-  readonly pageId: string;
-  filePath: string; // full/file/path/file.extension
-  viewport: {
-    width: number,
-    height: number
-  };
-  pageContent: {
-    fileType: FileType;
-    framework: string | Framework;
-    body: {
-      originalVersion: string; // original code
-      transpiledVersion: string; // code converted into vanilla version
-    }
-  };
+// Enable webkitdirectory
+declare module "react" {
+  interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
+      webkitdirectory?: string;
+  }
 }
 
 
@@ -42,7 +20,6 @@ export function UploadPanel() {
   // When user upload files, add it to the files array
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>):void => {
     if (e.target.files) {
-      // TODO: change Array.from() to push
       setFiles(Array.from(e.target.files));
     }
   };
@@ -51,27 +28,36 @@ export function UploadPanel() {
   // Convert all files into Pages
   // Send Pages to scan and navigate to it
   const handleSubmit = async (): Promise<void> => {
-    const pages = await convertFilesToPages();
-    //console.log(files[0].type);
-    console.log(pages);
+    const pages: Page[] = await convertFilesToPages();
     navigate('/output', { state: { pages } });
   };
 
-  // Convert all uploaded files into interface Pages 
+  // Helper function to convert all uploaded files into Page objects
   const convertFilesToPages = async (): Promise<Page[]> => {
     // Get pages from files
     const pages = await Promise.all(files.map(async (file) => {
-      // TODO: add type type
-      const fileContent = await file.text();
+      const fileType: FileType = getFileType(file.type);
+      let fileContent: string = '';
+      try{
+        if (fileType == FileType.Other){
+          // TODO: add 64 conversion code
+          fileContent = await toBase64(file);
+        } else {
+          fileContent = await file.text();
+        }
+      } catch(error) {
+        console.error('Error getting file content:', error);
+      }
+
       return {
         pageId: `${file.name} ID`, //TODO: use UUID or other id generator
-        filePath: "default/path/to/file.name", ////// Question: File structure, EX: style/css
+        filePath: file.webkitRelativePath, 
         viewport: {
-          width: 1920, // Example width
-          height: 1080 // Example height
+          width: 1920,
+          height: 1080 
         },
         pageContent: {
-          fileType: getFileType(file.type), 
+          fileType: fileType, 
           framework: Framework.VanillaProject, // Default to 'Vanilla'
           body: {
             originalVersion: fileContent,
@@ -80,10 +66,11 @@ export function UploadPanel() {
         }
       }
     }));
+    
     return pages;
   };
 
-  // Function to get file type from file extension
+  // Helper function to get file type from file extension
   const getFileType = (fileType: string): FileType => {
     switch (fileType) {
       case 'text/html':
@@ -93,9 +80,19 @@ export function UploadPanel() {
       case 'text/javascript':
         return FileType.Js;
       default:
-        throw new Error('Unsupported file type');
+        return FileType.Other;
     }
   };
+
+  // Helper function to convert files into Base64 string
+  const toBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  }
 
   return (
     <div id='UploadPanel' className='max-w-xl min-h-96 h-[25rem] '>
@@ -104,7 +101,8 @@ export function UploadPanel() {
         <div>
           <Button variant="outline"> + Choose File </Button>
           <p>or drop your files here</p>
-          <input type='file' multiple className='block' onChange={handleFileChange}/>
+          {/* only work for computer browsers, not mobile browsers */}
+          <input type='file'  webkitdirectory=""  multiple className='block' onChange={handleFileChange}/>
         </div>        
         <button className='btn flex'>
             
