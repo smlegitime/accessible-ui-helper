@@ -4,6 +4,7 @@ import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Home} from './pages/Home/index';
 import Scan from './pages/Scan/ScanPage';
+import { TestOutput } from './pages/Scan/TestOutput';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/scan" element={<Scan />} />
+          <Route path='/output' element={<TestOutput />} />
         </Routes>
       </BrowserRouter>
     </div>
