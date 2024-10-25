@@ -7,15 +7,14 @@ import Scan from './pages/Scan/ScanPage';
 import { TestOutput } from './pages/Scan/TestOutput';
 
 function App() {
-  const [message, setMessage] = useState('');
-   
+  const HomePage =  <Home />
+  const ScanPage = <Scan />
   // useEffect(() => {
   //     axios.get('http://localhost:8000/')
   //         .then(response => setMessage(response.data))
   //         .catch(error => console.error(error));
   // }, []);
 
-  console.log(message)
   return (
     <div className="App">
       <BrowserRouter>
