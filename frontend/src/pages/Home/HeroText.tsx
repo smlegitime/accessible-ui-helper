@@ -1,3 +1,9 @@
+/**
+ * Description: Text description of AccUI
+ * Created: Jiecheng(Jason) Chen
+ * Created date: Oct 14, 2024 | Updated date: Oct 26, 2024 
+ */
+
 import React from 'react';
 
 export function HeroText() {

@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .js,.ts .",
+    "lint": "eslint .",
     "format": "prettier --ignore-path .gitignore --write '**/*.+(js|ts|json)'"
   },
   "eslintConfig": {
