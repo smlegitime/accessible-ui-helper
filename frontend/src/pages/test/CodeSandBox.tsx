@@ -1,6 +1,6 @@
 import { ClientOptions, loadSandpackClient, SandboxSetup, SandpackClient } from "@codesandbox/sandpack-client";
-import { fixCodeType } from "./index";
 
+type fixCodeType = { [key: string]: { code: string } }
 export class CodeSandBox {
     content: SandboxSetup
     constructor(sandboxSetup: SandboxSetup) {

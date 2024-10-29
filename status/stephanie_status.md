@@ -1,3 +1,22 @@
+## Date: October 29th
+
+- Merged Yongcheng's code with new updated to Scan page. 
+  - Added fix button that updates code in view
+- Accessibility evaluation done on the front end
+- Made utils.ts where utils for scan page are eg FileCollection to SandPackFiles
+conversion.
+- Selection of violation to fix
+- Updated UI to match low fidelity UI mock up 
+
+TODO: 
+- Helper that adds axe-core to user's files
+
+NOTES: 
+- Send violation to backend: filecollection, accviolation[] (rio will filter on the backend). Sending multiple violations at a time. 
+- Backend recheck that pages are valid (package.json and axe.script.js are unchanged)
+returned from backend: filecollection with fixed code
+
+
 ## Date: October 19th
 
 - Organized interfaces and mockData in frontend

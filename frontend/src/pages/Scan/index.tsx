@@ -1,6 +1,6 @@
-import { fileSystemBasic } from '../../mocks/fileSystemMocks';
-import { useState } from 'react';
-import { AccessibilityResults } from '@/src/interfaces/scanInterfaces';
+import { initialFileCollectionData } from '../../mocks/fileSystemMocks';
+import { useEffect, useState } from 'react';
+import { AccessibilityResults, FileCollection } from '@/src/interfaces/scanInterfaces';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -8,11 +8,10 @@ import {
 } from "../../components/ui/resizable"
 import { View } from "./View"
 import { AccessiblityPanel } from './AccessiblityPanel';
-export type fixCodeType = { [key: string]: { code: string } }
-
 
 export function Scan() {
-  // TODO: Convert pages: Page[] to fileCollectionData that we are taking as input to AccessibilityPanel
+  // TODO: Convert pages: Page[] to fileCollectionData that we are taking 
+  // as input to AccessibilityPanel and extract framework
 
   const emptyResults = {
     passes: [],
@@ -21,7 +20,12 @@ export function Scan() {
     incomplete: []
   }
   const [accessibilityResults, setAccessibilityResults] = useState<AccessibilityResults>(emptyResults)
-  const [generatedPageFixes, setGeneratedPageFixes] = useState<fixCodeType>({})
+  const [generatedPageFixes, setGeneratedPageFixes] = useState<FileCollection>({})
+  const [codeFiles, setCodeFiles] = useState<FileCollection>(initialFileCollectionData)
+
+  useEffect(() => {
+    setCodeFiles(generatedPageFixes)
+  }, [generatedPageFixes])
 
   window.addEventListener('message', (event) => {
     if (event.data.type === 'axeResults') {
@@ -42,7 +46,6 @@ export function Scan() {
     }
   })
 
-  console.log(accessibilityResults);
   return (
     <div className='h-screen'>
       <div className='h-full'>
@@ -55,8 +58,8 @@ export function Scan() {
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}>
             <View
-              fileCollectionData={fileSystemBasic}
-              generatedPageFixes={generatedPageFixes} />
+              files={codeFiles}
+            />
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
