@@ -29,6 +29,7 @@ export function UploadPanel() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>):void => {
     if (e.target.files) {
       setFiles(Array.from(e.target.files));
+      console.log(files);
     }
   };
 
@@ -48,7 +49,6 @@ export function UploadPanel() {
       let fileContent: string = '';
       try{
         if (fileType == FileType.Other){
-          // TODO: add 64 conversion code
           fileContent = await toBase64(file);
         } else {
           fileContent = await file.text();
@@ -87,6 +87,8 @@ export function UploadPanel() {
         return FileType.Css;
       case 'text/javascript':
         return FileType.Js;
+      case 'application/json':
+        return FileType.Json;
       default:
         return FileType.Other;
     }

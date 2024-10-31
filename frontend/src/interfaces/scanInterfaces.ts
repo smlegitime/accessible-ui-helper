@@ -3,6 +3,7 @@ export enum FileType {
   Html = "Html",
   Css = "Css",
   Js = "Js",
+  Json = "Json",
   Other = "Other",
 }
 export enum Framework {
