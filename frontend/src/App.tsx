@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import './App.css';
-import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Home} from './pages/Home/index';
 import {Scan} from './pages/Scan/index';
 import SandboxViewer from "./pages/test/View";
-import { TestOutput } from './pages/Scan/TestOutput';
+import { TestOutput } from './pages/test/TestOutput';
 
 function App() {
   const HomePage =  <Home />

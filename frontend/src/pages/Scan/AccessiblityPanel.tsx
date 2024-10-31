@@ -30,14 +30,14 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }:
         <h5 className="text-white text-xs">Vanilla Website Project</h5>
       </div>
       <div className="border-b border-gray-300 my-2"></div>
-      <div className="inline-flex space-x-2">
+      <div className="inline-flex space-x-2 justify-center w-full">
         <h3 className="text-white self-center text-sm">
           {activeSelections.length} selected violation(s)
         </h3>
         <Button onClick={() => {
           setGeneratedPageFixes(updatedFiles)
         }}
-          className="max-h-6 min-w-20 bg-slate-50 rounded hover:bg-slate-500">
+          className="max-h-6 min-w-20 bg-slate-50 rounded hover:bg-slate-500 text-black">
           Fix
         </Button>
       </div>
@@ -46,7 +46,10 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }:
         <Accordion type="single" collapsible className="w-full mb-2 space-y-2" defaultValue="violations-block">
           <AccordionItem value="passes-block">
             <AccordionTrigger className="border-solid border-2 border-white rounded bg-slate-800">
-              <h2 className="text-white ml-2"> Passes </h2>
+              <div className="inline-flex flex justify-between flex-auto">
+                <h2 className="text-white ml-2"> Passes </h2>
+                <h3 className="text-white "> {scanResults.passes.length}</h3>
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               <PassesPanel resultsToDisplay={scanResults.passes} />
@@ -54,7 +57,12 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }:
           </AccordionItem>
           <AccordionItem value="violations-block">
             <AccordionTrigger className="border-solid border-2 border-white rounded bg-slate-800">
-              <h2 className="text-white ml-2"> Violations </h2></AccordionTrigger>
+            <div className="inline-flex flex justify-between flex-auto">
+                <h2 className="text-white ml-2"> Violations </h2>
+                <h3 className="text-white "> {scanResults.violations.length}</h3>
+              </div>
+            </AccordionTrigger>
+
             <AccordionContent>
               <ViolationsPanel
                 resultsToDisplay={scanResults.violations}

@@ -38,7 +38,7 @@ export function UploadPanel() {
   // Send Pages to scan and navigate to it
   const handleSubmit = async (): Promise<void> => {
     const pages: Page[] = await convertFilesToPages();
-    navigate('/output', { state: { pages } });
+    navigate('/scan', { state: { pages } });
   };
 
   // Helper function to convert all uploaded files into Page objects

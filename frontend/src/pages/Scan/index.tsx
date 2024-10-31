@@ -1,6 +1,5 @@
-import { initialFileCollectionData } from '../../mocks/fileSystemMocks';
 import { useEffect, useState } from 'react';
-import { AccessibilityResults, FileCollection } from '@/src/interfaces/scanInterfaces';
+import { AccessibilityResults, FileCollection, FileData, FileType, Page } from '../../interfaces/scanInterfaces';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -8,10 +7,64 @@ import {
 } from "../../components/ui/resizable"
 import { View } from "./View"
 import { AccessiblityPanel } from './AccessiblityPanel';
+import { useLocation } from 'react-router-dom';
+import { insertAxeScriptHTML } from './utils';
 
 export function Scan() {
-  // TODO: Convert pages: Page[] to fileCollectionData that we are taking 
+  // get pages from home page
+  const location = useLocation();
+  const { pages } = location.state as { pages: Page[] };
+  
+  // Convert pages: Page[] to fileCollectionData that we are taking 
   // as input to AccessibilityPanel and extract framework
+  const initialFileCollection: FileCollection = {}
+  pages.map((page) => {
+    let pageCode = ""
+    // update .html files to run axe-scripts
+    if (page.pageContent.fileType === FileType.Html) {
+      pageCode = insertAxeScriptHTML(page.pageContent.body.originalVersion)
+    } else {
+      pageCode = page.pageContent.body.originalVersion
+    }
+    const pageInfo: FileData = {
+      type: page.pageContent.fileType,
+      content: pageCode
+    }
+    return initialFileCollection["/" + page.filePath.substring(page.filePath.indexOf('/')+1)] = pageInfo
+  });
+  //Add axe-script here and file validation
+  initialFileCollection["/axe-script.js"] = {
+    type: FileType.Js,
+    content: `
+            import axe from 'axe-core';
+              
+            axe.run().then((results) =>
+              window.parent.postMessage({ type: 'axeResults', results }, '*')
+              );
+          `
+  }
+  initialFileCollection["/package.json"] = {
+  type: FileType.Json, 
+  content: `{
+  "name": "html-css-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {"axe-core": "^4.10.1"},
+  "devDependencies": {
+    "@babel/core": "7.2.0",
+    "parcel-bundler": "^1.6.1",
+    "axe-core": "^4.10.1"
+  },
+  "keywords": []
+}`
+  }
+
+
 
   const emptyResults = {
     passes: [],
@@ -20,9 +73,10 @@ export function Scan() {
     incomplete: []
   }
   const [accessibilityResults, setAccessibilityResults] = useState<AccessibilityResults>(emptyResults)
+  const [codeFiles, setCodeFiles] = useState<FileCollection>(initialFileCollection)
   const [generatedPageFixes, setGeneratedPageFixes] = useState<FileCollection>({})
-  const [codeFiles, setCodeFiles] = useState<FileCollection>(initialFileCollectionData)
-
+  console.log(codeFiles)
+  // TODO: Figure this out
   useEffect(() => {
     setCodeFiles(generatedPageFixes)
   }, [generatedPageFixes])

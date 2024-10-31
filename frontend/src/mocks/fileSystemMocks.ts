@@ -294,7 +294,7 @@ img {
   "dependencies": {"axe-core": "^4.10.1"},
   "devDependencies": {
     "@babel/core": "7.2.0",
-    "parcel-bundler": "^1.6.1"
+    "parcel-bundler": "^1.6.1",
     "axe-core": "^4.10.1"
   },
   "keywords": []

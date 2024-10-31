@@ -83,10 +83,10 @@ export function ViolationsPanel({ resultsToDisplay,
                             </div>
                         </AccordionTrigger>
                         <AccordionContent>
-                            <div>
+                            <div className="flex flex-col justify-center">
                                 <h3 className="text-white text-center mx-1">{result.description}</h3>
                                 <a href={result.helpUrl} target="_blank" rel="noopener noreferrer">
-                                    <h5>Learn more</h5>
+                                    <h5 className="text-center text-lime-300">Learn more</h5>
                                 </a>
                             </div>
                         </AccordionContent>
