@@ -30,7 +30,6 @@ export function PassesPanel({ resultsToDisplay }: { resultsToDisplay: AccViolati
 }
 
 function impactColor(impact: string | null) {
-    console.log(impact)
     if (impact === 'minor') {
         return "bg-yellow-500"
     } else if (impact === 'moderate') {

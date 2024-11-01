@@ -30,9 +30,9 @@ export function Scan() {
   const [generatedPageFixes, setGeneratedPageFixes] = useState<FileCollection>({})
   console.log(codeFiles)
   // TODO: Figure this out
-  useEffect(() => {
-    setCodeFiles(generatedPageFixes)
-  }, [generatedPageFixes])
+  // useEffect(() => {
+  //   setCodeFiles(generatedPageFixes)
+  // }, [generatedPageFixes])
 
   window.addEventListener('message', (event) => {
     if (event.data.type === 'axeResults') {
