@@ -94,7 +94,7 @@ export interface ExportPackage {
 }
 
 export interface ExportRequest {
-    files: ExportPackage;
+    files: ExportPackage[];
     outputPath: string;
 }
 
