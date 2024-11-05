@@ -91,6 +91,10 @@ export interface ExportPackage {
     isScannedReport: boolean;
     contents: string; //encoded version of what's in the file
     encoding?: string;
+}
+
+export interface ExportRequest {
+    files: ExportPackage;
     outputPath: string;
 }
 
