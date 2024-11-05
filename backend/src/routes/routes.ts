@@ -10,6 +10,6 @@ import { Router } from 'express';
 const router = Router();
 
 // Calls the controller based on the route path
-router.get('/', controllers.getAxeRules);
+router.post('/fix', controllers.handleScannedInput);
 
 export default router;

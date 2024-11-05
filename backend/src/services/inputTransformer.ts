@@ -4,9 +4,17 @@
  * Created date: Oct 22, 2024 | Updated date: 
  */
 
-import { Page, PageContent, PageAsset } from '../models/models';
+import { 
+  Page, 
+  PageContent, 
+  PageAsset,
+  FileCollection,
+  AccessibilityResults
+} from '../models/models';
 
-class InputTransformer {
+import { readFile } from '../lib/utils';
+
+export class InputTransformer {
 
      /**
       * Sanitize all file names to control for special characters and filename length
@@ -47,5 +55,15 @@ class InputTransformer {
      * @param webInputs 
      * @returns Transformed and standardized list of input pages
      */
-    public transformInput(webInputs: Array<Page>) : Array<Page> | null { return null; }
+    public static async transformInput(inputFiles: FileCollection, inputAccResults: AccessibilityResults) { 
+
+      try {
+        const data = await readFile('/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/test_2.json');
+        console.log(data);
+        return JSON.parse(data);
+
+      } catch (err) {
+        console.error('Error reading file:', err);
+      }
+    }
 }

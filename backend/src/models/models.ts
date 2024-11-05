@@ -1,23 +1,24 @@
 /**
  * Description: Initial models for the backend components
  * Created: Sybille Légitime
- * Created date: Oct 10, 2024 | Updated date: Oct 22, 2024
+ * Created date: Oct 10, 2024 | Updated date:
  */
 
 // Output Type of input processor
 // What happens if the project is large? Do we look for the contents of dist/
 // What about inline javascript <script></script> and css <p style="color:blue;"></p>
 enum FileType {
-    Html,
-    Css,
-    Js
+    Html = "Html",
+    Css = "Css",
+    Js = "Js",
+    Json = "Json"
 }
 
 enum Framework {
-    VanillaProject, // we will likely leverage as use case
-    React,
-    Angular,
-    Vue
+    VanillaProject = "VanillaProject", // we will likely leverage as use case
+    React = "React",
+    Angular = "Angular",
+    Vue = "Vue"
 }
 
 export interface PageContent {
@@ -92,3 +93,20 @@ export interface ExportPackage {
     encoding?: string;
     outputPath: string;
 }
+
+// Input files from the front-end
+export interface FileData {
+    type: string;
+    content: string;
+}
+  
+  export interface FileCollection {
+    [key: string]: FileData;
+}
+
+export interface AccessibilityResults {
+    passes: Array<AccViolation>;
+    violations: Array<AccViolation>;
+    inapplicable: Array<AccViolation>;
+    incomplete: Array<AccViolation>;
+  }
