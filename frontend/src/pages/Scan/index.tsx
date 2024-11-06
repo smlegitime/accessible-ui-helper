@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { AccessibilityResults, FileCollection, Page } from '../../interfaces/scanInterfaces';
+import {
+  AccessibilityResults,
+  FileCollection, Page
+} from '../../interfaces/scanInterfaces';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -18,21 +21,23 @@ export function Scan() {
   // Convert pages: Page[] to fileCollectionData that we are taking 
   // as input to AccessibilityPanel and extract framework
   const initialFileCollection: FileCollection = PagesToFileCollection(pages)
-  
+
   const emptyResults = {
     passes: [],
     violations: [],
     inapplicable: [],
     incomplete: []
   }
-  const [accessibilityResults, setAccessibilityResults] = useState<AccessibilityResults>(emptyResults)
-  const [codeFiles, setCodeFiles] = useState<FileCollection>(initialFileCollection)
-  const [generatedPageFixes, setGeneratedPageFixes] = useState<FileCollection>({})
-  console.log(codeFiles)
-  // TODO: Figure this out
-  // useEffect(() => {
-  //   setCodeFiles(generatedPageFixes)
-  // }, [generatedPageFixes])
+  const [accessibilityResults, setAccessibilityResults]
+    = useState<AccessibilityResults>(emptyResults)
+  const [generatedPageFixes, setGeneratedPageFixes]
+    = useState<FileCollection>(initialFileCollection)
+  const [codeFiles, setCodeFiles]
+    = useState<FileCollection>(initialFileCollection)
+
+  useEffect(() => {
+    setCodeFiles(generatedPageFixes)
+  }, [generatedPageFixes])
 
   window.addEventListener('message', (event) => {
     if (event.data.type === 'axeResults') {
