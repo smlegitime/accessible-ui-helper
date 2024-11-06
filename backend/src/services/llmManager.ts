@@ -8,6 +8,8 @@ import {LlmPrompt, GeneratedFixPage, AccViolation, FileCollection } from '../mod
 import * as path from "path";
 import { exec } from "child_process";
 import * as fs from 'fs';
+import OpenAI from "openai";
+import * as dotenv from 'dotenv';
 
 
 
@@ -23,8 +25,7 @@ import './errorHandler';
 // (Store data)
 // (FixedPageEvaluator?)
 
-const LLAMA_API_URL = "https://api.llama-api.com/chat/completions"
-const LLAMA_API_TOKEN= "LA-8cef0a65fa154994b08f69f22897b0c618f390884ea34aa69c1d029fa9308b4c"
+
 
 class LLMManager {
 
@@ -56,22 +57,22 @@ class LLMManager {
         continue;
       }
 
-      console.log("TEMPLATE: " + template)
+      // console.log("TEMPLATE: " + template)
 
-      fs.writeFile("template.txt", template, (err) => {
-        if (err) {
-          console.error('Error writing to file:', err);
-        } else {
-          console.log('File written successfully.');
-        }
-      });
+      // fs.writeFile("template.txt", template, (err) => {
+      //   if (err) {
+      //     console.error('Error writing to file:', err);
+      //   } else {
+      //     console.log('File written successfully.');
+      //   }
+      // });
       // const scriptPath = path.resolve(__dirname, "template.txt");
       // call llm with prompt for this fix
       let fixedFiles = null;
-      this.callLLM("template.txt")
+      this.callLLM(template)
         .then((data) => {
           fixedFiles = data; // Output: "Data from API"
-          console.log("Python script output:", data)
+          // console.log("Python script output:", data)
           
         })
         .catch((error) => {
@@ -113,29 +114,19 @@ class LLMManager {
         return "";
       }
       let fileData = fileCollection[page];
-      console.log(fileData);
+      // console.log(fileData);
       let content = fileData["content"]
       let fileType = fileData["type"]
       
-      console.log("fileType: " + fileType);
-      console.log("content: " + content);
+      // console.log("fileType: " + fileType);
+      // console.log("content: " + content);
 
       let nodes = violation.nodes as Object[];
       // NEED TO CHANGE TO HANDLE MULTIPLE NODES
       // ALSO NEED TO ERROR CHECK FOR FAILURE SUMMARY
       let failureSummary = violation.nodes[0]["failureSummary"];
-      console.log("failureSummary: " + failureSummary);
-      // const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
-      //   develop accessible web applications. 
-      //   Using the provided context, answer the user's question 
-      //   to the best of your ability using only the resources provided. 
-      //   Don't explain the code, just generate the code block itself.
+      // console.log("failureSummary: " + failureSummary);
 
-      //   I have a ${fileType} file below:
-        
-      //   ${content}
-
-      //   ${failureSummary}`;
       const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
         develop accessible web applications. 
         Using the provided context, answer the user's question 
@@ -146,7 +137,20 @@ class LLMManager {
         
         ${content}
 
-        Return a copy of the code above`;
+        ${failureSummary}`;
+      
+      // TESTING
+      // const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
+      //   develop accessible web applications. 
+      //   Using the provided context, answer the user's question 
+      //   to the best of your ability using only the resources provided. 
+      //   Don't explain the code, just generate the code block itself.
+
+      //   I have a ${fileType} file below:
+        
+      //   ${content}
+
+      //   Return a copy of the code above`;
 
         return PROMPT_TEMPLATE;
     }
@@ -164,17 +168,34 @@ class LLMManager {
     // Resolve the full path to script.py
   const scriptPath = path.resolve(__dirname, "llama.py");
 
-  return new Promise((resolve, reject) => {
-    exec(`python3 ${scriptPath} ${template}`, (error, stdout, stderr) => {
-      if (error) {
-        reject(`Error: ${error.message}`);
-      } else if (stderr) {
-        reject(`Stderr: ${stderr}`);
-      } else {
-        resolve(stdout);
-      }
-    });
+  
+  dotenv.config();
+
+  const apiKey = process.env.GPT_API_TOKEN;
+  const openai = new OpenAI({apiKey: apiKey});
+  const stream = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{ role: "user", content: template }],
+    stream: true,
   });
+  for await (const chunk of stream) {
+    process.stdout.write(chunk.choices[0]?.delta?.content || "");
+  }
+
+// console.log(completion)
+
+
+  // return new Promise((resolve, reject) => {
+  //   exec(`python3 ${scriptPath} ${template}`, (error, stdout, stderr) => {
+  //     if (error) {
+  //       reject(`Error: ${error.message}`);
+  //     } else if (stderr) {
+  //       reject(`Stderr: ${stderr}`);
+  //     } else {
+  //       resolve(stdout);
+  //     }
+  //   });
+  // });
     return ""; 
   }
 
