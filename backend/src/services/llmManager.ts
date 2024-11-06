@@ -7,6 +7,7 @@
 import {LlmPrompt, GeneratedFixPage, AccViolation, FileCollection } from '../models/models';
 import * as path from "path";
 import { exec } from "child_process";
+import * as fs from 'fs';
 
 
 
@@ -24,8 +25,6 @@ import './errorHandler';
 
 const LLAMA_API_URL = "https://api.llama-api.com/chat/completions"
 const LLAMA_API_TOKEN= "LA-8cef0a65fa154994b08f69f22897b0c618f390884ea34aa69c1d029fa9308b4c"
-
-const GROC_TOKEN = "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"
 
 class LLMManager {
 
@@ -45,12 +44,31 @@ class LLMManager {
     {
       // get each violation
       const violation = accViolations[violationKey]
+      console.log("violationKey: " + violationKey);
+      console.log("violation: " + violation);
       // create a prompt for the violation
-      const template = this.promptBuilder(violation);
+      const template = this.promptBuilder(violation, fileCollection);
+
+      // If something goes wrong when generating template
+      // ex: can't find file that the violation is referring to
+      if (template == "")
+      {
+        continue;
+      }
+
+      console.log("TEMPLATE: " + template)
+
+      fs.writeFile("template.txt", template, (err) => {
+        if (err) {
+          console.error('Error writing to file:', err);
+        } else {
+          console.log('File written successfully.');
+        }
+      });
+      // const scriptPath = path.resolve(__dirname, "template.txt");
       // call llm with prompt for this fix
-      // const fixedFiles = this.callLLM(template);
       let fixedFiles = null;
-      this.callLLM(template)
+      this.callLLM("template.txt")
         .then((data) => {
           fixedFiles = data; // Output: "Data from API"
           console.log("Python script output:", data)
@@ -63,9 +81,10 @@ class LLMManager {
       if (fixedFiles != null && this.validFixedPage(fixedFiles))
       {
         // add fixes to file
+        // need to find original file and then add changes
         // fileCollection[''] = fixedFiles;
       }
-      console.log("violation: " + violationKey);
+      
 
     }
 
@@ -73,13 +92,64 @@ class LLMManager {
     return promptInfo.files; 
   }
 
+
+
    /**
     * Builds a prompt based on the details in the scanned report 
     * @param promptInfo 
     * @returns String of the prompt that will be used when calling the LLM
     */
-  private promptBuilder(violation: AccViolation) : string
+  private promptBuilder(violation: AccViolation, fileCollection: FileCollection) : string
   { 
+    let pages = violation.pages;
+    // FOR NOW ONLY WORKING WITH ONE PAGE
+    for (const pageIndex in pages)
+    {
+      let page = pages[pageIndex]
+      console.log(page);
+      if (! (page in fileCollection ))
+      {
+        console.error("Page not in FileCollection");
+        return "";
+      }
+      let fileData = fileCollection[page];
+      console.log(fileData);
+      let content = fileData["content"]
+      let fileType = fileData["type"]
+      
+      console.log("fileType: " + fileType);
+      console.log("content: " + content);
+
+      let nodes = violation.nodes as Object[];
+      // NEED TO CHANGE TO HANDLE MULTIPLE NODES
+      // ALSO NEED TO ERROR CHECK FOR FAILURE SUMMARY
+      let failureSummary = violation.nodes[0]["failureSummary"];
+      console.log("failureSummary: " + failureSummary);
+      // const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
+      //   develop accessible web applications. 
+      //   Using the provided context, answer the user's question 
+      //   to the best of your ability using only the resources provided. 
+      //   Don't explain the code, just generate the code block itself.
+
+      //   I have a ${fileType} file below:
+        
+      //   ${content}
+
+      //   ${failureSummary}`;
+      const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
+        develop accessible web applications. 
+        Using the provided context, answer the user's question 
+        to the best of your ability using only the resources provided. 
+        Don't explain the code, just generate the code block itself.
+
+        I have a ${fileType} file below:
+        
+        ${content}
+
+        Return a copy of the code above`;
+
+        return PROMPT_TEMPLATE;
+    }
     return "";
   }
 
@@ -90,32 +160,12 @@ class LLMManager {
    */
   // private async callLLM(template: string) : Promise<FileCollection | null> { 
   private async callLLM(template: string) : Promise<string> { 
-    // const headers = {
-    //   "Content-Type": "application/json",
-    //   Authorization: `Bearer ${LLAMA_API_TOKEN}`,
-    //   // "Access-Control-Allow-Origin":"*",
-    //   model:"llama3.1-70b",
-    // }
-    // const response = await fetch(LLAMA_API_URL, {
-    //   method: "POST",
-    //   headers,
-      
-    //   body: JSON.stringify(
-    //     {
-    //       messages: [{role: "user", content: "Please give me ten orcish names"}]
-    //     }
-    //   )
-    // })
-
-    // const data = await response.json();
-    
-    // console.log(data);
 
     // Resolve the full path to script.py
   const scriptPath = path.resolve(__dirname, "llama.py");
 
   return new Promise((resolve, reject) => {
-    exec(`python3 ${scriptPath} ${"arg1"} ${"arg2"}`, (error, stdout, stderr) => {
+    exec(`python3 ${scriptPath} ${template}`, (error, stdout, stderr) => {
       if (error) {
         reject(`Error: ${error.message}`);
       } else if (stderr) {
@@ -126,7 +176,6 @@ class LLMManager {
     });
   });
     return ""; 
-    // return null; 
   }
 
   /**
@@ -223,70 +272,70 @@ violationArray.push(
             "target": [
                 "html"
             ],
-            "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+            failureSummary: "Fix all of the following:\n  Document does not have a main landmark"
         }
     ]
 }
 )
 
-violationArray.push(
-  {
-    pages: [],
-    id: "region",
-    impact: "moderate",
-    tags: [
-        "cat.keyboard",
-        "best-practice"
-    ],
-    description: "Ensure all page content is contained by landmarks",
-    help: "All page content should be contained by landmarks",
-    helpUrl: "https://dequeuniversity.com/rules/axe/4.10/region?application=axeAPI",
-    nodes: [
-        {
-            "any": [
-                {
-                    "id": "region",
-                    "data": {
-                        "isIframe": false
-                    },
-                    "relatedNodes": [],
-                    "impact": "moderate",
-                    "message": "Some page content is not contained by landmarks"
-                }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "moderate",
-            "html": "<h1>Home Page Updated</h1>",
-            "target": [
-                "h1"
-            ],
-            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        },
-        {
-            "any": [
-                {
-                    "id": "region",
-                    "data": {
-                        "isIframe": false
-                    },
-                    "relatedNodes": [],
-                    "impact": "moderate",
-                    "message": "Some page content is not contained by landmarks"
-                }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "moderate",
-            "html": "<a href=\"about.html\">Go to About</a>",
-            "target": [
-                "a"
-            ],
-            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-    ]
-}
-)
+// violationArray.push(
+//   {
+//     pages: [],
+//     id: "region",
+//     impact: "moderate",
+//     tags: [
+//         "cat.keyboard",
+//         "best-practice"
+//     ],
+//     description: "Ensure all page content is contained by landmarks",
+//     help: "All page content should be contained by landmarks",
+//     helpUrl: "https://dequeuniversity.com/rules/axe/4.10/region?application=axeAPI",
+//     nodes: [
+//         {
+//             "any": [
+//                 {
+//                     "id": "region",
+//                     "data": {
+//                         "isIframe": false
+//                     },
+//                     "relatedNodes": [],
+//                     "impact": "moderate",
+//                     "message": "Some page content is not contained by landmarks"
+//                 }
+//             ],
+//             "all": [],
+//             "none": [],
+//             "impact": "moderate",
+//             "html": "<h1>Home Page Updated</h1>",
+//             "target": [
+//                 "h1"
+//             ],
+//             "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+//         },
+//         {
+//             "any": [
+//                 {
+//                     "id": "region",
+//                     "data": {
+//                         "isIframe": false
+//                     },
+//                     "relatedNodes": [],
+//                     "impact": "moderate",
+//                     "message": "Some page content is not contained by landmarks"
+//                 }
+//             ],
+//             "all": [],
+//             "none": [],
+//             "impact": "moderate",
+//             "html": "<a href=\"about.html\">Go to About</a>",
+//             "target": [
+//                 "a"
+//             ],
+//             "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+//         }
+//     ]
+// }
+// )
 
 const llmPrompt: LlmPrompt = {
   files: fileCollection,

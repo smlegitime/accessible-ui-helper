@@ -1,0 +1,12 @@
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page Updated</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Home Page Updated</h1>
+    <button id="btn">Click Me</button>
+    <a href="about.html">Go to About</a>
+    <script src="node_modules/axe-core/axe.min.js"></script>
