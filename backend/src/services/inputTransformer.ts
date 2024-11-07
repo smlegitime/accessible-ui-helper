@@ -1,7 +1,7 @@
 /**
  * Description: Performs standard transformations to input file for downstream processing
  * Created: Sybille Légitime
- * Created date: Oct 22, 2024 | Updated date: 
+ * Created date: Oct 22, 2024 | Updated date: Nov 6, 2024
  */
 
 import { 
@@ -13,6 +13,9 @@ import {
 } from '../models/models';
 
 import { readFile } from '../lib/utils';
+import { logging } from '../lib/logging';
+
+const logger = logging.getLogger('');
 
 export class InputTransformer {
 
@@ -42,7 +45,14 @@ export class InputTransformer {
      * @param pageJson 
      * @returns Restructured input page
      */
-    private organizeInputContent(pageJson: Page) : Page | null { return null; }
+    private organizeInputContent(inputFiles: FileCollection, inputAccResults: AccessibilityResults) : any {  
+      // for (const accRes in inputAccResults.violations) {
+      //   const relatedPage = [];
+      //   for (const node in accRes.nodes) {
+
+      //   }
+      // }
+    }
 
     /**
      * Store list of pages (cache, filesystem, or database)
@@ -58,12 +68,12 @@ export class InputTransformer {
     public static async transformInput(inputFiles: FileCollection, inputAccResults: AccessibilityResults) { 
 
       try {
-        const data = await readFile('/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/test_2.json');
-        console.log(data);
+        const data = await readFile('/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/mocks/sampleBackendInput.json');
+        logger.info(data);
         return JSON.parse(data);
 
       } catch (err) {
-        console.error('Error reading file:', err);
+        logger.error(`Error reading file: ${err}`);
       }
     }
 }
