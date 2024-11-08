@@ -7,7 +7,7 @@ export enum FileType {
   Other = "Other",
 }
 export enum Framework {
-  VanillaProject = "VanillaProject",
+  Vanilla = "Vanilla",
   React = "React",
   Angular = "Angular",
   Vue = "Vue",

@@ -1,16 +1,28 @@
 import { FileCollection, FileData, FileType, Framework, Page } from "../../interfaces/scanInterfaces"
 import { SandpackFiles } from "@codesandbox/sandpack-react/types"
 
+/**
+ * Converts fileCollectionData to SandpackFiles to be used an input in View 
+ *     component
+ * @param fileCollectionData 
+ * @returns SandpackFiles object containing user code files
+ */
 export function fileCollectionToSandPackFiles(fileCollectionData: FileCollection): SandpackFiles {
     const organizedFiles: SandpackFiles = {}
     Object.keys(fileCollectionData).map((filepath) =>
         organizedFiles[`${filepath}`] = {
-            code: fileCollectionData[filepath]['content']
+            code: fileCollectionData[filepath]['content'],
+            readOnly: filepath === '/axe-script.js' ? true : false
         }
     )
     return organizedFiles
 }
 
+/**
+ * Insert axe-score script into user's HTML. 
+ * @param htmlContent - html to insert axe-core script into 
+ * @returns html code with axe-core inserted.
+ */
 export function insertAxeScriptHTML(htmlContent: string) {
     const bodyEndIndex = htmlContent.indexOf("</body>")
     const newHTML = htmlContent.substring(0, bodyEndIndex) +
@@ -22,10 +34,15 @@ export function insertAxeScriptHTML(htmlContent: string) {
     return newHTML
 }
 
+/**
+ * Converts pages to FileCollection 
+ * @param pages - Array of Pages[] that contain users code files
+ * @returns FileCollection object that contains pages info
+ */
 export function PagesToFileCollection(pages: Page[]) {
     const initialFileCollection: FileCollection = {}
     switch (pages[0].pageContent.framework) {
-        case Framework.VanillaProject:
+        case Framework.Vanilla:
             pages.map((page) => {
                 let pageCode = ""
                 // update .html files to run axe-scripts

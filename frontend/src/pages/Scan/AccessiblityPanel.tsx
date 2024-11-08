@@ -6,14 +6,19 @@ import { updatedFiles } from "../../mocks/fileSystemMocks"
 import { useState } from "react"
 
 /**
- * The left accessibility panel 
- * @param param0 
+ * The accessibility panel located on the left of scan page that displays 
+ *     the accessibility evaluation results
+ * @param setGeneratedPageFixes - setter for generated page fixes
+ * @param scanResults -  AccessibilityResults object
  * @returns a react component with all the accessibility evaluation results
  */
-export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }:
+export function AccessiblityPanel({ setGeneratedPageFixes,
+  scanResults,
+  framework }:
   {
     setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
     scanResults: AccessibilityResults
+    framework: String
   }) {
 
   const [activeSelections, setActiveSelections] = useState<number[]>([])
@@ -27,7 +32,7 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }:
       </div>
       <div className="flex flex-col items-start p-4">
         <h5 className="text-white text-sm font-bold"> Uploaded Folder Name</h5>
-        <h5 className="text-white text-xs">Vanilla Website Project</h5>
+        <h5 className="text-white text-xs">{framework} Website Project</h5>
       </div>
       <div className="border-b border-gray-300 my-2"></div>
       <div className="inline-flex space-x-2 justify-center w-full">
@@ -57,7 +62,7 @@ export function AccessiblityPanel({ setGeneratedPageFixes, scanResults }:
           </AccordionItem>
           <AccordionItem value="violations-block">
             <AccordionTrigger className="border-solid border-2 border-white rounded bg-slate-800">
-            <div className="inline-flex flex justify-between flex-auto">
+              <div className="inline-flex flex justify-between flex-auto">
                 <h2 className="text-white ml-2"> Violations </h2>
                 <h3 className="text-white "> {scanResults.violations.length}</h3>
               </div>

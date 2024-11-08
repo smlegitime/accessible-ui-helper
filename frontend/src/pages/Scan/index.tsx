@@ -13,12 +13,16 @@ import { AccessiblityPanel } from './AccessiblityPanel';
 import { useLocation } from 'react-router-dom';
 import { PagesToFileCollection } from './utils';
 
+/**
+ * Scan Page Component
+ * @returns react component that contains entire scan page
+ */
 export function Scan() {
   // get pages from home page
   const location = useLocation();
   const { pages } = location.state as { pages: Page[] };
 
-  // Convert pages: Page[] to fileCollectionData that we are taking 
+  // Convert pages: Page[] to fileCollection that we are taking 
   // as input to AccessibilityPanel and extract framework
   const initialFileCollection: FileCollection = PagesToFileCollection(pages)
 
@@ -28,12 +32,33 @@ export function Scan() {
     inapplicable: [],
     incomplete: []
   }
+  /**
+   * accessibility results
+   */
   const [accessibilityResults, setAccessibilityResults]
     = useState<AccessibilityResults>(emptyResults)
+  /**
+   * generated page fixes
+   */
   const [generatedPageFixes, setGeneratedPageFixes]
     = useState<FileCollection>(initialFileCollection)
+  /**
+   * Code files as a fileCollection object
+   */
   const [codeFiles, setCodeFiles]
     = useState<FileCollection>(initialFileCollection)
+  /**
+   * Framework of project
+   */
+  const frameWork = pages[0].pageContent.framework
+  // have a state that saves all the initial violations
+  /**
+   * state that saves all the initial violations
+   */
+  const [initialAccessibilityResults, setInitialAccessibilityResults]
+    = useState<AccessibilityResults>(emptyResults)
+  const [runInitial, setRunInitial] = useState(false)
+  console.log(initialAccessibilityResults)
 
   useEffect(() => {
     setCodeFiles(generatedPageFixes)
@@ -55,6 +80,11 @@ export function Scan() {
       initializedResult['inapplicable'] = returnedResults.inapplicable
       initializedResult['incomplete'] = returnedResults.incomplete
       setAccessibilityResults(initializedResult)
+      // only set if it has not been set before
+      if (!runInitial) {
+        setInitialAccessibilityResults(initializedResult);
+        setRunInitial(true);
+      }
     }
   })
 
@@ -65,7 +95,9 @@ export function Scan() {
           <ResizablePanel defaultSize={25}>
             <AccessiblityPanel
               setGeneratedPageFixes={setGeneratedPageFixes}
-              scanResults={accessibilityResults} />
+              scanResults={accessibilityResults}
+              framework={frameWork}
+            />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}>
