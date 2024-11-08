@@ -46,6 +46,10 @@ export class InputTransformer {
     return null;
   }
 
+  // Inject css script into style tag of corresponding html file and JS script into script tag
+  // Design to fit a bundler configuration change to account for different frontend frameworks
+  private injectScriptsIntoHtml(){}
+
   /**
    * Encode images, videos and other assets 
    * @param pageAssets 

@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/core": "^0.3.17",
+    "@langchain/openai": "^0.3.12",
     "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "express": "^4.21.1",
