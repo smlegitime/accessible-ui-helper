@@ -1,10 +1,10 @@
 /**
  * Description: Performs fixes on a page based on an accessibility report using an LLM
  * Created: Rio Young
- * Created date: Oct 22, 2024 | Updated date: 11/6/24
+ * Created date: Oct 22, 2024 | Updated date: 11/7/24
  */
 
-import {LlmPrompt, GeneratedFixPage, AccViolation, FileCollection } from '../models/models';
+import {LlmPrompt, FixedFileData, AccViolation, FileCollection } from '../models/models';
 import * as path from "path";
 import { exec } from "child_process";
 import * as fs from 'fs';
@@ -15,6 +15,7 @@ import * as dotenv from 'dotenv';
 
 
 import './errorHandler';
+import { content } from 'pdfkit/js/page';
 
 // PromptBuilder
 // Retrieve prompt template
@@ -25,9 +26,49 @@ import './errorHandler';
 // (Store data)
 // (FixedPageEvaluator?)
 
-
+// llm sample output
+// ```html
+// <!DOCTYPE html>
+// <html>
+//   <head>
+//     <title>Home Page Updated</title>
+//     <link rel="stylesheet" href="style.css">
+//   </head>
+//   <body>
+//     <h1>Home Page Updated</h1>
+//     <main>
+//       <button id="btn">Click Me</button>
+//       <a href="about.html">Go to About</a>
+//     </main>
+//     <script src="node_modules/axe-core/axe.min.js"></script>
+//     <script src="script.js"></script>
+//     <script src="axe-script.js"></script>
+//   </body>
+// </html>
+// ```
+let test_output_string = "```html\n\
+          <!DOCTYPE html>\n\
+          <html>\n\
+            <head>\n\
+              <title>Home Page Updated</title>\n\
+              <link rel=\"stylesheet\" href=\"style.css\">\n\
+            </head>\n\
+            <body>\n\
+              <h1>Home Page Updated</h1>\n\
+              <main>\n\
+                <button id=\"btn\">Click Me</button>\n\
+                <a href=\"about.html\">Go to About</a>\n\
+              </main>\
+              <script src=\"node_modules/axe-core/axe.min.js\"></script>\n\
+              <script src=\"script.js\"></script>\n\
+              <script src=\"axe-script.js\"></script>\n\
+            </body>\n\
+          </html>\n\
+          ```"
 
 class LLMManager {
+
+  
 
   /**
    * Main class method
@@ -48,49 +89,89 @@ class LLMManager {
       console.log("violationKey: " + violationKey);
       console.log("violation: " + violation);
       // create a prompt for the violation
-      const template = this.promptBuilder(violation, fileCollection);
+      const template_dict = this.promptBuilder(violation, fileCollection);
+      console.log("fix templates dict: "+ template_dict)
+      for (let [pageName, template] of Object.entries(template_dict)) {
+        console.log("pagename: "+ pageName + " template: " + template)
+        // console.log("TEMPLATE: " + template)
 
-      // If something goes wrong when generating template
-      // ex: can't find file that the violation is referring to
-      if (template == "")
-      {
-        continue;
-      }
+        // call llm with prompt for this fix
+        let output_string = ""
+        output_string = await this.callLLM(template);
 
-      // console.log("TEMPLATE: " + template)
+        // FOR TESTING
+        // output_string = test_output_string;
+        console.log("output string" + output_string)
+        // check files validity
+        if (output_string != "" )
+        {
+          // remove first and last lines, they are always just ```
+          const lines = output_string.split('\n');
+          if (lines.length <= 2) {
+            continue; // if there are less than 2 lines, this return value is no good, get outta there
+          }
 
-      // fs.writeFile("template.txt", template, (err) => {
-      //   if (err) {
-      //     console.error('Error writing to file:', err);
-      //   } else {
-      //     console.log('File written successfully.');
-      //   }
-      // });
-      // const scriptPath = path.resolve(__dirname, "template.txt");
-      // call llm with prompt for this fix
-      let fixedFiles = null;
-      this.callLLM(template)
-        .then((data) => {
-          fixedFiles = data; // Output: "Data from API"
-          // console.log("Python script output:", data)
+          output_string = lines.slice(1, -1).join('\n');
+          console.log("output string removed first and last line" + output_string)
+
+
+          // add fixes to file
+          let originalFileData = fileCollection[pageName];
+          // if this filedata has change before/is a FixedFileData
+          if (! ("content" in originalFileData) || ! ("type" in originalFileData))
+          {
+            originalFileData = originalFileData["originalData"]
+          }
           
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      // check files validity
-      if (fixedFiles != null && this.validFixedPage(fixedFiles))
-      {
-        // add fixes to file
-        // need to find original file and then add changes
-        // fileCollection[''] = fixedFiles;
+          let file_type = originalFileData.type;
+          let newGeneratedFileData = {
+            type: file_type,
+            content: output_string
+          }
+
+          fileCollection[pageName] = {
+            originalData: originalFileData,
+            generatedData: newGeneratedFileData
+          }
+        }
       }
       
+      console.log("GET FIXES")
+      this.printFileCollection(promptInfo.files);
 
     }
 
     
     return promptInfo.files; 
+  }
+
+  private printFileCollection(fileCollection: Object)
+  {
+    for (let [key, fileData] of Object.entries(fileCollection))
+    {
+      console.log("fileName: " + key )
+      
+      if (! ("content" in fileData) || ! ("type" in fileData))
+      {
+        let originalFileData = fileData["originalData"]
+        console.log("original file data")
+        console.log("type: " + originalFileData["type"])
+        console.log("content: " + originalFileData["content"])
+
+        let generatedFileData = fileData["originalData"]
+        console.log("generated file data")
+        console.log("type: " + generatedFileData["type"])
+        console.log("content: " + generatedFileData["content"])
+      }
+      else
+      {
+        console.log("type: " + fileData["type"])
+        console.log("content: " + fileData["content"])
+      }
+      // if (Object.keys(value).length > 0) {
+      //   this.printFileCollection(value);
+      // }
+    }
   }
 
 
@@ -100,20 +181,25 @@ class LLMManager {
     * @param promptInfo 
     * @returns String of the prompt that will be used when calling the LLM
     */
-  private promptBuilder(violation: AccViolation, fileCollection: FileCollection) : string
+  private promptBuilder(violation: AccViolation, fileCollection: FileCollection) : { [key: string]: string }
   { 
     let pages = violation.pages;
+    const dict: { [key: string]: string } = {};
     // FOR NOW ONLY WORKING WITH ONE PAGE
     for (const pageIndex in pages)
     {
-      let page = pages[pageIndex]
-      console.log(page);
-      if (! (page in fileCollection ))
+      let pageName = pages[pageIndex]
+      console.log(pageName);
+      if (! (pageName in fileCollection ))
       {
         console.error("Page not in FileCollection");
-        return "";
+        continue;
       }
-      let fileData = fileCollection[page];
+      let fileData = fileCollection[pageName];
+      if (! ("content" in fileData) || ! ("type" in fileData))
+      {
+        fileData = fileData["originalData"]
+      }
       // console.log(fileData);
       let content = fileData["content"]
       let fileType = fileData["type"]
@@ -122,9 +208,13 @@ class LLMManager {
       // console.log("content: " + content);
 
       let nodes = violation.nodes as Object[];
-      // NEED TO CHANGE TO HANDLE MULTIPLE NODES
+
       // ALSO NEED TO ERROR CHECK FOR FAILURE SUMMARY
-      let failureSummary = violation.nodes[0]["failureSummary"];
+      let failureSummary = "";
+      for (const nodeIndex in violation.nodes)
+      {
+        failureSummary += violation.nodes[nodeIndex]["failureSummary"]
+      }
       // console.log("failureSummary: " + failureSummary);
 
       const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
@@ -152,9 +242,11 @@ class LLMManager {
 
       //   Return a copy of the code above`;
 
-        return PROMPT_TEMPLATE;
+        console.log("TEMPLATE: " + PROMPT_TEMPLATE)
+        dict[pageName] = PROMPT_TEMPLATE;
+        // return PROMPT_TEMPLATE;
     }
-    return "";
+    return dict;
   }
 
   /**
@@ -178,8 +270,10 @@ class LLMManager {
     messages: [{ role: "user", content: template }],
     stream: true,
   });
+  let ret = "" 
   for await (const chunk of stream) {
     process.stdout.write(chunk.choices[0]?.delta?.content || "");
+    ret += chunk.choices[0]?.delta?.content || ""
   }
 
 // console.log(completion)
@@ -196,7 +290,7 @@ class LLMManager {
   //     }
   //   });
   // });
-    return ""; 
+    return ret; 
   }
 
   /**
@@ -204,7 +298,7 @@ class LLMManager {
    * @param pageFixes 
    * @returns True if page is valid, false otherwise
    */
-  private validFixedPage(pageFixes: FileCollection) : boolean { return false; }
+  private validFixedPage(pageFixes: FileCollection) : boolean { return true; }
   
 
 

@@ -105,9 +105,14 @@ export interface FileData {
     type: string;
     content: string;
 }
+
+export interface FixedFileData {
+    originalData: FileData,
+    generatedData: FileData
+}
   
   export interface FileCollection {
-    [key: string]: FileData;
+    [key: string]: FileData | FixedFileData;
 }
 
 export interface AccessibilityResults {
