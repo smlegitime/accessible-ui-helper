@@ -1,7 +1,7 @@
 /**
  * Description: Custom logger configuration and logger for backend server
- * Created: Sybille Légitime
- * Created date: Oct 22, 2024| Updated date: Nov 6, 2024
+ * @author Sybille Légitime
+ * @copyright 2024
  */
 
 import { EventEmitter } from 'events';
