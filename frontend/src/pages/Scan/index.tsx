@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   AccessibilityResults,
   FileCollection, Page
@@ -11,7 +11,7 @@ import {
 import { View } from "./View"
 import { AccessiblityPanel } from './AccessiblityPanel';
 import { useLocation } from 'react-router-dom';
-import { PagesToFileCollection } from './utils';
+import { pagesToFileCollection } from './utils';
 
 /**
  * Scan Page Component
@@ -22,9 +22,17 @@ export function Scan() {
   const location = useLocation();
   const { pages } = location.state as { pages: Page[] };
 
+    /**
+   * Accessibility standards to check against
+   */
+    const [accessibilityStandards, setAccessibilityStandards]
+    = useState<string[]>(['wcag21aa', 'wcag2aa', 'best-practice'])
+    
   // Convert pages: Page[] to fileCollection that we are taking 
   // as input to AccessibilityPanel and extract framework
-  const initialFileCollection: FileCollection = PagesToFileCollection(pages)
+  const initialFileCollection: FileCollection = useMemo(()=> {
+    return pagesToFileCollection(pages, accessibilityStandards)
+  }, [accessibilityStandards])
 
   const emptyResults = {
     passes: [],
@@ -51,15 +59,22 @@ export function Scan() {
    * Framework of project
    */
   const frameWork = pages[0].pageContent.framework
-  // have a state that saves all the initial violations
   /**
    * state that saves all the initial violations
    */
   const [initialAccessibilityResults, setInitialAccessibilityResults]
     = useState<AccessibilityResults>(emptyResults)
+  /**
+   * state variable of if first accessibility check has been done
+   */
   const [runInitial, setRunInitial] = useState(false)
-  console.log(initialAccessibilityResults)
+  /**
+   * Variable to view editor or not
+   */
+  const [viewEditor, setViewEditor] = useState(false)
 
+  // always update code files with generated page fixes
+  // TODO: should I just change to always update code files. 
   useEffect(() => {
     setCodeFiles(generatedPageFixes)
   }, [generatedPageFixes])
@@ -92,17 +107,20 @@ export function Scan() {
     <div className='h-screen'>
       <div className='h-full'>
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel defaultSize={25}>
+          <ResizablePanel defaultSize={25} minSize={15}>
             <AccessiblityPanel
               setGeneratedPageFixes={setGeneratedPageFixes}
               scanResults={accessibilityResults}
               framework={frameWork}
+              setViewEditor={setViewEditor}
+              viewEditor={viewEditor}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}>
             <View
               files={codeFiles}
+              viewEditor={viewEditor}
             />
           </ResizablePanel>
         </ResizablePanelGroup>

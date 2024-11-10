@@ -5,30 +5,28 @@ import { useMemo } from "react";
 
 //TODO: Make height dynamic to screen size
 
-export function View({files}: { files: FileCollection}) {
+export function View({ files, viewEditor }:
+  { files: FileCollection, viewEditor: boolean }) {
   const organizedFiles = useMemo(() => fileCollectionToSandPackFiles(files), [files]);
   return (
-    <SandpackProvider template="vanilla" files={organizedFiles}>
-    <SandpackLayout>
-      <SandpackFileExplorer style={{ height: "600px", border: "1px solid #ddd", width: "100%" }}/>
-      <SandpackCodeEditor 
-      closableTabs 
-      showTabs 
-      showLineNumbers={true}
-      showInlineErrors={true}
-      style={{ height: "600px", border: "1px solid #ddd", width: "100%" }}/>
-      <SandpackPreview style={{ height: "600px", border: "1px solid #ddd", width: "100%" }}/>
-    </SandpackLayout>
-  </SandpackProvider>
-
-
-    // <SandpackProvider template="vanilla" files={organizedFiles}>
-    //   <SandpackLayout>
-    //     <SandpackPreview 
-    //     style={{ height: "800px", border: "1px solid #ddd", width: "100%" }}
-    //     />
-    //   </SandpackLayout>
-    // </SandpackProvider>
+    <div className="w-full h-full">
+      <SandpackProvider 
+      template="vanilla" 
+      files={organizedFiles} 
+      theme={"dark"}
+      >
+        <SandpackLayout>
+          {viewEditor && <SandpackFileExplorer style={{ height: `${window.innerHeight}px`, border: "1px solid #ddd", width: "100%" }} />}
+          {viewEditor && <SandpackCodeEditor
+            closableTabs
+            showTabs
+            showLineNumbers={true}
+            showInlineErrors={true}
+            style={{ height: `${window.innerHeight}px`, border: "1px solid #ddd", width: "100%" }} />}
+          <SandpackPreview style={{ height: `${window.innerHeight}px`, border: "1px solid #ddd", width: "100%" }} />
+        </SandpackLayout>
+      </SandpackProvider>
+    </div>
   );
 }
 

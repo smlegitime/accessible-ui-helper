@@ -39,7 +39,7 @@ export function insertAxeScriptHTML(htmlContent: string) {
  * @param pages - Array of Pages[] that contain users code files
  * @returns FileCollection object that contains pages info
  */
-export function PagesToFileCollection(pages: Page[]) {
+export function pagesToFileCollection(pages: Page[], accessibilityStandards: string[]) {
     const initialFileCollection: FileCollection = {}
     switch (pages[0].pageContent.framework) {
         case Framework.Vanilla:
@@ -63,7 +63,11 @@ export function PagesToFileCollection(pages: Page[]) {
                 content: `
                         import axe from 'axe-core';
                           
-                        axe.run().then((results) =>
+                        axe.run(
+                            {
+                                runOnly: [${accessibilityStandards.map((standard) => `'${standard}'`)}]
+                            },
+                        ).then((results) =>
                           window.parent.postMessage({ type: 'axeResults', results }, '*')
                           );
                       `
