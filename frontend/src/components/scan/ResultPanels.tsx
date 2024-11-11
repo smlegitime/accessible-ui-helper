@@ -1,10 +1,4 @@
 import { AccViolation } from "@/src/interfaces/scanInterfaces"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "../ui/accordion"
 import { Badge } from "../ui/badge"
 import { ImCheckmark } from "react-icons/im";
 
