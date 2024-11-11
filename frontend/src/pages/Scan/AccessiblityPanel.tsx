@@ -3,9 +3,10 @@ import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion"
 import { Button } from "../../components/ui/button"
 import { updatedFiles } from "../../mocks/fileSystemMocks"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios"
 
 
 /**
@@ -21,18 +22,34 @@ export function AccessiblityPanel({
   framework,
   setViewEditor,
   viewEditor,
-  folderName }:
+  folderName,
+  codeFiles }:
   {
     setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
     scanResults: AccessibilityResults
     framework: String
     setViewEditor: React.Dispatch<React.SetStateAction<boolean>>,
     viewEditor: boolean,
-    folderName: string
+    folderName: string,
+    codeFiles: FileCollection
   }) {
 
   const [activeSelections, setActiveSelections] = useState<number[]>([])
   const navigate = useNavigate();
+
+  const generateFixes = useCallback(() => {
+    axios.post('http://localhost:8000/fix',
+      {
+        "framework": framework,
+        "fileCollection": codeFiles,
+        "violations": scanResults.violations.filter(
+          (violation, i) => activeSelections.includes(i))
+      }
+    )
+      //TODO: Update function to make sure that response is a valid fileCollection
+      .then(response => setGeneratedPageFixes(response.data))
+      .catch(error => console.error(error));
+  }, [framework, codeFiles, scanResults, activeSelections])
 
   return (
     <div className="h-screen bg-black relative">

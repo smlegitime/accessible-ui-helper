@@ -118,6 +118,7 @@ export function Scan() {
               setViewEditor={setViewEditor}
               viewEditor={viewEditor}
               folderName={folderName}
+              codeFiles={codeFiles}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
