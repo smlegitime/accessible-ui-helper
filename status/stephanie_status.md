@@ -1,3 +1,11 @@
+## Date: November 10th 
+- Scan page updated to new UI design 
+- Add export, rescan, select all buttons
+- Added theming to tailwind config (colors)
+- Collapsible sandbox code editor added
+- TODO: Start testing components and updating docs
+
+
 ## Date: October 29th
 
 - Merged Yongcheng's code with new updated to Scan page. 
