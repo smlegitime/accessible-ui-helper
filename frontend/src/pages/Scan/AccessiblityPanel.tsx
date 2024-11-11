@@ -5,6 +5,7 @@ import { Button } from "../../components/ui/button"
 import { updatedFiles } from "../../mocks/fileSystemMocks"
 import { useState } from "react"
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 
 /**
@@ -19,16 +20,19 @@ export function AccessiblityPanel({
   scanResults,
   framework,
   setViewEditor,
-  viewEditor }:
+  viewEditor,
+  folderName }:
   {
     setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
     scanResults: AccessibilityResults
     framework: String
     setViewEditor: React.Dispatch<React.SetStateAction<boolean>>,
-    viewEditor: boolean
+    viewEditor: boolean,
+    folderName: string
   }) {
 
   const [activeSelections, setActiveSelections] = useState<number[]>([])
+  const navigate = useNavigate();
 
   return (
     <div className="h-screen bg-black relative">
@@ -39,7 +43,7 @@ export function AccessiblityPanel({
           <h1 className="text-white	font-bold text-2xl">AccUI</h1>
         </div>
         <div className="flex flex-col items-start p-4">
-          <h5 className="text-white text-sm font-bold"> Uploaded Folder Name</h5>
+          <h5 className="text-white text-sm font-bold"> Uploaded Folder: {folderName} </h5>
           <h5 className="text-white text-xs">{framework} Website Project</h5>
         </div>
         <div className="border-b border-0 border-gray-500"></div>
@@ -89,7 +93,7 @@ export function AccessiblityPanel({
       {/* Selected violations part */}
       <div className="sticky bottom-0 flex flex-col">
         <div className="border-b border-0 border-gray-500"></div>
-        <div className="inline-flex justify-center w-full p-3 justify-between">
+        {scanResults.violations.length > 0 && <div className="inline-flex justify-center w-full p-3 justify-between">
           <h3 className="text-white self-center text-sm font-bold">
             {activeSelections.length} / {scanResults.violations.length} selected violation(s)
           </h3>
@@ -110,10 +114,9 @@ export function AccessiblityPanel({
               FIX
             </Button>
           </div>
-
-        </div>
+        </div>}
         <div className="border-b border-0 border-gray-500"></div>
-        <div className="inline-flex  justify-center w-full p-3 justify-between">
+        <div className="inline-flex justify-center w-full p-3 justify-between">
           <h3 className="text-white self-center text-sm font-bold">
             Ready To Export
           </h3>
@@ -121,9 +124,7 @@ export function AccessiblityPanel({
             <Button
               variant={'outline'}
               className="max-h-6 min-w-30 bg-black rounded-full hover:bg-slate-400 text-primary-100 p-4 font-bold border-primary-100"
-              onClick={() => setActiveSelections(() =>
-                scanResults.violations.map((violation, i) => i)
-              )}
+              onClick={() => navigate('/')}
             >
               RESCAN
             </Button>
@@ -134,9 +135,7 @@ export function AccessiblityPanel({
               DONE
             </Button>
           </div>
-
         </div>
-
       </div>
     </div>
   )

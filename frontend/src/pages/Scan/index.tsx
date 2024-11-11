@@ -28,12 +28,15 @@ export function Scan() {
     const [accessibilityStandards, setAccessibilityStandards]
     = useState<string[]>(['wcag21aa', 'wcag2aa', 'best-practice'])
     
+    
   // Convert pages: Page[] to fileCollection that we are taking 
   // as input to AccessibilityPanel and extract framework
   const initialFileCollection: FileCollection = useMemo(()=> {
     return pagesToFileCollection(pages, accessibilityStandards)
-  }, [accessibilityStandards])
+  }, [accessibilityStandards, pages])
 
+  const folderName = pages.length > 0 ? pages[0].filePath.split('/')[0] : "N/A"
+  
   const emptyResults = {
     passes: [],
     violations: [],
@@ -114,6 +117,7 @@ export function Scan() {
               framework={frameWork}
               setViewEditor={setViewEditor}
               viewEditor={viewEditor}
+              folderName={folderName}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
