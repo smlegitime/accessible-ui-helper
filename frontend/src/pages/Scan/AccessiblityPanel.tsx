@@ -55,26 +55,29 @@ export function AccessiblityPanel({
   /**
    * 'done'/import button functionality for generating pdf
    */
+  /**
+   * 'done'/import button functionality for generating pdf
+   */
   const handleDoneClick = () => {
+    // Update the fixes state
     setGeneratedPageFixes(updatedFiles); // Trigger the update for generatedPageFixes
+    
+    // Generate PDF after updating the fixes
+    const pdf = new jsPDF();
+    pdf.text("Generated Page Fixes", 10, 10);
+
+    // Using Object.entries to iterate over the dictionary
+    Object.entries(updatedFiles).forEach(([key, file], index) => {
+      pdf.text(`File ${index + 1}: ${key} - ${file.type}`, 10, 20 + index * 10);
+      // You can include additional details like `file.content` if needed
+    });
+
+    pdf.save("page-fixes.pdf");
   };
 
   // always update code files with generated page fixes
   // TODO: should I just change to always update code files.
-  useEffect(() => {
-    if (generatedPageFixes && Object.keys(generatedPageFixes).length > 0) {
-      const pdf = new jsPDF();
-      pdf.text("Generated Page Fixes", 10, 10);
-  
-      // Using Object.entries to iterate over the dictionary
-      Object.entries(generatedPageFixes).forEach(([key, file], index) => {
-        pdf.text(`File ${index + 1}: ${key} - ${file.type}`, 10, 20 + index * 10);
-        // You can include additional details like `file.content` if needed
-      });
-  
-      pdf.save("page-fixes.pdf");
-    }
-  }, [generatedPageFixes]);
+
   return (
     <div className="h-screen bg-black relative">
       <div className="h-full">
