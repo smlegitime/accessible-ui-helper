@@ -1,10 +1,11 @@
 import jsPDF from 'jspdf';
+import JSZip from 'jszip';
 import { AccessibilityResults, FileCollection } from "@/src/interfaces/scanInterfaces";
 import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
 import { Button } from "../../components/ui/button";
 import { updatedFiles } from "../../mocks/fileSystemMocks";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -36,11 +37,9 @@ export function AccessiblityPanel({
 }) {
 
   const [activeSelections, setActiveSelections] = useState<number[]>([]);
-  const [generatedPageFixes, setLocalGeneratedPageFixes] = useState<FileCollection>(codeFiles); // Local state to watch for updates
   const navigate = useNavigate();
 
-  // Convert pages: Page[] to fileCollection that we are taking 
-  // as input to AccessibilityPanel and extract framework
+  // Callback function to generate fixes and update generatedPageFixes
   const generateFixes = useCallback(() => {
     axios.post('http://localhost:8000/fix', {
       "framework": framework,
@@ -53,30 +52,45 @@ export function AccessiblityPanel({
   }, [framework, codeFiles, scanResults, activeSelections]);
 
   /**
-   * 'done'/import button functionality for generating pdf
+   * 'done'/import button functionality for generating pdf and zip
    */
-  /**
-   * 'done'/import button functionality for generating pdf
-   */
-  const handleDoneClick = () => {
-    // Update the fixes state
-    setGeneratedPageFixes(updatedFiles); // Trigger the update for generatedPageFixes
-    
-    // Generate PDF after updating the fixes
-    const pdf = new jsPDF();
-    pdf.text("Generated Page Fixes", 10, 10);
 
-    // Using Object.entries to iterate over the dictionary
-    Object.entries(updatedFiles).forEach(([key, file], index) => {
-      pdf.text(`File ${index + 1}: ${key} - ${file.type}`, 10, 20 + index * 10);
-      // You can include additional details like `file.content` if needed
-    });
+const handleDoneClick = async () => {
+  setGeneratedPageFixes(updatedFiles); 
+  
+  const pdf = new jsPDF();
+  pdf.text("Accessibility Report", 10, 10);
 
-    pdf.save("page-fixes.pdf");
-  };
+  pdf.text("Violations", 10, 20);
+  scanResults.violations.forEach((violation, index) => {
+    pdf.text(`${index + 1}. ${violation.description}`, 10, 30 + index * 10);
+  });
 
-  // always update code files with generated page fixes
-  // TODO: should I just change to always update code files.
+  const passesStartY = 40 + scanResults.violations.length * 10;
+  pdf.text("Passes", 10, passesStartY);
+  scanResults.passes.forEach((pass, index) => {
+    pdf.text(`${index + 1}. ${pass.description}`, 10, passesStartY + 10 + index * 10);
+  });
+
+  const pdfBlob = pdf.output("blob");
+
+  const zip = new JSZip();
+  
+  // Add the PDF to the ZIP
+  zip.file("Accessibility_Report.pdf", pdfBlob);
+
+  Object.entries(updatedFiles).forEach(([fileName, fileData]) => {
+    zip.file(fileName, fileData.content); // Assuming `fileData.content` contains the file's content as a string
+  });
+  // file generation
+  const zipBlob = await zip.generateAsync({ type: "blob" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(zipBlob);
+  link.download = "Project_Files.zip";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
 
   return (
     <div className="h-screen bg-black relative">
