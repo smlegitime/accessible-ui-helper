@@ -12,6 +12,8 @@ import { View } from "./View"
 import { AccessiblityPanel } from './AccessiblityPanel';
 import { useLocation } from 'react-router-dom';
 import { pagesToFileCollection } from './utils';
+import jsPDF from 'jspdf';
+
 
 /**
  * Scan Page Component

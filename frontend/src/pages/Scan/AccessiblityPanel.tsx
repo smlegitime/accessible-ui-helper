@@ -1,19 +1,20 @@
-import { AccessibilityResults, FileCollection } from "@/src/interfaces/scanInterfaces"
-import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion"
-import { Button } from "../../components/ui/button"
-import { updatedFiles } from "../../mocks/fileSystemMocks"
-import { useCallback, useState } from "react"
+import jsPDF from 'jspdf';
+import { AccessibilityResults, FileCollection } from "@/src/interfaces/scanInterfaces";
+import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
+import { Button } from "../../components/ui/button";
+import { updatedFiles } from "../../mocks/fileSystemMocks";
+import { useCallback, useEffect, useState } from "react";
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios"
+import axios from "axios";
 
 
 /**
  * The accessibility panel located on the left of scan page that displays 
  *     the accessibility evaluation results
  * @param setGeneratedPageFixes - setter for generated page fixes
- * @param scanResults -  AccessibilityResults object
+ * @param scanResults - AccessibilityResults object
  * @returns a react component with all the accessibility evaluation results
  */
 export function AccessiblityPanel({
@@ -23,41 +24,64 @@ export function AccessiblityPanel({
   setViewEditor,
   viewEditor,
   folderName,
-  codeFiles }:
-  {
-    setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
-    scanResults: AccessibilityResults
-    framework: String
-    setViewEditor: React.Dispatch<React.SetStateAction<boolean>>,
-    viewEditor: boolean,
-    folderName: string,
-    codeFiles: FileCollection
-  }) {
+  codeFiles
+}: {
+  setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
+  scanResults: AccessibilityResults,
+  framework: string,
+  setViewEditor: React.Dispatch<React.SetStateAction<boolean>>,
+  viewEditor: boolean,
+  folderName: string,
+  codeFiles: FileCollection
+}) {
 
-  const [activeSelections, setActiveSelections] = useState<number[]>([])
+  const [activeSelections, setActiveSelections] = useState<number[]>([]);
+  const [generatedPageFixes, setLocalGeneratedPageFixes] = useState<FileCollection>(codeFiles); // Local state to watch for updates
   const navigate = useNavigate();
 
+  // Convert pages: Page[] to fileCollection that we are taking 
+  // as input to AccessibilityPanel and extract framework
   const generateFixes = useCallback(() => {
-    axios.post('http://localhost:8000/fix',
-      {
-        "framework": framework,
-        "fileCollection": codeFiles,
-        "violations": scanResults.violations.filter(
-          (violation, i) => activeSelections.includes(i))
-      }
-    )
-      //TODO: Update function to make sure that response is a valid fileCollection
-      .then(response => setGeneratedPageFixes(response.data))
-      .catch(error => console.error(error));
-  }, [framework, codeFiles, scanResults, activeSelections])
+    axios.post('http://localhost:8000/fix', {
+      "framework": framework,
+      "fileCollection": codeFiles,
+      "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i))
+    })
+    // TODO: Update function to make sure that response is a valid fileCollection
+    .then(response => setGeneratedPageFixes(response.data))
+    .catch(error => console.error(error));
+  }, [framework, codeFiles, scanResults, activeSelections]);
 
+  /**
+   * 'done'/import button functionality for generating pdf
+   */
+  const handleDoneClick = () => {
+    setGeneratedPageFixes(updatedFiles); // Trigger the update for generatedPageFixes
+  };
+
+  // always update code files with generated page fixes
+  // TODO: should I just change to always update code files.
+  useEffect(() => {
+    if (generatedPageFixes && Object.keys(generatedPageFixes).length > 0) {
+      const pdf = new jsPDF();
+      pdf.text("Generated Page Fixes", 10, 10);
+  
+      // Using Object.entries to iterate over the dictionary
+      Object.entries(generatedPageFixes).forEach(([key, file], index) => {
+        pdf.text(`File ${index + 1}: ${key} - ${file.type}`, 10, 20 + index * 10);
+        // You can include additional details like `file.content` if needed
+      });
+  
+      pdf.save("page-fixes.pdf");
+    }
+  }, [generatedPageFixes]);
   return (
     <div className="h-screen bg-black relative">
       <div className="h-full">
         {/* Top part of panel */}
         <div className="flex items-start space-x-4 p-4">
           <div className="w-8 h-8 bg-primary-100 rounded-full"></div>
-          <h1 className="text-white	font-bold text-2xl">AccUI</h1>
+          <h1 className="text-white font-bold text-2xl">AccUI</h1>
         </div>
         <div className="flex flex-col items-start p-4">
           <h5 className="text-white text-sm font-bold"> Uploaded Folder: {folderName} </h5>
@@ -72,7 +96,7 @@ export function AccessiblityPanel({
             <FaCode />
           </Button>
         </div>
-        {/* Accessibilty Scan results panel */}
+        {/* Accessibility Scan results panel */}
         <h4 className="text-white text-xs font-bold p-3 ml-2">
           Accessibility Checks
         </h4>
@@ -145,9 +169,7 @@ export function AccessiblityPanel({
             >
               RESCAN
             </Button>
-            <Button onClick={() => {
-              setGeneratedPageFixes(updatedFiles)
-            }}
+            <Button onClick={handleDoneClick}
               className="max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold">
               DONE
             </Button>
@@ -155,5 +177,5 @@ export function AccessiblityPanel({
         </div>
       </div>
     </div>
-  )
+  );
 }
