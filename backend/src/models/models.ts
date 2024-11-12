@@ -77,16 +77,7 @@ export interface LlmPrompt {
     violations: AccViolation[];
 }
 
-// Type outputted the generate fix outputs
-export interface GeneratedFixPage {
-    pageId: string;
-    fixResults: [
-        {
-            scannedResult: ScannedResult;
-            newCodeBlock: string;
-        }
-    ]
-}
+
 
 // Type that the export module manipulates
 export interface ExportPackage {
@@ -100,19 +91,38 @@ export interface ExportRequest {
     outputPath: string;
 }
 
+export interface ViolationTarget {
+    target: string;
+    targetCode: string;
+    message: string;
+}
+
 // Input files from the front-end
 export interface FileData {
     type: string;
     content: string;
+    violationInfo?: ViolationTarget[]
 }
 
 export interface FixedFileData {
-    originalData: FileData,
-    generatedData: FileData
+    type: string;
+    content: string;
+    updatedCodeBlocks: string[]
+
 }
   
   export interface FileCollection {
-    [key: string]: FileData | FixedFileData;
+    [key: string]: FileData;
+}
+
+// Type outputted the generate fix outputs
+export interface FixedFileCollection {
+    [key: string]: FixedFileData;
+}
+
+export interface GeneratedFilesInfo {
+    originalData: FileCollection;
+    generatedCode: FixedFileCollection;
 }
 
 export interface AccessibilityResults {
