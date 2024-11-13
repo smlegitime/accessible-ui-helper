@@ -11,6 +11,7 @@ import { logging } from '../lib/logging';
 import { readFile } from '../lib/utils';
 import { FixedPageEvaluator } from '../services/fixedPageEvaluator';
 import { Request, Response } from 'express';
+import { FileCollection } from '../models/models';
 
 // Logger setup
 const logger = logging.getLogger('controllers');
@@ -22,8 +23,9 @@ export const handleScannedInput = async (req: Request, res: Response) => {
 
         logger.info('Request successfully received.');
 
+        // Input transformer junk
         const inputTransformer = new InputTransformer(scannedInput);
-        const transformedInput = await inputTransformer.transformInput(); // Will be fed to LLM manager
+        const transformedInput = inputTransformer.transformInput(); // Will be fed to LLM manager
 
         // Simulate generated page result from LLM
         // const testFilePath = '/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/mocks/sampleBackendOutput.json';
@@ -36,7 +38,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
         // const evaluator: FixedPageEvaluator = new FixedPageEvaluator(indexPage, inputAccResults);
         // const evalResult = await evaluator.evaluatePage();
         
-        res.send();
+        res.send(transformedInput);
 
     } catch (error: any) {
         logger.error(error);

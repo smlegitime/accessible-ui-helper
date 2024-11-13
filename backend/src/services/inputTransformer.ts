@@ -24,30 +24,6 @@ export class InputTransformer {
   }
 
   /**
-  * Sanitize all file names to control for special characters and filename length
-  * @param fileNames 
-  * @returns List of sanitized file names
-  */
-  private sanitizeFilenames(fileNames: Array<string>) : Array<string> | null { return null; }
-
-  /**
-   * Calculate position of code snippet in input code
-   * @param str Input code string
-   * @param substr Code snippet
-   * @returns 
-   */
-  private findSubstringIndices(str: string, substr: string): { start: number, end: number } | null {
-    const start = str.indexOf(substr);
-
-    if(start !== -1) {
-      const end = start + substr.length;
-      return { start, end };
-    }
-
-    return null;
-  }
-
-  /**
    * Inject script inside the provided document
    * @param htmlDocument 
    * @param inputFiles 
@@ -101,9 +77,6 @@ export class InputTransformer {
 
     return updatedDocWithJs.documentElement.outerHTML;
   }
-
-  // Ensure Axe remains read-only
-  private ensureAxeReadOnly(){}
 
   /**
    * Get the HTML pages from the input file collection
@@ -161,14 +134,13 @@ export class InputTransformer {
    * @returns Restructured input page
    */
   private organizeInputContent(inputFiles: FileCollection, violations: Array<Result>) : any {
-
-    const { filteredCollection, transformedInputStruct, violationNodes } = this.initializeTransformedInputStruct(inputFiles, violations)
+    const { filteredCollection, transformedInputObj, violationNodes } = this.initializeTransformedInputStruct(inputFiles, violations);
 
     for (const file in filteredCollection) {
       // pagesToBeFixed[file]['htmlWithInlineScripts'] = this.addInlineScriptsToHtml(inputFiles, filteredCollection[file]);
       for (const node of violationNodes) {
         if (filteredCollection[file]['content'].includes(node['html'])) {
-          transformedInputStruct[file]['violationInfo'].push({
+          transformedInputObj[file]['violationInfo'].push({
             'target': node['target'],
             'targetCode': node['html'],
             'message': node['failureSummary']
@@ -177,7 +149,7 @@ export class InputTransformer {
       }
     }
 
-    const transformedInput = this.mergeInputs(transformedInputStruct, inputFiles);
+    const transformedInput = this.mergeInputs(transformedInputObj, inputFiles);
 
     return transformedInput;
   }
@@ -192,7 +164,7 @@ export class InputTransformer {
    * Main class method
    * @returns Transformed and standardized list of input pages
    */
-  public async transformInput(): Promise<any> {
+  public transformInput(): any {
 
     try {
       const webFramework: Framework = this.scannedInput['framework'];
