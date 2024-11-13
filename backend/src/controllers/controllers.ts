@@ -11,7 +11,8 @@ import { logging } from '../lib/logging';
 import { readFile } from '../lib/utils';
 import { FixedPageEvaluator } from '../services/fixedPageEvaluator';
 import { Request, Response } from 'express';
-import { FileCollection } from '../models/models';
+import { FileCollection, GeneratedFilesInfo } from '../models/models';
+import {LLMManager} from '../services/llmManager';
 
 // Logger setup
 const logger = logging.getLogger('controllers');
@@ -25,7 +26,10 @@ export const handleScannedInput = async (req: Request, res: Response) => {
 
         // Input transformer junk
         const inputTransformer = new InputTransformer(scannedInput);
-        const transformedInput = inputTransformer.transformInput(); // Will be fed to LLM manager
+        const transformedInput: FileCollection = inputTransformer.transformInput(); // Will be fed to LLM manager
+        
+        const llmManager = new LLMManager();
+        const generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(transformedInput);
 
         // Simulate generated page result from LLM
         // const testFilePath = '/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/mocks/sampleBackendOutput.json';

@@ -49,13 +49,16 @@ export interface Page {
 
 // Accessibility Violations Type
 export interface AccViolation {
+    pages: string[];
     readonly id: string;
     impact: string;
     tags: Array<string>;
     description: string;
     help: string;
     helpUrl: string;
-    nodes: Object;
+    nodes: [{
+        [key: string]: Object;
+    }];
 }
 
 // Type that the Generate module receives (Output of Scanner)
@@ -70,20 +73,10 @@ export interface ScannedResult {
 
 // Type that the LLM module manipulates
 export interface LlmPrompt {
-    template: string;
-    examples: Array<string>; // stringified version of ScannedResult.scannedResult
-    pageId: string; // Reference to project pages with pageIds
+    files: FileCollection;
+    violations: AccViolation[];
 }
 
-// Type outputted the generate fix outputs
-export interface GeneratedFixPage {
-    originalData: FileData;
-    generatedCode: {
-        type: string;
-        content: string;
-        updatedCodeBlocks: Array<string>;
-    }
-}
 
 // Type that the export module manipulates
 export interface ExportPackage {
@@ -97,14 +90,38 @@ export interface ExportRequest {
     outputPath: string;
 }
 
+export interface ViolationTarget {
+    target: string;
+    targetCode: string;
+    message: string;
+}
+
 // Input files from the front-end
 export interface FileData {
     type: string;
     content: string;
+    violationInfo?: ViolationTarget[]
+}
+
+export interface FixedFileData {
+    type: string;
+    content: string;
+    updatedCodeBlocks: string[]
+
 }
   
   export interface FileCollection {
     [key: string]: FileData;
+}
+
+// Type outputted the generate fix outputs
+export interface FixedFileCollection {
+    [key: string]: FixedFileData;
+}
+
+export interface GeneratedFilesInfo {
+    originalData: FileCollection;
+    generatedCode: FixedFileCollection;
 }
 
 export interface AccessibilityResults {
