@@ -1,15 +1,26 @@
 /**
  * Description: File that assigns the Express app to an HTTP server
- * Created: Sybille Légitime
- * Created date: Oct 18, 2024 | Updated date: Oct 22, 2024
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
 import app from './index';
 import config from './config/config';
+import { logging } from './lib/logging';
 
+// Configuring the logger
+logging.configure({
+    minLevels: {
+        '': 'info',
+        'services': 'warn',
+        'controllers': 'warn'
+    }
+}).registerConsoleLogger();
+
+const logger = logging.getLogger('');
 const HOST = config.host;
 const PORT = config.port;
 
 app.listen(PORT, HOST, () => {
-    console.log(`Server is running on port ${PORT}`)
+    logger.info(`Server is running on port ${PORT}`)
 });

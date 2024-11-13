@@ -1,7 +1,7 @@
 /**
  * Description: Initial models for the backend components
- * Created: Sybille Légitime
- * Created date: Oct 10, 2024 | Updated date:
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
 // Output Type of input processor
@@ -14,7 +14,7 @@ enum FileType {
     Json = "Json"
 }
 
-enum Framework {
+export enum Framework {
     VanillaProject = "VanillaProject", // we will likely leverage as use case
     React = "React",
     Angular = "Angular",
@@ -77,13 +77,12 @@ export interface LlmPrompt {
 
 // Type outputted the generate fix outputs
 export interface GeneratedFixPage {
-    pageId: string;
-    fixResults: [
-        {
-            scannedResult: ScannedResult;
-            newCodeBlock: string;
-        }
-    ]
+    originalData: FileData;
+    generatedCode: {
+        type: string;
+        content: string;
+        updatedCodeBlocks: Array<string>;
+    }
 }
 
 // Type that the export module manipulates
@@ -113,4 +112,4 @@ export interface AccessibilityResults {
     violations: Array<AccViolation>;
     inapplicable: Array<AccViolation>;
     incomplete: Array<AccViolation>;
-  }
+}
