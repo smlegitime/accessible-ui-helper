@@ -5,9 +5,6 @@
  */
 
 import {GeneratedFilesInfo, FileData, AccViolation, FileCollection, FixedFileCollection } from '../models/models';
-import * as path from "path";
-import { exec } from "child_process";
-import * as fs from 'fs';
 import OpenAI from "openai";
 import * as dotenv from 'dotenv';
 
@@ -48,24 +45,38 @@ import { file } from 'pdfkit';
 // </html>
 // ```
 let test_output_string = "```html\n\
-          <!DOCTYPE html>\n\
-          <html>\n\
-            <head>\n\
-              <title>Home Page Updated</title>\n\
-              <link rel=\"stylesheet\" href=\"style.css\">\n\
-            </head>\n\
-            <body>\n\
-              <h1>Home Page Updated</h1>\n\
-              <main>\n\
-                <button id=\"btn\">Click Me</button>\n\
-                <a href=\"about.html\">Go to About</a>\n\
-              </main>\
-              <script src=\"node_modules/axe-core/axe.min.js\"></script>\n\
-              <script src=\"script.js\"></script>\n\
-              <script src=\"axe-script.js\"></script>\n\
-            </body>\n\
-          </html>\n\
-          ```"
+<!DOCTYPE html>\n\
+<html>\n\
+  <head>\n\
+    <title>Home Page Updated</title>\n\
+    <link rel=\"stylesheet\" href=\"style.css\">\n\
+  </head>\n\
+  <body>\n\
+    <header>\n\
+      <h1>Home Page Updated</h1>\n\
+    </header>\n\
+    <main>\n\
+      <button id=\"btn\">Click Me</button>\n\
+      <a href=\"about.html\">Go to About</a>\n\
+    </main>\n\
+    <script src=\"node_modules/axe-core/axe.min.js\"></script>\n\
+    <script src=\"script.js\"></script>\n\
+    <script src=\"axe-script.js\"></script>\n\
+  </body>\n\
+</html>\n\
+```\n\
+*****\n\
+```html\n\
+<header>\n\
+  <h1>Home Page Updated</h1>\n\
+</header>\n\
+*****\n\
+<main>\n\
+  <button id=\"btn\">Click Me</button>\n\
+  <a href=\"about.html\">Go to About</a>\n\
+</main>\n\
+*****"
+
 
 class LLMManager {
 
@@ -89,44 +100,74 @@ class LLMManager {
       // get each file
       const fileData = fileCollection[fileKey]
 
-      console.log("fileData: " + fileData);
+      // console.log("fileData: " + fileData);
       cleanFileCollection[fileKey] = {
         type: fileData.type,
         content: fileData.content,
       };
 
-      if (fileData.violationInfo === undefined )
+      if (fileData.violationInfo === undefined || fileData.violationInfo.length == 0)
       {
         continue;
       }
       
       // create a prompt for the violation
       const template = this.promptBuilder(fileData);
-      console.log("fix template: "+ template)
+      // console.log("fix template: "+ template)
       // call llm with prompt for this fix
       let output_string = ""
       output_string = await this.callLLM(template);
 
       // FOR TESTING
       // output_string = test_output_string;
-      console.log("output string" + output_string)
+      // console.log("output string" + output_string)
       // check files validity
       if (output_string != "" )
       {
+
+        const chunks = output_string.split('```')
+        
+        // Getting updated code blocks
+        let updatedCodeBlocks: string[] = []
+        // console.log("chunks: " + chunks)
+        let changes = chunks[3];
+        // console.log("changes: " + changes)
+        
+        let lines = changes.split('\n');
+        if (lines.length > 1) {
+          // remove file type from first line and delimiter (set in callLLM) from last
+          changes = lines.slice(1, -1).join('\n');
+          // console.log("changes: " + changes)
+
+          let changeArrary = changes.split("\n*****")
+          for (const i in changeArrary)
+          {
+            updatedCodeBlocks.push(changeArrary[i])
+          }
+        }
+        // console.log("updatedCodeBlocks: " + updatedCodeBlocks)
+        
+        // Get cleaned entire changed code
+        output_string = chunks[1];
         // remove first and last lines, they are always just ```
-        const lines = output_string.split('\n');
+        
+
+        // first thing will be nothing, second will be entire changed code
+        output_string = chunks[1];
+        // remove first and last lines, they are always just ```
+        lines = output_string.split('\n');
         if (lines.length <= 2) {
           continue; // if there are less than 2 lines, this return value is no good, get outta there
         }
 
         output_string = lines.slice(1, -1).join('\n');
-        console.log("output string removed first and last line" + output_string)
+        // console.log("output string clean" + output_string)
 
         // NEED TO ADD CHANGED LINES TO UPDATED CODE BLOCK
         fixedFileCollection[fileKey] = {
           type: fileData.type,
           content: output_string,
-          updatedCodeBlocks: []
+          updatedCodeBlocks: updatedCodeBlocks,
         };
 
       }
@@ -214,7 +255,10 @@ class LLMManager {
         ${content}
 
         Please fix the issues below:
-        ${failureSummary}`;
+        ${failureSummary}
+        
+        After the code block, please print each changed code snippet separated by "*****" without any additional text.
+        `;
       
       // TESTING
       // const PROMPT_TEMPLATE = `You are a helpful code assistant that can help a developer
@@ -229,7 +273,7 @@ class LLMManager {
 
       //   Return a copy of the code above`;
 
-        console.log("TEMPLATE: " + PROMPT_TEMPLATE)
+        // console.log("TEMPLATE: " + PROMPT_TEMPLATE)
         
         // return PROMPT_TEMPLATE;
     
@@ -286,6 +330,9 @@ class LLMManager {
 
 
 }
+
+// FOR TESTING
+// REMOVE LATER
 
 let manager = new LLMManager();
             
