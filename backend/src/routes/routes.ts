@@ -1,7 +1,7 @@
 /**
  * Description: Contains all routes in backend. Pass req/res to controller
- * Created: Sybille Légitime
- * Created date: Oct 18, 2024 | Updated date:
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
 import * as controllers from '../controllers/controllers';

@@ -1,64 +1,51 @@
 /**
  * Description: Processes requests/passes them along to the service layer.
- * Created: Sybille Légitime
- * Created date: Oct 18, 2024 | Updated date:
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
-import axios from 'axios';
-import { FileCollection, AccessibilityResults } from '../models/models';
+import { AxeResults } from 'axe-core';
 import { InputTransformer } from '../services/inputTransformer';
 
-export const handleScannedInput = async (req: any, res: any) => {
+import { logging } from '../lib/logging';
+import { readFile } from '../lib/utils';
+import { FixedPageEvaluator } from '../services/fixedPageEvaluator';
+import { Request, Response } from 'express';
+import { FileCollection, GeneratedFilesInfo } from '../models/models';
+import {LLMManager} from '../services/llmManager';
+
+// Logger setup
+const logger = logging.getLogger('controllers');
+
+export const handleScannedInput = async (req: Request, res: Response) => {
     try {
-        const inputFileCollection: FileCollection = req.body.fileCollection;
-        const inputAccResults: AccessibilityResults = req.body.accessibilityResults;
+        const scannedInput = req.body;
+        const inputAccResults: AxeResults = req.body.accessibilityResults;
 
-        // Logging
-        console.log('Request successfully received.');
+        logger.info('Request successfully received.');
 
-        const transformedResult = await InputTransformer.transformInput(
-            inputFileCollection,
-            inputAccResults
-        );
+        // Input transformer junk
+        const inputTransformer = new InputTransformer(scannedInput);
+        const transformedInput: FileCollection = inputTransformer.transformInput(); // Will be fed to LLM manager
         
-        // // console.log(transformedResult);
-        // const prompt = getPrompt(transformedResult);
-        // const llmResponse = await callLlm(prompt);
-        // console.log(llmResponse)
-        
-        res.send(transformedResult);
+        const llmManager = new LLMManager();
+        const generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(transformedInput);
 
-    } catch (error) {
-        console.error(error);
+        // Simulate generated page result from LLM
+        // const testFilePath = '/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/mocks/sampleBackendOutput.json';
+        // const data = await readFile(testFilePath);
+        // const generatedPage: any = JSON.parse(data);
+        // const indexPageName: string = Object.keys(generatedPage)[0];
+        // const indexPage = generatedPage[indexPageName]; // This is the index page (Right??)
+
+        // // Evaluate generatedResult
+        // const evaluator: FixedPageEvaluator = new FixedPageEvaluator(indexPage, inputAccResults);
+        // const evalResult = await evaluator.evaluatePage();
+        
+        res.send(transformedInput);
+
+    } catch (error: any) {
+        logger.error(error);
         res.status(500).send({error});
     }
 };
-
-// function getPrompt(inputData: any){
-//     const fileCollection = inputData.fileCollection;
-//     const instruction = `${fileCollection['/index.html']['pageViolations']['failureSummary']}`
-//     const examples = `${fileCollection['/index.html']['originalData']['content']}`
-//     const prompt = `You are a helpful assistant. Your task is to produce code given a specific message. The context is the following code ${examples}.
-//     Produce an h1 html element for the following: ${instruction}`
-
-    
-
-//     return prompt;
-// }
-
-// async function callLlm(prompt: string) {
-//     const baseUrl = "http://llmserver.cs.brown.edu:37090"
-
-//     const headers = { 
-//         "Content-Type": "application/json",
-//         "accept": "text/event-stream"
-//     }  
-
-//     const url = `${baseUrl}/generate`
-//     const data = { "prompt": prompt }
-
-//     const llmResponse = await axios.post(url, data, {headers});
-
-//     return llmResponse;
-
-// }

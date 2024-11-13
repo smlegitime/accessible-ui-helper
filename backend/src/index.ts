@@ -16,6 +16,7 @@ const app: Express = express();
 // for global or path-dependent incoming requests
 app.use(cors());
 app.use(express.json());
+
 app.use('/api', router);
 
 // Export Express app for serving
