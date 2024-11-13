@@ -1,7 +1,7 @@
 /**
  * Description: Custom logger configuration and logger for backend server
  * @author Sybille Légitime
- * @copyright 2024
+ * @copyright 2024. All rights reserved.
  */
 
 import { EventEmitter } from 'events';
@@ -161,7 +161,7 @@ export class Logger {
 
     public trace(message: string): void { this.log('trace', message); }
     public debug(message: string): void { this.log('debug', message); }
-    public info(message: string): void  { this.log('info', message); }
-    public warn(message: string): void  { this.log('warn', message); }
+    public info(message: string): void { this.log('info', message); }
+    public warn(message: string): void { this.log('warn', message); }
     public error(message: string): void { this.log('error', message); }
 }

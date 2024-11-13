@@ -1,3 +1,9 @@
+/**
+ * Description: Utility functions
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
+ */
+
 import * as fs from 'fs';
 
 export const readFile = (filePath: string): Promise<string> => {

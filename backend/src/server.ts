@@ -1,7 +1,7 @@
 /**
  * Description: File that assigns the Express app to an HTTP server
- * Created: Sybille Légitime
- * Created date: Oct 18, 2024 | Updated date: Nov 6, 2024
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
 import app from './index';
