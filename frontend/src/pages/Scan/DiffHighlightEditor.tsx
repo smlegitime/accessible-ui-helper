@@ -125,14 +125,6 @@ export function DiffHighlightEditor({
     }, [files, originalFiles]);
 
     return (
-        <div className="relative">
             <SandpackCodeEditor {...props} />
-            <style>{`
-                .cm-line.diff-changed {
-                    background-color: rgba(0, 255, 0, 0.1) !important;
-                    border-left: 2px solid #4caf50 !important;
-                }
-            `}</style>
-        </div>
     );
 }
