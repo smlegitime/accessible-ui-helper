@@ -1,0 +1,25 @@
+{
+  "name": "llm_playground_ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc && node langchain.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@langchain/core": "^0.3.17",
+    "@langchain/ollama": "^0.1.1",
+    "@langchain/openai": "^0.3.12",
+    "dotenv": "^16.4.5",
+    "langchain": "^0.3.5",
+    "llama-stack-client": "^0.0.35",
+    "ollama": "^0.5.9"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
