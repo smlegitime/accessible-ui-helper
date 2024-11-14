@@ -22,32 +22,20 @@ import jsPDF from 'jspdf';
 export function Scan() {
   // get pages from home page
   const location = useLocation();
-  const navigate = useNavigate();
-  const {pages} : {pages : Page[]} = location.state ? location.state as {pages: Page[]} : {pages: []}
-  useEffect(() => {
-    if (pages.length === 0)  {
-      navigate("/")
-    }
-  }, [pages])
+  const { pages } = location.state as { pages: Page[] };
 
-  //location.state ? pages =  location.state as Page[]
-  // const { pages } = location.state as { pages: Page[] };
-  // Send user to homepage when pages is empty
-    /**
+  /**
    * Accessibility standards to check against
    */
-    const [accessibilityStandards, setAccessibilityStandards]
+  const [accessibilityStandards, setAccessibilityStandards]
     = useState<string[]>(['wcag21aa', 'wcag2aa', 'best-practice'])
-    
-    
+
   // Convert pages: Page[] to fileCollection that we are taking 
   // as input to AccessibilityPanel and extract framework
-  const initialFileCollection: FileCollection = useMemo(()=> {
+  const initialFileCollection: FileCollection = useMemo(() => {
     return pagesToFileCollection(pages, accessibilityStandards)
-  }, [accessibilityStandards, pages])
+  }, [accessibilityStandards])
 
-  const folderName = pages.length > 0 ? pages[0].filePath.split('/')[0] : "N/A"
-  
   const emptyResults = {
     passes: [],
     violations: [],
@@ -72,7 +60,7 @@ export function Scan() {
   /**
    * Framework of project
    */
-  const frameWork = pages.length > 0 ? pages[0].pageContent.framework : ""
+  const frameWork = pages[0].pageContent.framework
   /**
    * state that saves all the initial violations
    */
@@ -87,35 +75,53 @@ export function Scan() {
    */
   const [viewEditor, setViewEditor] = useState(false)
 
+  useEffect(() => {
+    const messageHandler = (event: MessageEvent) => {
+        console.log('Scan component received message:', event.data);
+        if (event.data.type === 'axeResults') {
+            const returnedResults = event.data.results;
+            console.log('Processing axe results:', returnedResults);
+            // TODO: check the type of the returned results
+            // parse the results the here to AccessibilityResults object
+            const initializedResult: AccessibilityResults = {
+                passes: [],
+                violations: [],
+                inapplicable: [],
+                incomplete: []
+            }
+            initializedResult['passes'] = returnedResults.passes;
+            initializedResult['violations'] = returnedResults.violations;
+            initializedResult['inapplicable'] = returnedResults.inapplicable;
+            initializedResult['incomplete'] = returnedResults.incomplete;
+            setAccessibilityResults(initializedResult);
+            // only set if it has not been set before
+            if (!runInitial) {
+                setInitialAccessibilityResults(initializedResult);
+                setRunInitial(true);
+            }
+        }
+    };
+
+    window.addEventListener('message', messageHandler);
+
+    return () => {
+        window.removeEventListener('message', messageHandler);
+    };
+  }, [runInitial]);
+
   // always update code files with generated page fixes
-  // TODO: should I just change to always update code files. 
   useEffect(() => {
     setCodeFiles(generatedPageFixes)
   }, [generatedPageFixes])
 
-  window.addEventListener('message', (event) => {
-    if (event.data.type === 'axeResults') {
-      const returnedResults = event.data.results
-      // TODO: check the type of the returned results
-      // parse the results the here to AccessibilityResults object
-      const initializedResult: AccessibilityResults = {
-        passes: [],
-        violations: [],
-        inapplicable: [],
-        incomplete: []
-      }
-      initializedResult['passes'] = returnedResults.passes
-      initializedResult['violations'] = returnedResults.violations
-      initializedResult['inapplicable'] = returnedResults.inapplicable
-      initializedResult['incomplete'] = returnedResults.incomplete
-      setAccessibilityResults(initializedResult)
-      // only set if it has not been set before
-      if (!runInitial) {
-        setInitialAccessibilityResults(initializedResult);
-        setRunInitial(true);
-      }
+  const [originalFiles, setOriginalFiles] = useState<FileCollection>(initialFileCollection);
+  
+  useEffect(() => {
+    // save initial files
+    if (initialFileCollection && !originalFiles) {
+      setOriginalFiles(initialFileCollection);
     }
-  })
+  }, [initialFileCollection]);
 
   return (
     <div className='h-screen'>
@@ -128,8 +134,8 @@ export function Scan() {
               framework={frameWork}
               setViewEditor={setViewEditor}
               viewEditor={viewEditor}
-              folderName={folderName}
-              codeFiles={codeFiles}
+              codeFiles={originalFiles}
+              folderName="Your Folder Name"
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
@@ -137,6 +143,7 @@ export function Scan() {
             <View
               files={codeFiles}
               viewEditor={viewEditor}
+              originalFiles={originalFiles}
             />
           </ResizablePanel>
         </ResizablePanelGroup>

@@ -50,6 +50,35 @@ export function ViolationsPanel({ resultsToDisplay,
         activeSelections: number[],
         setActiveSelections: React.Dispatch<React.SetStateAction<number[]>>
     }) {
+
+
+        //handle violation method
+        function handleViolationSelect(violation: AccViolation, index: number, active: boolean) {
+            setActiveSelections((oldSelections) => {
+                if (active) {
+                    return [...oldSelections, index];
+                } else {
+                    return oldSelections.filter(i => i !== index);
+                }
+            });
+            
+            //get target and html tag
+            const target = violation.nodes[0]?.target?.[0] || '';
+            const html = violation.nodes[0]?.html || '';
+            
+            //post message to iframe
+            const previewFrame = document.querySelector('.sp-preview-iframe') as HTMLIFrameElement;
+            const frameWindow = previewFrame?.contentWindow;
+            if (frameWindow) {
+                frameWindow.postMessage({
+                    type: 'highlightViolation',
+                    selector: target,
+                    html: html,
+                    active: active
+                }, '*');
+            }
+        }
+
     const violationDivs = resultsToDisplay.map((result, i) => {
         return (
             <div className="flex flex-row w-full bg-[#282828] rounded-lg" key={i}>
@@ -58,13 +87,10 @@ export function ViolationsPanel({ resultsToDisplay,
                             active:bg-gray-700 focus:outline-none 
                                focus:ring focus:ring-gray-300 rounded
                                `}
-                        onClick={() => setActiveSelections((oldSelections) => {
-                            if (oldSelections.includes(i)) {
-                                return oldSelections.filter((selection) => selection !== i)
-                            } else {
-                                return [...oldSelections, i]
-                            }
-                        })}>
+                        onClick={() => {
+                            const isCurrentlySelected = activeSelections.includes(i);
+                            handleViolationSelect(result, i, !isCurrentlySelected);
+                        }}>
                         <div className={`w-4 h-4 rounded-full ${activeSelections.includes(i) ? ' bg-primary-100' : ' bg-secondary-100'
                             }`}></div>
                     </button>
@@ -80,9 +106,7 @@ export function ViolationsPanel({ resultsToDisplay,
                         <h5 className="text-[#88AFEF] underline">Learn more</h5>
                     </a>
                 </div>
-
             </div>
-
         )
     })
     return (
