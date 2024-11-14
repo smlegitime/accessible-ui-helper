@@ -41,8 +41,12 @@ export function insertAxeScriptHTML(htmlContent: string) {
  */
 export function pagesToFileCollection(pages: Page[], accessibilityStandards: string[]) {
     const initialFileCollection: FileCollection = {}
+    if (pages.length === 0) {
+        return initialFileCollection
+    }
     switch (pages[0].pageContent.framework) {
         case Framework.Vanilla:
+            const entryFile = "index.html"
             pages.map((page) => {
                 let pageCode = ""
                 // update .html files to run axe-scripts

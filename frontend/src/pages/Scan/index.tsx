@@ -10,7 +10,7 @@ import {
 } from "../../components/ui/resizable"
 import { View } from "./View"
 import { AccessiblityPanel } from './AccessiblityPanel';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { pagesToFileCollection } from './utils';
 import jsPDF from 'jspdf';
 
@@ -22,8 +22,17 @@ import jsPDF from 'jspdf';
 export function Scan() {
   // get pages from home page
   const location = useLocation();
-  const { pages } = location.state as { pages: Page[] };
+  const navigate = useNavigate();
+  const {pages} : {pages : Page[]} = location.state ? location.state as {pages: Page[]} : {pages: []}
+  useEffect(() => {
+    if (pages.length === 0)  {
+      navigate("/")
+    }
+  }, [pages])
 
+  //location.state ? pages =  location.state as Page[]
+  // const { pages } = location.state as { pages: Page[] };
+  // Send user to homepage when pages is empty
     /**
    * Accessibility standards to check against
    */
@@ -63,7 +72,7 @@ export function Scan() {
   /**
    * Framework of project
    */
-  const frameWork = pages[0].pageContent.framework
+  const frameWork = pages.length > 0 ? pages[0].pageContent.framework : ""
   /**
    * state that saves all the initial violations
    */

@@ -7,7 +7,7 @@ import { Button } from "../../components/ui/button";
 import { updatedFiles } from "../../mocks/fileSystemMocks";
 import { useCallback, useState } from "react";
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 
@@ -37,7 +37,6 @@ export function AccessiblityPanel({
 }) {
 
   const [activeSelections, setActiveSelections] = useState<number[]>([]);
-  const navigate = useNavigate();
 
   // Callback function to generate fixes and update generatedPageFixes
   const generateFixes = useCallback(() => {
@@ -98,7 +97,7 @@ const handleDoneClick = async () => {
         {/* Top part of panel */}
         <div className="flex items-start space-x-4 p-4">
           <div className="w-8 h-8 bg-primary-100 rounded-full"></div>
-          <h1 className="text-white font-bold text-2xl">AccUI</h1>
+          <Link to={"/"}><h1 className="text-white font-bold text-2xl">AccUI</h1></Link>
         </div>
         <div className="flex flex-col items-start p-4">
           <h5 className="text-white text-sm font-bold"> Uploaded Folder: {folderName} </h5>
@@ -117,21 +116,21 @@ const handleDoneClick = async () => {
         <h4 className="text-white text-xs font-bold p-3 ml-2">
           Accessibility Checks
         </h4>
-        <div className="px-3 mr-2 max-h-[60%] overflow-y-auto">
+        <div className="px-3 mr-2">
           <Accordion type="single" collapsible className="w-full mb-2 space-y-2" defaultValue="violations-block">
-            <AccordionItem value="passes-block">
+            <AccordionItem value="passes-block" className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
                   <h2 className="text-white ml-2 inline-flex items-center font-bold"> <FaRegSmile color="#E4FD90" style={{ marginRight: '8px' }} /> Passes </h2>
-                  <h3 className="text-white "> {scanResults.passes.length}</h3>
+                  <h3 className="text-white"> {scanResults.passes.length}</h3>
                 </div>
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="max-h-[50%] overflow-y-auto">
                 <PassesPanel resultsToDisplay={scanResults.passes} />
               </AccordionContent>
             </AccordionItem>
             <div className="border-b border-0 border-gray-500"></div>
-            <AccordionItem value="violations-block">
+            <AccordionItem value="violations-block" className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
                   <h2 className="text-white ml-2 inline-flex items-center font-bold"> <FaRegFrown color="#FD9090" style={{ marginRight: '8px' }} /> Violations </h2>
@@ -179,13 +178,6 @@ const handleDoneClick = async () => {
             Ready To Export
           </h3>
           <div className="space-x-2">
-            <Button
-              variant={'outline'}
-              className="max-h-6 min-w-30 bg-black rounded-full hover:bg-slate-400 text-primary-100 p-4 font-bold border-primary-100"
-              onClick={() => navigate('/')}
-            >
-              RESCAN
-            </Button>
             <Button onClick={handleDoneClick}
               className="max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold">
               DONE
