@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { SandpackCodeEditor } from '@codesandbox/sandpack-react';
-import DiffMatchPatch from 'diff-match-patch';
 import { FileCollection } from '@/src/interfaces/scanInterfaces';
 
 interface DiffHighlightEditorProps {
@@ -13,6 +12,42 @@ interface DiffHighlightEditorProps {
     showTabs?: boolean;
 }
 
+function normalizeContent(content: string): string {
+    return content
+        .replace(/\s+/g, ' ') 
+        .replace(/\s*;\s*/g, ';')  
+        .replace(/\s*{\s*/g, '{')  
+        .replace(/\s*}\s*/g, '}')  
+        .replace(/\s*:\s*/g, ':') 
+        .trim();  
+}
+
+function computeLineDiffs(oldContent: string, newContent: string): boolean[] {
+    const oldLines = oldContent.split('\n');
+    const newLines = newContent.split('\n');
+    const diffs: boolean[] = [];
+
+    // Check each new line for real changes
+    newLines.forEach((newLine, index) => {
+        // If empty line, mark as unchanged
+        if (!newLine.trim()) {
+            diffs.push(false);
+            return;
+        }
+
+        // Look for matching original line
+        const normalizedNewLine = normalizeContent(newLine);
+        const foundMatch = oldLines.some(oldLine => 
+            normalizeContent(oldLine) === normalizedNewLine
+        );
+
+        // If no exact match found, mark as changed
+        diffs.push(!foundMatch);
+    });
+
+    return diffs;
+}
+
 export function DiffHighlightEditor({
     files,
     originalFiles,
@@ -22,10 +57,6 @@ export function DiffHighlightEditor({
         if (!originalFiles) return;
 
         const addHighlights = () => {
-            // Debug log
-            // console.log('Current files:', files);
-            // console.log('Original files:', originalFiles);
-
             const editor = document.querySelector('.sp-code-editor');
             if (!editor) {
                 requestAnimationFrame(addHighlights);
@@ -38,59 +69,44 @@ export function DiffHighlightEditor({
                 return;
             }
 
-            // Clear old highlights
+            // Clear existing highlights
             codeLines.forEach(line => {
-                line.classList.remove( 'diff-removed','diff-added');
+                line.classList.remove('diff-changed');
             });
 
-            const dmp = new DiffMatchPatch();
-
-            // Get the active file
+            // Get current file paths
             const currentFilePaths = Object.keys(files);
             
             currentFilePaths.forEach(filepath => {
-                // console.log('Processing file:', filepath);
-
                 const newContent = files[filepath].content;
                 const oldContent = originalFiles[filepath]?.content || '';
 
-                // console.log('New content:', newContent);
-                // console.log('Old content:', oldContent);
+                // If content is same, skip processing
+                if (normalizeContent(newContent) === normalizeContent(oldContent)) {
+                    return;
+                }
 
-                // Perform the overall diff comparison
-                const diff = dmp.diff_main(oldContent, newContent);
-                dmp.diff_cleanupSemantic(diff);
+                // Calculate differences
+                const diffs = computeLineDiffs(oldContent, newContent);
 
-                let lineNum = 0;
-                let currentLine = 0;
-
-                diff.forEach(([type, text]) => {
-                    const textLines = text.split('\n');
-                    
-                    textLines.forEach((line, i) => {
-                        // Ensure we do not exceed the available line count
-                        if (currentLine < codeLines.length) {
-                            if (type !== 0) { // 0 indicates no change
-                                // console.log(`Highlighting line ${currentLine} as ${type === 1 ? 'added' : 'removed'}`);
-                                codeLines[currentLine].classList.add(
-                                    type === 1 ? 'diff-removed' : 'diff-added'  
-                                );
-                            }
-                            currentLine++;
+                // Apply highlights
+                diffs.forEach((hasChanged, index) => {
+                    if (index < codeLines.length && hasChanged) {
+                        const lineContent = codeLines[index].textContent?.trim();
+                        if (lineContent) {
+                            codeLines[index].classList.add('diff-changed');
                         }
-                    });
-
-                    lineNum += textLines.length - 1;
+                    }
                 });
             });
         };
 
-        // Initially add highlights
+        // Initial highlight application
         addHighlights();
 
-        // Listen for file changes
+        // Watch for changes
         const observer = new MutationObserver(() => {
-            setTimeout(addHighlights, 100); // Add delay to ensure DOM update completion
+            setTimeout(addHighlights, 100);
         });
 
         const editor = document.querySelector('.sp-code-editor');
@@ -112,12 +128,7 @@ export function DiffHighlightEditor({
         <div className="relative">
             <SandpackCodeEditor {...props} />
             <style>{`
-                .cm-line.diff-removed{
-                    background-color: rgba(255, 0, 0, 0.1) !important;
-                    border-left: 2px solid #f44336 !important;
-                }
-                
-                .cm-line.diff-added{
+                .cm-line.diff-changed {
                     background-color: rgba(0, 255, 0, 0.1) !important;
                     border-left: 2px solid #4caf50 !important;
                 }

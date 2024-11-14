@@ -368,7 +368,8 @@ img {
   "/axe-script.js": {
     type: 'js',
     content:  `
-    import axe from 'axe-core';
+     import axe from 'axe-core';
+                
     // Add highlight function
     function highlightElement(selector, html, active) {
         console.log('Highlighting element:', { selector, html, active });
