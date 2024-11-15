@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import JSZip from 'jszip';
-import { AccessibilityResults, FileCollection } from "@/src/interfaces/scanInterfaces";
+import { AccessibilityResults, FileCollection, GeneratedFilesInfo } from "@/src/interfaces/scanInterfaces";
 import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
 import { Button } from "../../components/ui/button";
@@ -9,6 +9,7 @@ import { useCallback, useState } from "react";
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { fixedFileCollectionToFileCollection } from './utils';
 
 
 /**
@@ -20,6 +21,7 @@ import axios from "axios";
  */
 export function AccessiblityPanel({
   setGeneratedPageFixes,
+  setOriginalFiles,
   scanResults,
   framework,
   setViewEditor,
@@ -28,6 +30,7 @@ export function AccessiblityPanel({
   codeFiles
 }: {
   setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
+  setOriginalFiles:  React.Dispatch<React.SetStateAction<FileCollection>>,
   scanResults: AccessibilityResults,
   framework: string,
   setViewEditor: React.Dispatch<React.SetStateAction<boolean>>,
@@ -46,7 +49,13 @@ export function AccessiblityPanel({
       "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i))
     })
     // TODO: Update function to make sure that response is a valid fileCollection
-    .then(response => setGeneratedPageFixes(response.data))
+    .then((response) => {
+      const data = response.data as GeneratedFilesInfo
+      const generatedCodeCollection = data.generatedCode
+      setOriginalFiles(data.originalData)
+      setGeneratedPageFixes(fixedFileCollectionToFileCollection(generatedCodeCollection))
+      // setGeneratedPageFixes(updatedFiles)
+    })
     .catch(error => console.error(error));
   }, [framework, codeFiles, scanResults, activeSelections]);
 

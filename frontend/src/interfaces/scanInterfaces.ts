@@ -94,3 +94,19 @@ export interface AccessibilityResults {
   inapplicable: AccViolation[];
   incomplete: AccViolation[];
 }
+
+export interface FixedFileData {
+  type: string;
+  content: string;
+  updatedCodeBlocks: string[]
+}
+
+// Response JSON from backend
+export interface FixedFileCollection {
+  [key: string]: FixedFileData;
+}
+
+export interface GeneratedFilesInfo {
+  originalData: FileCollection;
+  generatedCode: FixedFileCollection;
+}

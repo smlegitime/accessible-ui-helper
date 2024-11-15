@@ -136,6 +136,7 @@ export function Scan() {
           <ResizablePanel defaultSize={25} minSize={15}>
             <AccessiblityPanel
               setGeneratedPageFixes={setGeneratedPageFixes}
+              setOriginalFiles={setOriginalFiles}
               scanResults={accessibilityResults}
               framework={frameWork}
               setViewEditor={setViewEditor}

@@ -1,4 +1,4 @@
-import { FileCollection, FileData, FileType, Framework, Page } from "../../interfaces/scanInterfaces"
+import { FileCollection, FileData, FileType, FixedFileCollection, Framework, Page } from "../../interfaces/scanInterfaces"
 import { SandpackFiles } from "@codesandbox/sandpack-react/types"
 
 /**
@@ -17,6 +17,17 @@ export function fileCollectionToSandPackFiles(fileCollectionData: FileCollection
     )
     return organizedFiles
 }
+
+export function fixedFileCollectionToFileCollection(fixedFileCollection : FixedFileCollection) : FileCollection {
+    const parsedFileCollection : FileCollection = {}
+    Object.keys(fixedFileCollection).map((filepath) => 
+        parsedFileCollection[`${filepath}`] = {
+            type:  fixedFileCollection[filepath].type,
+            content: fixedFileCollection[filepath].content
+        })
+    return parsedFileCollection
+}
+
 
 /**
  * Insert axe-score script into user's HTML. 
