@@ -18,6 +18,11 @@ export function fileCollectionToSandPackFiles(fileCollectionData: FileCollection
     return organizedFiles
 }
 
+/**
+ * Convert a FixedFileCollection object to a FileCollection object
+ * @param fixedFileCollection - a FixedFileCollection object returned from fix call
+ * @returns a FileCollection object
+ */
 export function fixedFileCollectionToFileCollection(fixedFileCollection : FixedFileCollection) : FileCollection {
     const parsedFileCollection : FileCollection = {}
     Object.keys(fixedFileCollection).map((filepath) => 
