@@ -73,7 +73,9 @@ export class InputValidator {
    * @returns Promise<void> - Resolves if no issues are found, otherwise rejects / send with ESLint error messages.
    */
   static async detectScriptIssues(filePath: string): Promise<void> {
-    const eslint = new ESLint();
+    const eslint = new ESLint({
+      overrideConfigFile: './.eslintrc.json', 
+    });
     const results = await eslint.lintFiles([filePath]);
     
     if (results.length > 0 && results[0].messages.length > 0) {
