@@ -43,13 +43,12 @@ interface ViolationCheck {
   id: string;
   data: any;
   relatedNodes: Array<{
-      html: string;
-      target: string[];
+    html: string;
+    target: string[];
   }>;
   impact: string;
   message: string;
 }
-
 
 export interface ViolationNode {
   any: ViolationCheck[];
@@ -60,7 +59,6 @@ export interface ViolationNode {
   target: string[];
   failureSummary?: string;
 }
-
 
 export interface AccViolation {
   readonly id: string;
@@ -98,7 +96,7 @@ export interface AccessibilityResults {
 export interface FixedFileData {
   type: string;
   content: string;
-  updatedCodeBlocks: string[]
+  updatedCodeBlocks: string[];
 }
 
 // Response JSON from backend

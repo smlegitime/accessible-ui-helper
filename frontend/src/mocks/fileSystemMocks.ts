@@ -4,7 +4,7 @@ import { FileCollection } from "../interfaces/scanInterfaces";
 export const fileSystemBasic: FileCollection = {
   "index.html": {
     type: "html",
-      content: `
+    content: `
       <!DOCTYPE html>
        <html lang="en">
        <head>
@@ -23,7 +23,7 @@ export const fileSystemBasic: FileCollection = {
            <script src="axe-script.js"></script>
            <script src="script.js"></script>
        </body>
-       </html>`
+       </html>`,
   },
   "style.css": {
     type: "css",
@@ -80,8 +80,7 @@ export const fileSystemBasic: FileCollection = {
   },
   "axe-script.js": {
     type: "js",
-    content: 
-    `
+    content: `
     import axe from 'axe-core';
     
     axe.run().then((results) =>
@@ -119,10 +118,9 @@ export const codeSandBoxSetUpInitial = {
   // environment: "vanilla"
 };
 
-
-export const initialFileCollectionData : FileCollection = {
+export const initialFileCollectionData: FileCollection = {
   "/index.html": {
-    type: 'html',
+    type: "html",
     content: `<!DOCTYPE html>
     <html>
       <head>
@@ -137,25 +135,25 @@ export const initialFileCollectionData : FileCollection = {
         <script src="script.js"></script>
         <script src="axe-script.js"></script>
       </body>
-    </html>`
+    </html>`,
   },
   "/style.css": {
-    type: 'css',
+    type: "css",
     content: `body { 
   font-family: Arial; 
 } 
 img { 
   width: 100px; 
-}`
+}`,
   },
   "/script.js": {
-    type: 'js',
+    type: "js",
     content: `document.getElementById('btn').addEventListener('click', function() {
   alert('Button clicked!');
-});`
+});`,
   },
   "/about.html": {
-    type: 'html',
+    type: "html",
     content: `<!DOCTYPE html>
     <html>
       <head>
@@ -170,51 +168,49 @@ img {
       <script src="about-script.js"></script>
       <script src="axe-script.js"></script>
       </body>
-    </html>`
+    </html>`,
   },
   "/about-style.css": {
-    type: 'css',
+    type: "css",
     content: `h1 { 
   color: red; 
-}`
+}`,
   },
   "/about-script.js": {
-    type: 'js',
-    content: `console.log('About page loaded');`
+    type: "js",
+    content: `console.log('About page loaded');`,
   },
   "/axe-script.js": {
-    type: 'js',
-    content : `
+    type: "js",
+    content: `
     import axe from 'axe-core';
       
     axe.run().then((results) =>
       window.parent.postMessage({ type: 'axeResults', results }, '*')
       );
-  `
+  `,
   },
   "/package.json": {
-    type: 'json',
+    type: "json",
     content: JSON.stringify({
-  "name": "html-css-js",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.html",
-  "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+      name: "html-css-js",
+      version: "1.0.0",
+      description: "",
+      main: "index.html",
+      scripts: {
+        start: "parcel index.html --open",
+        build: "parcel build index.html",
+      },
+      dependencies: { "axe-core": "^4.10.1" },
+      devDependencies: {
+        "@babel/core": "7.2.0",
+        "parcel-bundler": "^1.6.1",
+        "axe-core": "^4.10.1",
+      },
+      keywords: [],
+    }),
   },
-  "dependencies": {"axe-core": "^4.10.1"},
-  "devDependencies": {
-    "@babel/core": "7.2.0",
-    "parcel-bundler": "^1.6.1",
-    "axe-core": "^4.10.1"
-  },
-  "keywords": []
-})
-  }
 };
-
-
 
 export const initialFiles = {
   "/index.html": {
@@ -232,7 +228,7 @@ export const initialFiles = {
         <script src="script.js"></script>
         <script src="axe-script.js"></script>
       </body>
-    </html>`
+    </html>`,
   },
   "/style.css": {
     code: `body { 
@@ -240,12 +236,12 @@ export const initialFiles = {
 } 
 img { 
   width: 100px; 
-}`
+}`,
   },
   "/script.js": {
     code: `document.getElementById('btn').addEventListener('click', function() {
   alert('Button clicked!');
-});`
+});`,
   },
   "/about.html": {
     code: `<!DOCTYPE html>
@@ -262,24 +258,24 @@ img {
       <script src="about-script.js"></script>
       <script src="axe-script.js"></script>
       </body>
-    </html>`
+    </html>`,
   },
   "/about-style.css": {
     code: `h1 { 
   color: red; 
-}`
+}`,
   },
   "/about-script.js": {
-    code: `console.log('About page loaded');`
+    code: `console.log('About page loaded');`,
   },
   "/axe-script.js": {
-    code : `
+    code: `
     import axe from 'axe-core';
       
     axe.run().then((results) =>
       window.parent.postMessage({ type: 'axeResults', results }, '*')
       );
-  `
+  `,
   },
   "/package.json": {
     code: `{
@@ -298,14 +294,13 @@ img {
     "axe-core": "^4.10.1"
   },
   "keywords": []
-}`
-  }
+}`,
+  },
 };
-
 
 export const updatedFiles = {
   "/index.html": {
-    type: 'html',
+    type: "html",
     content: `<!DOCTYPE html>
 <html>
   <head>
@@ -320,25 +315,25 @@ export const updatedFiles = {
     <script src="script.js"></script>
     <script src="axe-script.js"></script>
   </body>
-</html>`
+</html>`,
   },
   "/style.css": {
-    type: 'css',
+    type: "css",
     content: `body { 
   font-family: Arial; 
 } 
 img { 
   width: 100px; 
-}`
+}`,
   },
   "/script.js": {
-    type: 'js', 
+    type: "js",
     content: `document.getElementById('btn').addEventListener('click', function() {
   alert('Updated Button Clicked!');
-});`
+});`,
   },
   "/about.html": {
-    type: 'html',
+    type: "html",
     content: `<!DOCTYPE html>
 <html>
   <head>
@@ -353,21 +348,21 @@ img {
     <script src="about-script.js"></script>
     <script src="axe-script.js"></script>
   </body>
-</html>`
+</html>`,
   },
   "/about-style.css": {
-    type: 'css',
+    type: "css",
     content: `h1 { 
   color: yellow; 
-}`
+}`,
   },
   "/about-script.js": {
-    type: 'js',
-    content: `console.log('About page loaded lglg');`
+    type: "js",
+    content: `console.log('About page loaded lglg');`,
   },
   "/axe-script.js": {
-    type: 'js',
-    content:  `
+    type: "js",
+    content: `
      import axe from 'axe-core';
                 
     // Add highlight function
@@ -490,10 +485,10 @@ img {
     }).then((results) => {
         console.log('Axe scan results:', results);
         window.parent.postMessage({ type: 'axeResults', results }, '*')
-    });`
+    });`,
   },
   "/package.json": {
-    type: 'json',
+    type: "json",
     content: `{
   "name": "html-css-js",
   "version": "1.0.0",
@@ -511,6 +506,6 @@ img {
 
   },
   "keywords": []
-}`
-  }
+}`,
+  },
 };

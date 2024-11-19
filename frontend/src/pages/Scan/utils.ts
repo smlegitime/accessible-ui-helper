@@ -1,21 +1,31 @@
-import { FileCollection, FileData, FileType, FixedFileCollection, Framework, Page } from "../../interfaces/scanInterfaces"
-import { SandpackFiles } from "@codesandbox/sandpack-react/types"
+import {
+  FileCollection,
+  FileData,
+  FileType,
+  FixedFileCollection,
+  Framework,
+  Page,
+} from "../../interfaces/scanInterfaces";
+import { SandpackFiles } from "@codesandbox/sandpack-react/types";
 
 /**
- * Converts fileCollectionData to SandpackFiles to be used an input in View 
+ * Converts fileCollectionData to SandpackFiles to be used an input in View
  *     component
- * @param fileCollectionData 
+ * @param fileCollectionData
  * @returns SandpackFiles object containing user code files
  */
-export function fileCollectionToSandPackFiles(fileCollectionData: FileCollection): SandpackFiles {
-    const organizedFiles: SandpackFiles = {}
-    Object.keys(fileCollectionData).map((filepath) =>
-        organizedFiles[`${filepath}`] = {
-            code: fileCollectionData[filepath]['content'],
-            readOnly: filepath === '/axe-script.js' ? true : false
-        }
-    )
-    return organizedFiles
+export function fileCollectionToSandPackFiles(
+  fileCollectionData: FileCollection,
+): SandpackFiles {
+  const organizedFiles: SandpackFiles = {};
+  Object.keys(fileCollectionData).map(
+    (filepath) =>
+      (organizedFiles[`${filepath}`] = {
+        code: fileCollectionData[filepath]["content"],
+        readOnly: filepath === "/axe-script.js" ? true : false,
+      }),
+  );
+  return organizedFiles;
 }
 
 /**
@@ -23,64 +33,73 @@ export function fileCollectionToSandPackFiles(fileCollectionData: FileCollection
  * @param fixedFileCollection - a FixedFileCollection object returned from fix call
  * @returns a FileCollection object
  */
-export function fixedFileCollectionToFileCollection(fixedFileCollection : FixedFileCollection) : FileCollection {
-    const parsedFileCollection : FileCollection = {}
-    Object.keys(fixedFileCollection).map((filepath) => 
-        parsedFileCollection[`${filepath}`] = {
-            type:  fixedFileCollection[filepath].type,
-            content: fixedFileCollection[filepath].content
-        })
-    return parsedFileCollection
+export function fixedFileCollectionToFileCollection(
+  fixedFileCollection: FixedFileCollection,
+): FileCollection {
+  const parsedFileCollection: FileCollection = {};
+  Object.keys(fixedFileCollection).map(
+    (filepath) =>
+      (parsedFileCollection[`${filepath}`] = {
+        type: fixedFileCollection[filepath].type,
+        content: fixedFileCollection[filepath].content,
+      }),
+  );
+  return parsedFileCollection;
 }
 
-
 /**
- * Insert axe-score script into user's HTML. 
- * @param htmlContent - html to insert axe-core script into 
+ * Insert axe-score script into user's HTML.
+ * @param htmlContent - html to insert axe-core script into
  * @returns html code with axe-core inserted.
  */
 export function insertAxeScriptHTML(htmlContent: string) {
-    const bodyEndIndex = htmlContent.indexOf("</body>")
-    const newHTML = htmlContent.substring(0, bodyEndIndex) +
-        `
+  const bodyEndIndex = htmlContent.indexOf("</body>");
+  const newHTML =
+    htmlContent.substring(0, bodyEndIndex) +
+    `
     <script src="node_modules/axe-core/axe.min.js"></script>
     <script src="axe-script.js"></script>
-    `
-        + htmlContent.substring(bodyEndIndex);
-    return newHTML
+    ` +
+    htmlContent.substring(bodyEndIndex);
+  return newHTML;
 }
 
 /**
- * Converts pages to FileCollection 
+ * Converts pages to FileCollection
  * @param pages - Array of Pages[] that contain users code files
  * @returns FileCollection object that contains pages info
  */
-export function pagesToFileCollection(pages: Page[], accessibilityStandards: string[]) {
-    const initialFileCollection: FileCollection = {}
-    if (pages.length === 0) {
-        return initialFileCollection
-    }
-    switch (pages[0].pageContent.framework) {
-        case Framework.Vanilla:
-            const entryFile = "index.html"
-            pages.map((page) => {
-                let pageCode = ""
-                // update .html files to run axe-scripts
-                if (page.pageContent.fileType === FileType.Html) {
-                    pageCode = insertAxeScriptHTML(page.pageContent.body.originalVersion)
-                } else {
-                    pageCode = page.pageContent.body.originalVersion
-                }
-                const pageInfo: FileData = {
-                    type: page.pageContent.fileType,
-                    content: pageCode
-                }
-                return initialFileCollection["/" + page.filePath.substring(page.filePath.indexOf('/') + 1)] = pageInfo
-            });
-            //Add axe-script here and file validation
-            initialFileCollection["/axe-script.js"] = {
-                type: FileType.Js,
-                content:`
+export function pagesToFileCollection(
+  pages: Page[],
+  accessibilityStandards: string[],
+) {
+  const initialFileCollection: FileCollection = {};
+  if (pages.length === 0) {
+    return initialFileCollection;
+  }
+  switch (pages[0].pageContent.framework) {
+    case Framework.Vanilla:
+      const entryFile = "index.html";
+      pages.map((page) => {
+        let pageCode = "";
+        // update .html files to run axe-scripts
+        if (page.pageContent.fileType === FileType.Html) {
+          pageCode = insertAxeScriptHTML(page.pageContent.body.originalVersion);
+        } else {
+          pageCode = page.pageContent.body.originalVersion;
+        }
+        const pageInfo: FileData = {
+          type: page.pageContent.fileType,
+          content: pageCode,
+        };
+        return (initialFileCollection[
+          "/" + page.filePath.substring(page.filePath.indexOf("/") + 1)
+        ] = pageInfo);
+      });
+      //Add axe-script here and file validation
+      initialFileCollection["/axe-script.js"] = {
+        type: FileType.Js,
+        content: `
                 import axe from 'axe-core';
                 
                 // Add highlight function
@@ -198,16 +217,16 @@ export function pagesToFileCollection(pages: Page[], accessibilityStandards: str
                 
                 // Run axe check
                 axe.run({
-                    runOnly: [${accessibilityStandards ? accessibilityStandards.map((standard) => `'${standard}'`).join(',') : "'wcag2aa','best-practice'"}]
+                    runOnly: [${accessibilityStandards ? accessibilityStandards.map((standard) => `'${standard}'`).join(",") : "'wcag2aa','best-practice'"}]
                 }).then((results) => {
                     console.log('Axe scan results:', results);
                     window.parent.postMessage({ type: 'axeResults', results }, '*')
                 });
-            `
-            }
-            initialFileCollection["/package.json"] = {
-                type: FileType.Json,
-                content: `{
+            `,
+      };
+      initialFileCollection["/package.json"] = {
+        type: FileType.Json,
+        content: `{
               "name": "html-css-js",
               "version": "1.0.0",
               "description": "",
@@ -223,16 +242,16 @@ export function pagesToFileCollection(pages: Page[], accessibilityStandards: str
                 "axe-core": "^4.10.1"
               },
               "keywords": []
-            }`
-            }
-            return initialFileCollection
-        case Framework.Angular:
-            return {} as FileCollection
-        case Framework.React:
-            return {} as FileCollection
-        case Framework.Vue:
-            return {} as FileCollection
-        default:
-            return {} as FileCollection
-    }
+            }`,
+      };
+      return initialFileCollection;
+    case Framework.Angular:
+      return {} as FileCollection;
+    case Framework.React:
+      return {} as FileCollection;
+    case Framework.Vue:
+      return {} as FileCollection;
+    default:
+      return {} as FileCollection;
+  }
 }

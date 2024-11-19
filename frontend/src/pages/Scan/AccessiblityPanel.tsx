@@ -62,7 +62,6 @@ export function AccessiblityPanel({
   /**
    * 'done'/import button functionality for generating pdf and zip
    */
-
   const handleDoneClick = async () => {
     setGeneratedPageFixes(codeFiles); 
   
@@ -136,7 +135,9 @@ export function AccessiblityPanel({
         </div>
         <div className="border-b border-0 border-gray-500"></div>
         <div className="flex justify-center p-3">
-          <Button className={`max-h-6 w-full ${viewEditor ? "bg-secondary-100" : " bg-primary-100"} rounded-lg hover:bg-slate-400 text-black p-4 font-bold `}
+          <Button className={`max-h-6 w-full 
+          ${viewEditor ? "bg-secondary-100" : " bg-primary-100"} rounded-lg 
+          hover:bg-slate-400 text-black p-4 font-bold `}
             onClick={() => { setViewEditor((oldValue) => !oldValue) }}
           >
             {viewEditor ? "COLLAPSE EDITOR" : "VIEW CHANGES IN EDITOR"}
@@ -148,11 +149,17 @@ export function AccessiblityPanel({
           Accessibility Checks
         </h4>
         <div className="px-3 mr-2">
-          <Accordion type="single" collapsible className="w-full mb-2 space-y-2" defaultValue="violations-block">
-            <AccordionItem value="passes-block" className="max-h-96 overflow-y-auto">
+          <Accordion 
+          type="single" 
+          collapsible 
+          className="w-full mb-2 space-y-2" 
+          defaultValue="violations-block">
+            <AccordionItem value="passes-block" 
+            className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
-                  <h2 className="text-white ml-2 inline-flex items-center font-bold"> <FaRegSmile color="#E4FD90" style={{ marginRight: '8px' }} /> Passes </h2>
+                  <h2 className="text-white ml-2 inline-flex items-center font-bold"> 
+                    <FaRegSmile color="#E4FD90" style={{ marginRight: '8px' }} /> Passes </h2>
                   <h3 className="text-white"> {scanResults.passes.length}</h3>
                 </div>
               </AccordionTrigger>
@@ -164,7 +171,8 @@ export function AccessiblityPanel({
             <AccordionItem value="violations-block" className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
-                  <h2 className="text-white ml-2 inline-flex items-center font-bold"> <FaRegFrown color="#FD9090" style={{ marginRight: '8px' }} /> Violations </h2>
+                  <h2 className="text-white ml-2 inline-flex items-center font-bold"> 
+                    <FaRegFrown color="#FD9090" style={{ marginRight: '8px' }} /> Violations </h2>
                   <h3 className="text-white "> {scanResults.violations.length}</h3>
                 </div>
               </AccordionTrigger>
