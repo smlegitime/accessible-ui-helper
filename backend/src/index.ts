@@ -1,8 +1,8 @@
 /**
- * Description: File that defines and configures the Express app
- * Created: Stephanie Olaiya
- * Updated: Sybille Légitime
- * Created date: Oct 3, 2024 | Updated date: Oct 18, 2024
+ * @fileoverview Express app definition and configiration
+ * @author Stephanie Olaiya
+ * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
 import express, { Express } from 'express';
@@ -15,8 +15,7 @@ import { InputTransformer } from './services/inputTransformer';
 const app: Express = express();
 
 
-// Mounts middleware functions and routes, which execute
-// for global or path-dependent incoming requests
+// Mounts middleware functions and routes, which execute during global or path-dependent incoming requests
 app.use(cors());
 app.use(express.json());
 

@@ -1,5 +1,5 @@
 /**
- * Description: Processes requests/passes them along to the service layer.
+ * @fileoverview Processes requests/passes them along to the service layer.
  * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
@@ -8,11 +8,10 @@ import { AxeResults } from 'axe-core';
 import { InputTransformer } from '../services/inputTransformer';
 
 import { logging } from '../lib/logging';
-import { readFile } from '../lib/utils';
 import { FixedPageEvaluator } from '../services/fixedPageEvaluator';
 import { Request, Response } from 'express';
 import { FileCollection, GeneratedFilesInfo } from '../models/models';
-import {LLMManager} from '../services/llmManager';
+import { LLMManager } from '../services/llmManager';
 
 // Logger setup
 const logger = logging.getLogger('controllers');
@@ -24,25 +23,34 @@ export const handleScannedInput = async (req: Request, res: Response) => {
 
         logger.info('Request successfully received.');
 
-        // Input transformer junk
         const inputTransformer = new InputTransformer(scannedInput);
-        const transformedInput: FileCollection = inputTransformer.transformInput(); // Will be fed to LLM manager
+        const transformedInput: FileCollection = inputTransformer.transformInput();
+
+        logger.info('Request successfully transformed.');
+        logger.info('Generating fixes...');
         
         const llmManager = new LLMManager();
         const generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(transformedInput);
 
-        // Simulate generated page result from LLM
-        // const testFilePath = '/Users/sybillelegitime/Documents/accessible-ui-helper/backend/src/models/mocks/sampleBackendOutput.json';
-        // const data = await readFile(testFilePath);
-        // const generatedPage: any = JSON.parse(data);
-        // const indexPageName: string = Object.keys(generatedPage)[0];
-        // const indexPage = generatedPage[indexPageName]; // This is the index page (Right??)
+        logger.info('Fixes successfully generated.');
+        logger.info('Preparing generated code for evaluation...');
 
-        // // Evaluate generatedResult
-        // const evaluator: FixedPageEvaluator = new FixedPageEvaluator(indexPage, inputAccResults);
-        // const evalResult = await evaluator.evaluatePage();
+        for (const htmlPage in generatedFileInfo['generatedCode']) {
+            generatedFileInfo['generatedCode'][htmlPage]['htmlWithInlineScripts'] = inputTransformer.addInlineScriptsToHtml(
+                generatedFileInfo['originalData'],
+                generatedFileInfo['generatedCode'][htmlPage]
+            )
+        }
+
+        logger.info('Performing accessibility evaluation of the generated code...');
+
+        const evaluator: FixedPageEvaluator = new FixedPageEvaluator(generatedFileInfo, inputAccResults);
+        const evalResult = await evaluator.evaluatePage();
+
+        logger.info('Generated code evaluation completed.');
+        logger.info('Returning result...');
         
-        res.send(transformedInput);
+        res.send(generatedFileInfo);
 
     } catch (error: any) {
         logger.error(error);

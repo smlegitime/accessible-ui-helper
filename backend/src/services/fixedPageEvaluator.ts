@@ -6,16 +6,16 @@
 
 import axe, { AxeResults, Result } from 'axe-core';
 import { JSDOM } from 'jsdom';
-import { GeneratedFixPage } from '../models/models';
+import { GeneratedFilesInfo } from '../models/models';
 import { logging } from '../lib/logging';
 
 const logger = logging.getLogger('services.fixedPageEvaluator');
 
 export class FixedPageEvaluator {
-    private generatedPage: GeneratedFixPage;
+    private generatedPage: GeneratedFilesInfo;
     private originalAxeResults: AxeResults;
 
-    constructor(generatedPage: GeneratedFixPage, originalAxeResults: AxeResults) {
+    constructor(generatedPage: GeneratedFilesInfo, originalAxeResults: AxeResults) {
         this.generatedPage = generatedPage;
         this.originalAxeResults = originalAxeResults;
     }
@@ -34,9 +34,9 @@ export class FixedPageEvaluator {
      * Retrieves the Axe accessibility results from HTML page
      * @returns the accessibility results object
      */
-    private async getAxeResults(): Promise<AxeResults> {
+    private async getAxeResults(page: string): Promise<AxeResults> {
         try {
-            const generatedHtml: string = this.generatedPage['generatedCode']['content'];
+            const generatedHtml: string = this.generatedPage['generatedCode'][page]['content'];
 
             const document: Document = this.generateDOMFromHtml(generatedHtml);
 
@@ -64,11 +64,13 @@ export class FixedPageEvaluator {
     }
 
     public async evaluatePage() {
-        const res = await this.getAxeResults()
+        for (const page in this.generatedPage['generatedCode']){
+            const res = await this.getAxeResults(page)
 
-        //Some comparison logic
-        if (this.areIdentical(this.originalAxeResults.violations, res.violations)) {
-            // Call LLM service again
+            //Some comparison logic
+            if (this.areIdentical(this.originalAxeResults.violations, res.violations)) {
+                // Call LLM service again
+            }
         }
         
         return this.generatedPage;

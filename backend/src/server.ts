@@ -1,5 +1,5 @@
 /**
- * Description: File that assigns the Express app to an HTTP server
+ * @fileoverview Express app assigment to an HTTP server
  * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */

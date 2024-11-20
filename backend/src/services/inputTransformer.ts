@@ -1,5 +1,5 @@
 /**
- * Description: Performs standard transformations to input file for downstream processing
+ * @fileoverview Performs standard transformations to input file for downstream processing
  * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
@@ -8,7 +8,8 @@ import {
   Page,
   FileCollection,
   Framework,
-  FileData
+  FileData,
+  FixedFileData
 } from '../models/models';
 import { JSDOM } from 'jsdom';
 import { logging } from '../lib/logging';
@@ -45,37 +46,6 @@ export class InputTransformer {
     }
 
     return htmlDocument;
-  }
-
-  /**
-   * Inject css script into style tag of corresponding html file and JS script into script tag
-   * Design to fit a bundler configuration change to account for different frontend frameworks
-   * @param inputFiles 
-   */
-  private addInlineScriptsToHtml(inputFiles: FileCollection, htmlPage: FileData){
-    const fileTypeMap = {
-      'css': {
-        'fileExtension': /.\.css$/, // all CSS files
-        'oldTagName': 'link',
-        'tagAttribute': 'href',
-        'newTagName': 'style'
-      },
-      'js': {
-        'fileExtension': /^(?!.*\.min\.js$)(?!.*axe*).*\.js$/, // all JS files except .min.js and files including 'axe'
-        'oldTagName': 'script',
-        'tagAttribute': 'src',
-        'newTagName': 'script'
-      }
-    }
-
-    const htmlDocument = new JSDOM(htmlPage['content']).window.document;
-    const updatedDocWithJs = this.injectInline(
-      this.injectInline(htmlDocument, inputFiles, fileTypeMap['css']), 
-      inputFiles, 
-      fileTypeMap['js']
-    );
-
-    return updatedDocWithJs.documentElement.outerHTML;
   }
 
   /**
@@ -137,7 +107,7 @@ export class InputTransformer {
     const { filteredCollection, transformedInputObj, violationNodes } = this.initializeTransformedInputStruct(inputFiles, violations);
 
     for (const file in filteredCollection) {
-      // pagesToBeFixed[file]['htmlWithInlineScripts'] = this.addInlineScriptsToHtml(inputFiles, filteredCollection[file]);
+      transformedInputObj[file]['htmlWithInlineScripts'] = this.addInlineScriptsToHtml(inputFiles, filteredCollection[file]);
       for (const node of violationNodes) {
         if (filteredCollection[file]['content'].includes(node['html'])) {
           transformedInputObj[file]['violationInfo'].push({
@@ -155,10 +125,35 @@ export class InputTransformer {
   }
 
   /**
-   * Store list of pages (cache, filesystem, or database)
-   * @param webInputs 
+   * Inject css script into style tag of corresponding html file and JS script into script tag
+   * Design to fit a bundler configuration change to account for different frontend frameworks
+   * @param inputFiles 
    */
-  private storeInput(webInputs: Array<Page>) : void {}
+  public addInlineScriptsToHtml(inputFiles: FileCollection, htmlPage: FileData | FixedFileData): string {
+    const fileTypeMap = {
+      'css': {
+        'fileExtension': /.\.css$/, // all CSS files
+        'oldTagName': 'link',
+        'tagAttribute': 'href',
+        'newTagName': 'style'
+      },
+      'js': {
+        'fileExtension': /^(?!.*\.min\.js$)(?!.*axe*).*\.js$/, // all JS files except .min.js and files including 'axe'
+        'oldTagName': 'script',
+        'tagAttribute': 'src',
+        'newTagName': 'script'
+      }
+    }
+
+    const htmlDocument = new JSDOM(htmlPage['content']).window.document;
+    const updatedDocWithJs = this.injectInline(
+      this.injectInline(htmlDocument, inputFiles, fileTypeMap['css']), 
+      inputFiles, 
+      fileTypeMap['js']
+    );
+
+    return updatedDocWithJs.documentElement.outerHTML;
+  }
 
   /**
    * Main class method

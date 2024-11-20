@@ -1,5 +1,5 @@
 /**
- * Description: Custom logger configuration and logger for backend server
+ * @fileoverview Custom logger configuration and logger for backend server
  * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
