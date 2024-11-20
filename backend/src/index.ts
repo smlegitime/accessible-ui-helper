@@ -1,7 +1,6 @@
 /**
  * @fileoverview Express app definition and configiration
  * @author Stephanie Olaiya
- * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
 

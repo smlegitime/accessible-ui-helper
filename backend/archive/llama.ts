@@ -5,7 +5,7 @@ const baseUrl = 'https://api.llama-api.com';
 
 const sendMessage = async () => {
   try {
-    const response = await axios.post(
+    const response: any = await axios.post(
       `${baseUrl}/v1/chat/completions`, // Adjust the endpoint if needed
       {
         model: 'llama3.1-70b',

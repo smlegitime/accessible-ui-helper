@@ -1,7 +1,7 @@
 /**
- * Description: Performs some error handling for LLMManager and contains custom errors
- * Created: Rio Young
- * Created date: Oct 22, 2024 | Updated date: 
+ * @fileoverview Performs some error handling for LLMManager and contains custom errors
+ * @author Rio Young
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
 import { LlmPrompt } from '../models/models';

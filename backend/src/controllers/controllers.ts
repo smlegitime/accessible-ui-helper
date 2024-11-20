@@ -42,13 +42,13 @@ export const handleScannedInput = async (req: Request, res: Response) => {
             )
         }
 
-        logger.info('Performing accessibility evaluation of the generated code...');
+        // logger.info('Performing accessibility evaluation of the generated code...');
 
-        const evaluator: FixedPageEvaluator = new FixedPageEvaluator(generatedFileInfo, inputAccResults);
-        const evalResult = await evaluator.evaluatePage();
+        // const evaluator: FixedPageEvaluator = new FixedPageEvaluator(generatedFileInfo, inputAccResults);
+        // const evalResult = await evaluator.evaluatePage();
 
-        logger.info('Generated code evaluation completed.');
-        logger.info('Returning result...');
+        // logger.info('Generated code evaluation completed.');
+        // logger.info('Returning result...');
         
         res.send(generatedFileInfo);
 

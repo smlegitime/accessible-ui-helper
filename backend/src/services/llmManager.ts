@@ -22,7 +22,7 @@ export class LLMManager {
    */
   public async getFixes(fileCollection: FileCollection) : Promise<GeneratedFilesInfo >
   { 
-    let cleanFileCollection: FileCollection = {}
+    // let cleanFileCollection: FileCollection = {}
     let fixedFileCollection: FixedFileCollection = {}
     
     for (const fileKey in fileCollection)
@@ -30,10 +30,10 @@ export class LLMManager {
       // get each file
       const fileData = fileCollection[fileKey]
 
-      cleanFileCollection[fileKey] = {
-        type: fileData.type,
-        content: fileData.content,
-      };
+      // cleanFileCollection[fileKey] = {
+      //   type: fileData.type,
+      //   content: fileData.content,
+      // };
 
       if (fileData.violationInfo === undefined || fileData.violationInfo.length == 0)
       {
@@ -85,6 +85,7 @@ export class LLMManager {
         }
 
         outputString = lines.slice(1, -1).join('\n');
+        console.log('>>>Output string returned by LLM: [', outputString, ']')
 
         fixedFileCollection[fileKey] = {
           type: fileData.type,
@@ -101,7 +102,7 @@ export class LLMManager {
     }
 
     let generatedFileInfo : GeneratedFilesInfo = {
-      originalData: cleanFileCollection,
+      originalData: fileCollection,
       generatedCode: fixedFileCollection
 
     }
