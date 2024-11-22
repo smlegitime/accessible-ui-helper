@@ -18,7 +18,7 @@ export class InputValidator {
    * @throws Error if validation fails for any file.
    */
   static validateFiles(fileCollection: { [key: string]: { type: string, content: string } }): void {
-    const allowedFileTypes = ['html', 'css', 'js'];
+    const allowedFileTypes = ['html', 'css', 'js', 'json'];
     let htmlCount = 0;
     let cssCount = 0;
     let jsCount = 0;
@@ -29,7 +29,7 @@ export class InputValidator {
 
       // Ensure the file type is valid
       if (!allowedFileTypes.includes(file.type)) {
-        throw new Error(`Invalid file type detected in ${filePath}. Only HTML, CSS, and JS files are allowed.`);
+        throw new Error(`Invalid file type detected in ${filePath}. Only HTML, CSS, JS, JSON files are allowed.`);
       }
 
       // Count each type of file
