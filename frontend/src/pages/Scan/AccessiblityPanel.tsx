@@ -204,7 +204,8 @@ export function AccessiblityPanel({
               SELECT ALL
             </Button>
             <Button onClick={() => {
-              setGeneratedPageFixes(updatedFiles);
+              // setGeneratedPageFixes(updatedFiles);
+              generateFixes();
             }}
               className="max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold">
               FIX

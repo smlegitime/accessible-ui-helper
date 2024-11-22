@@ -1,87 +1,75 @@
 /**
- * Initial models for the back-end components
- *
+ * Description: Initial models for the backend components
  * @author Sybille Légitime
+ * @copyright 2024. All rights reserved.
  */
 
-// Output Type of input processor
-// What happens if the project is large? Do we look for the contents of dist/
-// What about inline javascript <script></script> and css <p style="color:blue;"></p>
-enum FileType {
-    Html,
-    Css,
-    Js
+export enum Framework {
+    VanillaProject = "VanillaProject", // we will likely leverage as use case
+    React = "React",
+    Angular = "Angular",
+    Vue = "Vue"
 }
 
-enum Framework {
-    VanillaProject, // we will likely leverage as use case
-    React,
-    Angular,
-    Vue
-}
-
-interface Page {
-    readonly pageId: string;
-    filePath: string; // full/file/path/file.extension
-    viewport: {
-        width: number,
-        height: number
-    };
-    pageContent: {
-        fileType: FileType.Html | FileType.Css | FileType.Js;
-        framework: string | Framework;
-        body: {
-            originalVersion: string; // original code
-            transpiledVersion: string; // code converted into vanilla version
-        }
-    };
+export interface PageAsset {
+    assetId: string;
+    assetSize: string;
+    assetEncoding?: string;
 }
 
 // Accessibility Violations Type
-interface AccViolation {
+export interface AccViolation {
+    pages: string[];
     readonly id: string;
     impact: string;
     tags: Array<string>;
     description: string;
     help: string;
     helpUrl: string;
-    nodes: Object;
+    nodes: [{
+        [key: string]: Object;
+    }];
 }
 
-// Type that the Generate module receives (Output of Scanner)
-// Most likely a list of those types
-interface ScannedResult {
-    readonly pageId: string;
-    scannedResult: {
-        codeBlock: string;
-        violation: AccViolation;
-    }    
+export interface ViolationTarget {
+    target: string;
+    targetCode: string;
+    message: string;
 }
 
-// Type that the LLM module manipulates
-interface LlmPrompt {
-    violation: AccViolation; //contains what needs to be fixed
-    fileCollection: FileCollection;  //contains all files that need to be fixed
-    //template: string;
-    //examples: Array<string>; // stringified version of ScannedResult.scannedResult
-    //pageId: string; // Reference to project pages with pageIds
+// Input files from the front-end
+export interface FileData {
+    type: string;
+    content: string;
+    violationInfo?: ViolationTarget[]
+    htmlWithInlineScripts?: string
+}
+
+export interface FixedFileData {
+    type: string;
+    content: string;
+    updatedCodeBlocks: string[];
+    htmlWithInlineScripts?: string
+
+}
+  
+  export interface FileCollection {
+    [key: string]: FileData;
 }
 
 // Type outputted the generate fix outputs
-interface GeneratedFixPage {
-    pageId: string;
-    fixResults: [
-        {
-            scannedResult: ScannedResult;
-            newCodeBlock: string;
-        }
-    ]
+export interface FixedFileCollection {
+    [key: string]: FixedFileData;
 }
 
-// Type that the export module manipulates
-interface ExportPackage {
-    isScannedReport: boolean;
-    contents: string; //encoded version of what's in the file
-    encoding?: string;
-    outputPath: string;
+export interface GeneratedFilesInfo {
+    originalData: FileCollection;
+    generatedCode: FixedFileCollection;
+}
+
+export interface AccessibilityResults {
+    passes: Array<AccViolation>;
+    violations: Array<AccViolation>;
+    inapplicable: Array<AccViolation>;
+    incomplete: Array<AccViolation>;
 }
