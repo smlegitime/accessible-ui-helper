@@ -4,8 +4,7 @@
  * @copyright 2024. All rights reserved.
  */
 
-import { 
-  Page,
+import {
   FileCollection,
   Framework,
   FileData,

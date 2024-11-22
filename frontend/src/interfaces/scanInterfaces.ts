@@ -7,7 +7,7 @@ export enum FileType {
   Other = "Other",
 }
 export enum Framework {
-  VanillaProject = "VanillaProject",
+  Vanilla = "Vanilla",
   React = "React",
   Angular = "Angular",
   Vue = "Vue",
@@ -39,6 +39,27 @@ export interface FileCollection {
   [key: string]: FileData;
 }
 
+interface ViolationCheck {
+  id: string;
+  data: any;
+  relatedNodes: Array<{
+    html: string;
+    target: string[];
+  }>;
+  impact: string;
+  message: string;
+}
+
+export interface ViolationNode {
+  any: ViolationCheck[];
+  all: ViolationCheck[];
+  none: ViolationCheck[];
+  impact: string | null;
+  html: string;
+  target: string[];
+  failureSummary?: string;
+}
+
 export interface AccViolation {
   readonly id: string;
   impact: string;
@@ -46,7 +67,7 @@ export interface AccViolation {
   description: string;
   help: string;
   helpUrl: string;
-  nodes: Object;
+  nodes: ViolationNode[];
 }
 
 export interface PageScannedResult {
@@ -70,4 +91,20 @@ export interface AccessibilityResults {
   violations: AccViolation[];
   inapplicable: AccViolation[];
   incomplete: AccViolation[];
+}
+
+export interface FixedFileData {
+  type: string;
+  content: string;
+  updatedCodeBlocks: string[];
+}
+
+// Response JSON from backend
+export interface FixedFileCollection {
+  [key: string]: FixedFileData;
+}
+
+export interface GeneratedFilesInfo {
+  originalData: FileCollection;
+  generatedCode: FixedFileCollection;
 }

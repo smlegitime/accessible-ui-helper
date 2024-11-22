@@ -4,16 +4,6 @@
  * @copyright 2024. All rights reserved.
  */
 
-// Output Type of input processor
-// What happens if the project is large? Do we look for the contents of dist/
-// What about inline javascript <script></script> and css <p style="color:blue;"></p>
-enum FileType {
-    Html = "Html",
-    Css = "Css",
-    Js = "Js",
-    Json = "Json"
-}
-
 export enum Framework {
     VanillaProject = "VanillaProject", // we will likely leverage as use case
     React = "React",
@@ -21,30 +11,10 @@ export enum Framework {
     Vue = "Vue"
 }
 
-export interface PageContent {
-    fileType: FileType.Html | FileType.Css | FileType.Js;
-    framework: string | Framework;
-    body: {
-        originalVersion: string; // original code
-        transpiledVersion: string; // code converted into vanilla version
-    }
-}
-
 export interface PageAsset {
     assetId: string;
     assetSize: string;
     assetEncoding?: string;
-}
-
-export interface Page {
-    readonly pageId: string;
-    filePath: string; // full/file/path/file.extension
-    viewport: {
-        width: number,
-        height: number
-    };
-    pageContent: PageContent;
-    pageAssets: Array<PageAsset>;
 }
 
 // Accessibility Violations Type
@@ -59,35 +29,6 @@ export interface AccViolation {
     nodes: [{
         [key: string]: Object;
     }];
-}
-
-// Type that the Generate module receives (Output of Scanner)
-// Most likely a list of those types
-export interface ScannedResult {
-    readonly pageId: string;
-    scannedResult: {
-        codeBlock: string;
-        violation: AccViolation;
-    }    
-}
-
-// Type that the LLM module manipulates
-export interface LlmPrompt {
-    files: FileCollection;
-    violations: AccViolation[];
-}
-
-
-// Type that the export module manipulates
-export interface ExportPackage {
-    isScannedReport: boolean;
-    contents: string; //encoded version of what's in the file
-    encoding?: string;
-}
-
-export interface ExportRequest {
-    files: ExportPackage[];
-    outputPath: string;
 }
 
 export interface ViolationTarget {
