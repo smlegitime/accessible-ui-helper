@@ -65,22 +65,21 @@ export const handleScannedInput = async (req: Request, res: Response) => {
             const newTransformedInput = result.result
             let newGeneratedFileInfo = await llmManager.getFixes(newTransformedInput);
 
-            // 遍历 old 对象的文件名
+            // Merge the initial generated code with the new generated code.
+            logger.info(' Merging two updatedCodeBlocks....');
+
             Object.keys(newGeneratedFileInfo.generatedCode).forEach((fileName) => {
-            // 检查 newData 中是否有相同的文件名
             if (newGeneratedFileInfo.generatedCode[fileName] && Array.isArray(generatedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
-                // 确保 newData 的 updatedCodeBlocks 是一个数组
                 if (!Array.isArray(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
                     newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [];
                 }
 
-                // 合并 old 的 updatedCodeBlocks 到 new 的 updatedCodeBlocks
+                // merge old updatedCodeBlocks to new updatedCodeBlocks
                 newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [
                     ...newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks,
                     ...generatedFileInfo.generatedCode[fileName].updatedCodeBlocks,
                 ];
 
-                // 去重（可选）
                 newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [...new Set(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)];
             }
 
