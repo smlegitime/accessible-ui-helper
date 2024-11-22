@@ -1,6 +1,6 @@
 /**
  * @fileoverview Processes requests/passes them along to the service layer.
- * @author Sybille L¨¦gitime
+ * @author Sybille Lï¿½ï¿½gitime
  * @copyright 2024. All rights reserved.
  */
 

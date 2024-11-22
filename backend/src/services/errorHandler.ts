@@ -4,7 +4,7 @@
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
-import { LlmPrompt } from '../models/models';
+// import { LlmPrompt } from '../models/models';
 
 // Q: How do we make sure that the generated “fixed” code is axe-core compliant? 
 // Do we run a scan against the fixed code until we have no more errors for the page? 

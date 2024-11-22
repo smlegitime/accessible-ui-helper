@@ -43,7 +43,7 @@ export function AccessiblityPanel({
 
   // Callback function to generate fixes and update generatedPageFixes
   const generateFixes = useCallback(() => {
-    axios.post('http://localhost:8000/fix', {
+    axios.post('http://localhost:8000/api/fix', {
       "framework": framework,
       "fileCollection": codeFiles,
       "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i))
