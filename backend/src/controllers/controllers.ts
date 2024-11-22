@@ -1,6 +1,6 @@
 /**
  * @fileoverview Processes requests/passes them along to the service layer.
- * @author Sybille L茅gitime
+ * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
 
@@ -19,7 +19,7 @@ const logger = logging.getLogger('controllers');
 export const handleScannedInput = async (req: Request, res: Response) => {
     try {
         const scannedInput = req.body;
-        const inputAccResults: AxeResults = req.body.accessibilityResults;
+        logger.info('Generated code evaluation completed.');
 
         logger.info('Request successfully received.');
 
@@ -30,7 +30,17 @@ export const handleScannedInput = async (req: Request, res: Response) => {
         logger.info('Generating fixes...');
         
         const llmManager = new LLMManager();
-        const generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(transformedInput);
+        let generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(transformedInput);
+
+        Object.entries(generatedFileInfo.originalData).forEach(([key, value]) => {
+            if (value.violationInfo && Array.isArray(value.violationInfo)) {
+              value.violationInfo.forEach((violation) => {
+                if (Array.isArray(violation.target)) {
+                  violation.target = violation.target.join(', ');
+                }
+              });
+            }
+          });
 
         logger.info('Fixes successfully generated.');
         logger.info('Preparing generated code for evaluation...');
@@ -42,15 +52,69 @@ export const handleScannedInput = async (req: Request, res: Response) => {
             )
         }
 
-        // logger.info('Performing accessibility evaluation of the generated code...');
+        logger.info('Performing accessibility evaluation of the generated code...');
 
-        // const evaluator: FixedPageEvaluator = new FixedPageEvaluator(generatedFileInfo, inputAccResults);
-        // const evalResult = await evaluator.evaluatePage();
+        const evaluator: FixedPageEvaluator = new FixedPageEvaluator(transformedInput, generatedFileInfo);
+        const result = await evaluator.evaluatePage();
+                
+        if(result.success == false){
 
-        // logger.info('Generated code evaluation completed.');
-        // logger.info('Returning result...');
+            logger.info('Fixes failed to pass evaluation.');
+            logger.info('Generating fixes again...');
+
+            const newTransformedInput = result.result
+            let newGeneratedFileInfo = await llmManager.getFixes(newTransformedInput);
+
+            // 遍历 old 对象的文件名
+            Object.keys(newGeneratedFileInfo.generatedCode).forEach((fileName) => {
+            // 检查 newData 中是否有相同的文件名
+            if (newGeneratedFileInfo.generatedCode[fileName] && Array.isArray(generatedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
+                // 确保 newData 的 updatedCodeBlocks 是一个数组
+                if (!Array.isArray(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
+                    newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [];
+                }
+
+                // 合并 old 的 updatedCodeBlocks 到 new 的 updatedCodeBlocks
+                newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [
+                    ...newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks,
+                    ...generatedFileInfo.generatedCode[fileName].updatedCodeBlocks,
+                ];
+
+                // 去重（可选）
+                newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [...new Set(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)];
+            }
+
+            generatedFileInfo = newGeneratedFileInfo
+    });
+
+
+        }
+               
+        logger.info('Generated code evaluation completed.');
+        logger.info('Generating output...');
+
+        Object.entries(scannedInput.fileCollection).forEach(([key, value]) => {
+            if ((value as any).type === 'html') {
+                delete (value as any).htmlWithInlineScripts;
+                delete (value as any).violationInfo;
+            }
+        });
         
-        res.send(generatedFileInfo);
+        generatedFileInfo.originalData = { ...scannedInput.fileCollection };
+        
+        Object.entries(generatedFileInfo.generatedCode).forEach(([key, value]) => {
+            if (value.type === 'html') {
+              delete (value as { htmlWithInlineScripts?: string }).htmlWithInlineScripts;
+            }
+          });
+          
+
+        logger.info('Returning result...');
+        const output = {
+            generatedFilesInfo: generatedFileInfo
+          };
+          
+        res.send(output);
 
     } catch (error: any) {
         logger.error(error);

@@ -1,5 +1,5 @@
 /**
- * @fileoverview Initial models for the backend components
+ * Description: Initial models for the backend components
  * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
@@ -74,7 +74,7 @@ export interface ScannedResult {
 // Type that the LLM module manipulates
 export interface LlmPrompt {
     files: FileCollection;
-    violations: Array<AccViolation>;
+    violations: AccViolation[];
 }
 
 
@@ -100,14 +100,16 @@ export interface ViolationTarget {
 export interface FileData {
     type: string;
     content: string;
-    violationInfo?: Array<ViolationTarget>;
+    violationInfo?: ViolationTarget[]
+    htmlWithInlineScripts?: string
 }
 
 export interface FixedFileData {
     type: string;
     content: string;
-    updatedCodeBlocks: Array<string>;
-    htmlWithInlineScripts?: string;
+    updatedCodeBlocks: string[];
+    htmlWithInlineScripts?: string
+
 }
   
   export interface FileCollection {
@@ -122,4 +124,11 @@ export interface FixedFileCollection {
 export interface GeneratedFilesInfo {
     originalData: FileCollection;
     generatedCode: FixedFileCollection;
+}
+
+export interface AccessibilityResults {
+    passes: Array<AccViolation>;
+    violations: Array<AccViolation>;
+    inapplicable: Array<AccViolation>;
+    incomplete: Array<AccViolation>;
 }
