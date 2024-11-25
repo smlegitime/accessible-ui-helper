@@ -52,38 +52,22 @@ export class LLMManager {
       if (outputString !== "" && outputString !== undefined)
       {
         console.log("Called LLM successfully")
-        const chunks = outputString.split('```')
+        const chunks = outputString.split("\n*****")
         
         // Getting updated code blocks
         let updatedCodeBlocks: string[] = []
-        let changes = chunks[2]; // TODO: variablize the index for chunks
-        let lines = changes.split('\n');
-        if (lines.length > 1) {
-          // remove file type from first line and delimiter (set in callLLM) from last
-          changes = lines.slice(1, -1).join('\n');
-
-          let changeArrary = changes.split("\n*****") // TODO: ensure that these are removed in generated response
-          for (const i in changeArrary)
-          {
-            updatedCodeBlocks.push(changeArrary[i])
-          }
+        
+        for (let i = 1; i < chunks.length; i++)
+        {
+          updatedCodeBlocks.push(chunks[i])
         }
+        
         
         // Get cleaned entire changed code
-        outputString = chunks[1];
+        outputString = chunks[0];
 
-        // remove first and last lines, they are always just ```
-        // first thing will be nothing, second will be entire changed code
-        outputString = chunks[1];
-        
-        // remove first and last lines, they are always just ```
-        lines = outputString.split('\n');
-        if (lines.length <= 2) {
-          continue; // if there are less than 2 lines, this return value is no good, get outta there
-        }
-
-        outputString = lines.slice(1, -1).join('\n');
         console.log('>>>Output string returned by LLM: [', outputString, ']')
+        console.log("updatedCodeBlocks: ", updatedCodeBlocks.toString())
 
         fixedFileCollection[fileKey] = {
           type: fileData.type,
@@ -167,7 +151,7 @@ export class LLMManager {
       develop accessible web applications. 
       Using the provided context, answer the user's question 
       to the best of your ability using only the resources provided. 
-      Don't explain the code, just generate the code block itself.
+      Don't explain the code, just generate the code. Generate the code without using any code block delimiters.
 
       I have a ${fileType} file below:
       
