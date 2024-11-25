@@ -1,8 +1,7 @@
 /**
  * @fileoverview Performs fixes on a site's files based on violation reports by calling an LLM
- * Created: Rio Young
- * Created date: Oct 22, 2024 | Updated date: 11/20/24
- * @copyright 2024. All rights reserved.
+ * @author Rio Young
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
 import {GeneratedFilesInfo, FileData, AccViolation, FileCollection, FixedFileCollection } from '../models/models';
