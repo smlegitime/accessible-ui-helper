@@ -1,4 +1,8 @@
-
+/**
+ * @fileoverview Tests the LLMManager for correctness
+ * @author Rio Young
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
 import { LLMManager } from "../services/llmManager"; 
 import {GeneratedFilesInfo, FileData, AccViolation, FileCollection, FixedFileCollection } from '../models/models';
 
