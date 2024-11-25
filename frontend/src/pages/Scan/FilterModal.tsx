@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../../components/ui/button';
 import { StandardTag } from '../../components/scan/StandardTag';
@@ -6,9 +6,41 @@ import { StandardTag } from '../../components/scan/StandardTag';
 interface FilterModalProps {
   applyFilters: (filters: string[]) => void;
 }
+interface tagObject {
+  tagName: string,
+  tagId: string
+  tagType: string
+}
 
 // Pre-select recommended filters
 export function FilterModal({ applyFilters }: FilterModalProps) {
+
+  const recommendedTags: tagObject[] = [
+    {
+      tagName: 'WCAG 2.1 AA',
+      tagId: 'wcag21aa',
+      tagType: 'Recommended'
+    },
+    {
+      tagName: 'WCAG 2 AA',
+      tagId: 'wcag2aa',
+      tagType: 'Recommended'
+    },
+    {
+      tagName: 'Best Practices',
+      tagId: 'best-practice',
+      tagType: 'Recommended'
+    },
+  ]
+
+  const otherTags: tagObject[] = [
+    {
+      tagName: 'Experimental',
+      tagId: 'experimental',
+      tagType: 'Recommended'
+    }
+  ]
+  
   const [selectedFilters, setSelectedFilters] = useState<string[]>([
     'wcag21aa',
     'wcag2aa',
@@ -33,7 +65,7 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
     <Dialog.Root defaultOpen={true}>
       <Dialog.Portal>
         {/* Overlay with black background */}
-        <Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-sm'/>
+        <Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-sm' />
         <Dialog.Content
           onInteractOutside={(event) => event.preventDefault()}
           onEscapeKeyDown={(event) => event.preventDefault()}
@@ -65,29 +97,14 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
               Recommended
             </h2>
 
-            {/* WCAG2.1AA Tag */}
-            <StandardTag 
-            tagName='WCAG 2.1 AA' 
-            tagId='wcag21aa' 
-            tagType='Recommended'
-            selectedFilters={selectedFilters}
-            handleCheckboxChange={handleCheckboxChange}/>
+          {recommendedTags.map((tag) => <StandardTag
+                        key={tag.tagId}  
+                        tagName={tag.tagName}
+                        tagId={tag.tagId}
+                        tagType={tag.tagType}
+                        selectedFilters={selectedFilters}
+                        handleCheckboxChange={handleCheckboxChange}/>)}
 
-            {/* WCAG2AA Tag */}
-            <StandardTag 
-            tagName='WCAG 2 AA' 
-            tagId='wcag2aa' 
-            tagType='Recommended'
-            selectedFilters={selectedFilters}
-            handleCheckboxChange={handleCheckboxChange}/>
-
-            {/* Best Practices Tag */}
-            <StandardTag 
-            tagName='Best Practices' 
-            tagId='best-practice' 
-            tagType='Recommended'
-            selectedFilters={selectedFilters}
-            handleCheckboxChange={handleCheckboxChange}/>
           </div>
 
           {/* Other Filters Section */}
@@ -96,13 +113,14 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
               Other Filters
             </h2>
 
-            {/* Experimental Tag */}
-            <StandardTag 
-            tagName='Experimental' 
-            tagId='experimental' 
-            tagType='Recommended'
-            selectedFilters={selectedFilters}
-            handleCheckboxChange={handleCheckboxChange}/>
+            {/* Other Tags */}
+            {otherTags.map((tag) => <StandardTag
+                        key={tag.tagId} 
+                        tagName={tag.tagName}
+                        tagId={tag.tagId}
+                        tagType={tag.tagType}
+                        selectedFilters={selectedFilters}
+                        handleCheckboxChange={handleCheckboxChange}/>)}
           </div>
         </Dialog.Content>
       </Dialog.Portal>
