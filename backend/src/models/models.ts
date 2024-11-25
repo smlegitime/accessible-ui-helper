@@ -4,6 +4,13 @@
  * @copyright 2024. All rights reserved.
  */
 
+export enum FileType {
+    Html = "Html",
+    Css = "Css",
+    Js = "Js",
+    Json = "Json"
+}
+
 export enum Framework {
     VanillaProject = "VanillaProject", // we will likely leverage as use case
     React = "React",

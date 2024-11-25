@@ -50,9 +50,25 @@ export function AccessiblityPanel({
     })
     // TODO: Update function to make sure that response is a valid fileCollection
     .then((response) => {
-      const data = response.data as GeneratedFilesInfo
-      const generatedCodeCollection = data.generatedCode
-      setOriginalFiles(data.originalData)
+      const data = response.data as GeneratedFilesInfo;
+      const generatedCodeCollection = data.generatedFilesInfo.generatedCode;
+
+      const originalFiles = data.generatedFilesInfo.originalData;
+      const newStruct: any = {...generatedCodeCollection};
+
+      console.log('Struct before the changes: ', newStruct);
+
+      for (const file in originalFiles) {
+        for (const updatedFile in newStruct) {
+          if (file !== updatedFile) {
+            newStruct[file] = originalFiles[file];
+          }
+        }
+      }
+
+      console.log(newStruct);
+
+      setOriginalFiles(data.generatedFilesInfo.originalData);
       setGeneratedPageFixes(fixedFileCollectionToFileCollection(generatedCodeCollection))
       // setGeneratedPageFixes(updatedFiles)
     })

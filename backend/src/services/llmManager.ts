@@ -44,26 +44,25 @@ export class LLMManager {
       console.log("Generated template: "+ template)
 
       // call llm with prompt for this fix
-      let outputString = ""
+      let outputString: string = ""
       outputString = await this.callLLM(template);
       console.log("Calling LLM")
 
       // check files validity
-      if (outputString != "" )
+      if (outputString !== "" && outputString !== undefined)
       {
         console.log("Called LLM successfully")
         const chunks = outputString.split('```')
         
         // Getting updated code blocks
         let updatedCodeBlocks: string[] = []
-        let changes = chunks[3];
-        
+        let changes = chunks[2]; // TODO: variablize the index for chunks
         let lines = changes.split('\n');
         if (lines.length > 1) {
           // remove file type from first line and delimiter (set in callLLM) from last
           changes = lines.slice(1, -1).join('\n');
 
-          let changeArrary = changes.split("\n*****")
+          let changeArrary = changes.split("\n*****") // TODO: ensure that these are removed in generated response
           for (const i in changeArrary)
           {
             updatedCodeBlocks.push(changeArrary[i])
@@ -205,7 +204,6 @@ export class LLMManager {
       process.stdout.write(chunk.choices[0]?.delta?.content || "");
       ret += chunk.choices[0]?.delta?.content || ""
     }
-
       return ret; 
   }
 

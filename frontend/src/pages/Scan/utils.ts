@@ -37,13 +37,13 @@ export function fixedFileCollectionToFileCollection(
   fixedFileCollection: FixedFileCollection,
 ): FileCollection {
   const parsedFileCollection: FileCollection = {};
-  Object.keys(fixedFileCollection).map(
-    (filepath) =>
-      (parsedFileCollection[`${filepath}`] = {
-        type: fixedFileCollection[filepath].type,
-        content: fixedFileCollection[filepath].content,
-      }),
-  );
+  for (const filepath in fixedFileCollection) {
+    parsedFileCollection[`${filepath}`] = {
+      type: fixedFileCollection[filepath].type,
+      content: fixedFileCollection[filepath].content,
+    }
+  }
+
   return parsedFileCollection;
 }
 

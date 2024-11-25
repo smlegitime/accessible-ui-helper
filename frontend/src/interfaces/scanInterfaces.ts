@@ -105,6 +105,8 @@ export interface FixedFileCollection {
 }
 
 export interface GeneratedFilesInfo {
-  originalData: FileCollection;
-  generatedCode: FixedFileCollection;
+  generatedFilesInfo:{
+    originalData: FileCollection;
+    generatedCode: FixedFileCollection;
+  }
 }

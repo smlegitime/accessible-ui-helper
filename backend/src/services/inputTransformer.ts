@@ -6,6 +6,7 @@
 
 import {
   FileCollection,
+  FileType,
   Framework,
   FileData,
   FixedFileData
@@ -56,7 +57,7 @@ export class InputTransformer {
     const filteredCollection: FileCollection = {};
 
     for (const file in inputFiles) {
-      if (inputFiles[file]['type'] == 'html') {
+      if (inputFiles[file]['type'] == FileType.Html) {
         filteredCollection[file] = inputFiles[file]
       }
     }
@@ -104,7 +105,6 @@ export class InputTransformer {
    */
   private organizeInputContent(inputFiles: FileCollection, violations: Array<Result>) : any {
     const { filteredCollection, transformedInputObj, violationNodes } = this.initializeTransformedInputStruct(inputFiles, violations);
-
     for (const file in filteredCollection) {
       transformedInputObj[file]['htmlWithInlineScripts'] = this.addInlineScriptsToHtml(inputFiles, filteredCollection[file]);
       for (const node of violationNodes) {
@@ -165,6 +165,7 @@ export class InputTransformer {
       const inputFiles: FileCollection = this.scannedInput['fileCollection'];
       const inputAccResults: Array<Result> = this.scannedInput['violations'];
 
+      console.log(inputAccResults)
       const organizedInputs = this.organizeInputContent(inputFiles, inputAccResults);
       
       logger.info('Input transformation complete.');

@@ -19,8 +19,6 @@ const logger = logging.getLogger('controllers');
 export const handleScannedInput = async (req: Request, res: Response) => {
     try {
         const scannedInput = req.body;
-        logger.info('Generated code evaluation completed.');
-
         logger.info('Request successfully received.');
 
         const inputTransformer = new InputTransformer(scannedInput);
