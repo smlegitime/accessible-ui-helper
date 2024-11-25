@@ -32,14 +32,6 @@ export function Scan() {
     }
   }, [pages]);
 
-  /**
-   *
-   * @param selectedFilters
-   * standards filtered in FilterModal, passed to setAccessibilityStandards
-   */
-  const applyFilters = (selectedFilters: string[]) => {
-    setAccessibilityStandards(selectedFilters);
-  };
 
   /**
    * Accessibility standards to check against
@@ -146,9 +138,14 @@ export function Scan() {
     }
   }, [initialFileCollection]);
 
+
+  useEffect(() => {
+    setCodeFiles(initialFileCollection)
+  }, [initialFileCollection])
+  
   return (
     <div className='h-screen'>
-      <FilterModal applyFilters={applyFilters} />
+      <FilterModal applyFilters={setAccessibilityStandards} />
       <div className='h-full'>
         <ResizablePanelGroup direction='horizontal'>
           <ResizablePanel defaultSize={25} minSize={15}>

@@ -7,7 +7,7 @@ import { Button } from "../../components/ui/button";
 import { updatedFiles } from "../../mocks/fileSystemMocks";
 import { useCallback, useState } from "react";
 import { FaRegSmile, FaRegFrown, FaCode } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import { fixedFileCollectionToFileCollection } from './utils';
 
