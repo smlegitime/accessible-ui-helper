@@ -31,7 +31,8 @@ export function AccessiblityPanel({
   setViewEditor,
   viewEditor,
   folderName,
-  codeFiles
+  codeFiles,
+  setLoadingFix
 }: {
   setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
   setOriginalFiles: React.Dispatch<React.SetStateAction<FileCollection>>,
@@ -41,6 +42,7 @@ export function AccessiblityPanel({
   viewEditor: boolean,
   folderName: string,
   codeFiles: FileCollection
+  setLoadingFix: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 
   /**
@@ -52,6 +54,7 @@ export function AccessiblityPanel({
    * call api/fix on backend to get code with selected violations fixes.
    */
   const generateFixes = useCallback(() => {
+    setLoadingFix(true)
     axios.post('http://localhost:8000/api/fix', {
       "framework": framework,
       "fileCollection": codeFiles,
@@ -75,8 +78,9 @@ export function AccessiblityPanel({
         }
         setOriginalFiles(data.generatedFilesInfo.originalData);
         setGeneratedPageFixes(fixedFileCollectionToFileCollection(newStruct))
+        setLoadingFix(false)
       })
-      .catch(error => console.error(error));
+      .catch(error => console.error(error)); 
   }, [framework, codeFiles, scanResults, activeSelections]);
 
   return (

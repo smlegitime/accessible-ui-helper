@@ -20,6 +20,7 @@ import { AccessiblityPanel } from './AccessiblityPanel';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { pagesToFileCollection } from './utils';
 import { FilterModal } from './FilterModal';
+import { LoadingSkeleton } from '../../components/scan/LoadingSkeleton';
 
 /**
  * Scan Page Component
@@ -93,6 +94,7 @@ export function Scan() {
    * Variable to view editor or not
    */
   const [viewEditor, setViewEditor] = useState(false);
+  const [loadingFix, setLoadingFix] = useState(false);
 
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
@@ -148,7 +150,7 @@ export function Scan() {
   useEffect(() => {
     setCodeFiles(initialFileCollection)
   }, [initialFileCollection])
-  
+
   return (
     <div className='h-screen'>
       <FilterModal applyFilters={setAccessibilityStandards} />
@@ -164,15 +166,19 @@ export function Scan() {
               viewEditor={viewEditor}
               codeFiles={originalFiles}
               folderName={folderName}
+              setLoadingFix={setLoadingFix}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}>
-            <View
-              files={codeFiles}
-              viewEditor={viewEditor}
-              originalFiles={originalFiles}
-            />
+            {loadingFix ?
+              <LoadingSkeleton />
+              :
+              <View
+                files={codeFiles}
+                viewEditor={viewEditor}
+                originalFiles={originalFiles}
+              />}
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>

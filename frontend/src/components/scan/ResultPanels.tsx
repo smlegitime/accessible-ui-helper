@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Passes and Violations parts of Accessibility Panel
+ * @author Stephanie Olaiya
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import { AccViolation } from "@/src/interfaces/scanInterfaces"
 import { Badge } from "../ui/badge"
 import { ImCheckmark } from "react-icons/im";
@@ -50,34 +56,32 @@ export function ViolationsPanel({ resultsToDisplay,
         activeSelections: number[],
         setActiveSelections: React.Dispatch<React.SetStateAction<number[]>>
     }) {
-
-
-        //handle violation method
-        function handleViolationSelect(violation: AccViolation, index: number, active: boolean) {
-            setActiveSelections((oldSelections) => {
-                if (active) {
-                    return [...oldSelections, index];
-                } else {
-                    return oldSelections.filter(i => i !== index);
-                }
-            });
-            
-            //get target and html tag
-            const target = violation.nodes[0]?.target?.[0] || '';
-            const html = violation.nodes[0]?.html || '';
-            
-            //post message to iframe
-            const previewFrame = document.querySelector('.sp-preview-iframe') as HTMLIFrameElement;
-            const frameWindow = previewFrame?.contentWindow;
-            if (frameWindow) {
-                frameWindow.postMessage({
-                    type: 'highlightViolation',
-                    selector: target,
-                    html: html,
-                    active: active
-                }, '*');
+    //handle violation method
+    function handleViolationSelect(violation: AccViolation, index: number, active: boolean) {
+        setActiveSelections((oldSelections) => {
+            if (active) {
+                return [...oldSelections, index];
+            } else {
+                return oldSelections.filter(i => i !== index);
             }
+        });
+
+        //get target and html tag
+        const target = violation.nodes[0]?.target?.[0] || '';
+        const html = violation.nodes[0]?.html || '';
+
+        //post message to iframe
+        const previewFrame = document.querySelector('.sp-preview-iframe') as HTMLIFrameElement;
+        const frameWindow = previewFrame?.contentWindow;
+        if (frameWindow) {
+            frameWindow.postMessage({
+                type: 'highlightViolation',
+                selector: target,
+                html: html,
+                active: active
+            }, '*');
         }
+    }
 
     const violationDivs = resultsToDisplay.map((result, i) => {
         return (
