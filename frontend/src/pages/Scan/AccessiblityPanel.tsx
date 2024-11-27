@@ -4,7 +4,7 @@
  * @author Stephanie Olaiya
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
-import { AccessibilityResults, FileCollection, GeneratedFilesInfo } from "@/src/interfaces/scanInterfaces";
+import { AccessibilityResults, FileCollection, FixedFileCollection, GeneratedFilesInfo } from "@/src/interfaces/scanInterfaces";
 import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
 import { Button } from "../../components/ui/button";
@@ -57,30 +57,26 @@ export function AccessiblityPanel({
       "fileCollection": codeFiles,
       "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i))
     })
-    .then((response) => {
-      const data = response.data as GeneratedFilesInfo;
-      const generatedCodeCollection = data.generatedFilesInfo.generatedCode;
-
-      const originalFiles = data.generatedFilesInfo.originalData;
-      const newStruct: any = {...generatedCodeCollection};
-
-      console.log('Struct before the changes: ', newStruct);
-
-      for (const file in originalFiles) {
-        for (const updatedFile in newStruct) {
-          if (file !== updatedFile) {
-            newStruct[file] = originalFiles[file];
+      .then((response) => {
+        const data = response.data as GeneratedFilesInfo;
+        const generatedCodeCollection = data.generatedFilesInfo.generatedCode;
+        const originalFiles = data.generatedFilesInfo.originalData;
+        const newStruct: FixedFileCollection = {};
+        for (const file in originalFiles) {
+          if (Object.keys(generatedCodeCollection).includes(file)) {
+            newStruct[file] = generatedCodeCollection[file]
+          } else {
+            newStruct[file] = {
+              type: originalFiles[file].type,
+              content: originalFiles[file].content,
+              updatedCodeBlocks: []
+            }
           }
         }
-      }
-
-      console.log(newStruct);
-
-      setOriginalFiles(data.generatedFilesInfo.originalData);
-      setGeneratedPageFixes(fixedFileCollectionToFileCollection(generatedCodeCollection))
-      // setGeneratedPageFixes(updatedFiles)
-    })
-    .catch(error => console.error(error));
+        setOriginalFiles(data.generatedFilesInfo.originalData);
+        setGeneratedPageFixes(fixedFileCollectionToFileCollection(newStruct))
+      })
+      .catch(error => console.error(error));
   }, [framework, codeFiles, scanResults, activeSelections]);
 
   return (
@@ -88,10 +84,14 @@ export function AccessiblityPanel({
       <div className="flex-grow overflow-auto"> {/* Allow content to scroll */}
         <div className="flex items-start space-x-4 p-4">
           <div className="w-8 h-8 bg-primary-100 rounded-full"></div>
-          <Link to={"/"}><h1 className="text-white font-bold text-2xl">AccUI</h1></Link>
+          <Link to={"/"}>
+            <h1 className="text-white font-bold text-2xl">AccUI</h1>
+          </Link>
         </div>
         <div className="flex flex-col items-start p-4">
-          <h5 className="text-white text-sm font-bold"> Uploaded Folder: {folderName} </h5>
+          <h5 className="text-white text-sm font-bold">
+            Uploaded Folder: {folderName}
+          </h5>
           <h5 className="text-white text-xs">{framework} Website Project</h5>
         </div>
         <div className="border-b border-0 border-gray-500"></div>
@@ -110,16 +110,16 @@ export function AccessiblityPanel({
           Accessibility Checks
         </h4>
         <div className="px-3 mr-2">
-          <Accordion 
-          type="single" 
-          collapsible 
-          className="w-full mb-2 space-y-2" 
-          defaultValue="violations-block">
-            <AccordionItem value="passes-block" 
-            className="max-h-96 overflow-y-auto">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full mb-2 space-y-2"
+            defaultValue="violations-block">
+            <AccordionItem value="passes-block"
+              className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
-                  <h2 className="text-white ml-2 inline-flex items-center font-bold"> 
+                  <h2 className="text-white ml-2 inline-flex items-center font-bold">
                     <FaRegSmile color="#E4FD90" style={{ marginRight: '8px' }} /> Passes </h2>
                   <h3 className="text-white"> {scanResults.passes.length}</h3>
                 </div>
@@ -132,8 +132,10 @@ export function AccessiblityPanel({
             <AccordionItem value="violations-block" className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
-                  <h2 className="text-white ml-2 inline-flex items-center font-bold"> 
-                    <FaRegFrown color="#FD9090" style={{ marginRight: '8px' }} /> Violations </h2>
+                  <h2 className="text-white ml-2 inline-flex items-center font-bold">
+                    <FaRegFrown color="#FD9090" style={{ marginRight: '8px' }} />
+                    Violations
+                  </h2>
                   <h3 className="text-white "> {scanResults.violations.length}</h3>
                 </div>
               </AccordionTrigger>
@@ -147,7 +149,7 @@ export function AccessiblityPanel({
           </Accordion>
         </div>
       </div>
-      
+
       {/* Selected violations part */}
       <div className="sticky bottom-0 flex flex-col bg-black z-10">
         <div className="border-b border-0 border-gray-500"></div>
@@ -165,8 +167,9 @@ export function AccessiblityPanel({
             >
               SELECT ALL
             </Button>
-            <Button onClick={() => {
-              // setGeneratedPageFixes(updatedFiles);
+            <Button 
+            disabled={activeSelections.length === 0}
+            onClick={() => {
               generateFixes();
             }}
               className="max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold">
@@ -180,10 +183,10 @@ export function AccessiblityPanel({
             Ready To Export
           </h3>
           <div className="space-x-2">
-            <ExportButton 
-                setGeneratedPageFixes={setGeneratedPageFixes}
-                scanResults={scanResults}
-                codeFiles={codeFiles}/>
+            <ExportButton
+              setGeneratedPageFixes={setGeneratedPageFixes}
+              scanResults={scanResults}
+              codeFiles={codeFiles} />
           </div>
         </div>
       </div>

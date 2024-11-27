@@ -20,7 +20,6 @@ export function View({
   originalFiles: FileCollection | null
 }) {
   const organizedFiles = useMemo(() => fileCollectionToSandPackFiles(files), [files]);
-
   return (
     <div className="w-full h-full">
       <SandpackProvider
