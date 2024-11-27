@@ -12,7 +12,9 @@ import { FixedPageEvaluator } from '../services/fixedPageEvaluator';
 import { Request, Response } from 'express';
 import { FileCollection, GeneratedFilesInfo } from '../models/models';
 import { LLMManager } from '../services/llmManager';
-
+import { convertToOpenAIFunction } from '@langchain/core/utils/function_calling';
+import { output } from 'pdfkit';
+import { OutputTransformer } from '../services/outputTransformer';
 // Logger setup
 const logger = logging.getLogger('controllers');
 
@@ -39,6 +41,8 @@ export const handleScannedInput = async (req: Request, res: Response) => {
               });
             }
           });
+        
+        
 
         logger.info('Fixes successfully generated.');
         logger.info('Preparing generated code for evaluation...');
@@ -49,6 +53,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
                 generatedFileInfo['generatedCode'][htmlPage]
             )
         }
+        
 
         logger.info('Performing accessibility evaluation of the generated code...');
 
@@ -88,29 +93,35 @@ export const handleScannedInput = async (req: Request, res: Response) => {
         }
                
         logger.info('Generated code evaluation completed.');
-        logger.info('Generating output...');
 
-        Object.entries(scannedInput.fileCollection).forEach(([key, value]) => {
-            if ((value as any).type === 'html') {
-                delete (value as any).htmlWithInlineScripts;
-                delete (value as any).violationInfo;
-            }
-        });
+        logger.info('Transformering output ...');
         
         generatedFileInfo.originalData = { ...scannedInput.fileCollection };
-        
+
+        const outputTransformer  = new OutputTransformer(generatedFileInfo);
+        generatedFileInfo = outputTransformer.OutputTransformer();
+
+        Object.entries(scannedInput.fileCollection).forEach(([key, value]) => {
+          if ((value as any).type === 'Html') {
+              delete (value as any).htmlWithInlineScripts;
+              delete (value as any).violationInfo;
+          }
+      });
+
+
         Object.entries(generatedFileInfo.generatedCode).forEach(([key, value]) => {
-            if (value.type === 'html') {
-              delete (value as { htmlWithInlineScripts?: string }).htmlWithInlineScripts;
+            if (value.type === 'Html') {
+            delete (value as { htmlWithInlineScripts?: string }).htmlWithInlineScripts;
             }
           });
-          
 
+        logger.info('Transformer output completed.');
         logger.info('Returning result...');
+      
         const output = {
             generatedFilesInfo: generatedFileInfo
-          };
-          
+            };
+
         res.send(output);
 
     } catch (error: any) {
