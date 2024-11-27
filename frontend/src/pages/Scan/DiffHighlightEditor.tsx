@@ -17,7 +17,7 @@ interface DiffHighlightEditorProps {
     showTabs?: boolean;
 }
 
-function normalizeContent(content: string): string {
+export function normalizeContent(content: string): string {
     return content
         .replace(/\s+/g, ' ') 
         .replace(/\s*;\s*/g, ';')  
