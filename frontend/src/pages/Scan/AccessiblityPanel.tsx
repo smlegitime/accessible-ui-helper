@@ -78,7 +78,8 @@ export function AccessiblityPanel({
         }
         setOriginalFiles(data.generatedFilesInfo.originalData);
         setGeneratedPageFixes(fixedFileCollectionToFileCollection(newStruct))
-        setLoadingFix(false)
+        setLoadingFix(false) // remove loading skeletn
+        setActiveSelections([]) // reset active selections
       })
       .catch(error => console.error(error)); 
   }, [framework, codeFiles, scanResults, activeSelections]);
