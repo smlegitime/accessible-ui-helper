@@ -1,9 +1,8 @@
 /**
- * Description: Handle User File Uploade
- * Created: Jiecheng(Jason) Chen
- * Created date: Oct 14, 2024 | Updated date: Nov 13, 2024 
+ * @fileoverview Handle User File Upload
+ * @author Jiecheng(Jason) Chen
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
-
 import React from 'react';
 import { useState, useRef, DragEvent } from 'react';
 import { Button } from '../../components/ui/button';

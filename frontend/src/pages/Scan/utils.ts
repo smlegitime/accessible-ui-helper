@@ -1,3 +1,8 @@
+/**
+ * @fileoverview utility functions for scan page
+ * @author Stephanie Olaiya, YongCheng Shi
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
 import {
   FileCollection,
   FileData,
