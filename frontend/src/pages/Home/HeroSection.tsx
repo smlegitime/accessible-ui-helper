@@ -1,11 +1,8 @@
 /**
- * Description: Hero Section that contains the text description and upload panel
- * Created: Jiecheng(Jason) Chen
- * Created date: Oct 14, 2024 | Updated date: Nov 13, 2024 
+ * @fileoverview Hero Section that contains the text description and upload panel
+ * @author Jiecheng(Jason) Chen
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
-
-import React from 'react';
-// import { HeroText } from './HeroText';
 import { UploadPanel } from './UploadPanel';
 
 export function HeroSection() {

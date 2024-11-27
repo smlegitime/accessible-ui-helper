@@ -1,10 +1,15 @@
+/**
+ * @fileoverview Rendered Code Preview Component 
+ * @author YongCheng Shi
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
 import { FileCollection } from "@/src/interfaces/scanInterfaces";
-import { SandpackProvider, SandpackPreview, SandpackLayout, SandpackCodeEditor, SandpackFileExplorer } from "@codesandbox/sandpack-react";
+import { SandpackProvider, SandpackPreview, SandpackLayout, SandpackFileExplorer } from "@codesandbox/sandpack-react";
 import { fileCollectionToSandPackFiles } from "./utils";
 import { useMemo } from "react";
 import { DiffHighlightEditor } from "./DiffHighlightEditor";
 
-//TODO: Make height dynamic to screen size
+
 export function View({
   files,
   viewEditor,

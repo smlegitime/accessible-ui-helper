@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Scan Page main component
+ * @author Stephanie Olaiya
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import { useEffect, useMemo, useState } from 'react';
 import {
   AccessibilityResults,
@@ -45,7 +51,7 @@ export function Scan() {
   // as input to AccessibilityPanel and extract framework
   const initialFileCollection: FileCollection = useMemo(() => {
     return pagesToFileCollection(pages, accessibilityStandards);
-  }, [accessibilityStandards]);
+  }, [accessibilityStandards, pages]);
 
   const emptyResults = {
     passes: [],

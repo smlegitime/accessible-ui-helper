@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Dialog Box for user to select accessibility standards
+ * @author Marie Baker
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
 import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../../components/ui/button';

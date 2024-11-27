@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Sandpack Code Editor that shows code changes
+ * @author Yongcheng Shi
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
 import React, { useEffect } from 'react';
 import { SandpackCodeEditor } from '@codesandbox/sandpack-react';
 import { FileCollection } from '@/src/interfaces/scanInterfaces';
