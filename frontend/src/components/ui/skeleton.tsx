@@ -1,3 +1,9 @@
+/**
+ * @fileoverview shadCN skeleton component
+ * @author shadCN
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import { cn } from "../../lib/utils"
 
 function Skeleton({

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Mock axe-core accessibility scan results
+ * @author FrontEnd team
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 export const mock1 = {
   passes: [
     {

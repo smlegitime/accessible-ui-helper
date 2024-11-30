@@ -1,3 +1,9 @@
+/**
+ * @fileoverview mocks for file collection to render
+ * @author FrontEnd team
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import { FileCollection } from "../interfaces/scanInterfaces";
 
 // Sample file system object representing static HTML, CSS, and JS files

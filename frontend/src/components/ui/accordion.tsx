@@ -1,3 +1,10 @@
+/**
+ * @fileoverview shadCN Accordion component
+ * @author shadCN
+ * @updatedBy Stephanie Olaiya
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"

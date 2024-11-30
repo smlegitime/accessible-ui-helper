@@ -1,3 +1,10 @@
+/**
+ * @fileoverview shadCN Badge component
+ * @author shadCN
+ * @updated Stephanie Olaiya
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 

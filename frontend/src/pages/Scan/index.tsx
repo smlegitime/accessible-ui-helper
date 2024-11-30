@@ -29,16 +29,17 @@ import { LoadingSkeleton } from '../../components/scan/LoadingSkeleton';
 export function Scan() {
   // get pages from home page
   const location = useLocation();
-  const navigate = useNavigate();
   const { pages }: { pages: Page[] } = location.state
     ? (location.state as { pages: Page[] })
     : { pages: [] };
+
+  // go to home page if there are no uploaded pages
+  const navigate = useNavigate();
   useEffect(() => {
     if (pages.length === 0) {
       navigate('/');
     }
-  }, [pages]);
-
+  }, [pages, navigate]);
 
   /**
    * Accessibility standards to check against
@@ -70,6 +71,7 @@ export function Scan() {
    */
   const [generatedPageFixes, setGeneratedPageFixes] = useState<FileCollection>(
     initialFileCollection
+    // {}
   );
   /**
    * Code files as a fileCollection object
@@ -82,19 +84,19 @@ export function Scan() {
    */
   const frameWork = pages.length > 0 ? pages[0].pageContent.framework : '';
   /**
-   * state that saves all the initial violations
-   */
-  const [initialAccessibilityResults, setInitialAccessibilityResults] =
-    useState<AccessibilityResults>(emptyResults);
-  /**
-   * state variable of if first accessibility check has been done
-   */
-  const [runInitial, setRunInitial] = useState(false);
-  /**
    * Variable to view editor or not
    */
   const [viewEditor, setViewEditor] = useState(false);
+  /**
+   * waiting for loading result
+   */
   const [loadingFix, setLoadingFix] = useState(false);
+  /**
+   * state holding unfixed fileCollection or previous fix iteration
+   */
+  const [originalFiles, setOriginalFiles] = useState<FileCollection>(
+    initialFileCollection
+  );
 
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
@@ -102,7 +104,6 @@ export function Scan() {
       if (event.data.type === 'axeResults') {
         const returnedResults = event.data.results;
         console.log('Processing axe results:', returnedResults);
-        // TODO: check the type of the returned results
         // parse the results the here to AccessibilityResults object
         const initializedResult: AccessibilityResults = {
           passes: [],
@@ -115,11 +116,6 @@ export function Scan() {
         initializedResult['inapplicable'] = returnedResults.inapplicable;
         initializedResult['incomplete'] = returnedResults.incomplete;
         setAccessibilityResults(initializedResult);
-        // only set if it has not been set before
-        if (!runInitial) {
-          setInitialAccessibilityResults(initializedResult);
-          setRunInitial(true);
-        }
       }
     };
 
@@ -128,34 +124,20 @@ export function Scan() {
     return () => {
       window.removeEventListener('message', messageHandler);
     };
-  }, [runInitial]);
+  }, []);
 
   // always update code files with generated page fixes
   useEffect(() => {
+    setOriginalFiles(codeFiles);
     setCodeFiles(generatedPageFixes);
-  }, [generatedPageFixes]);
-
-  const [originalFiles, setOriginalFiles] = useState<FileCollection>(
-    initialFileCollection
-  );
-
-  useEffect(() => {
-    // save initial files
-    if (initialFileCollection && !originalFiles) {
-      setOriginalFiles(initialFileCollection);
-    }
-  }, [initialFileCollection]);
-
-
-  useEffect(() => {
-    setCodeFiles(initialFileCollection)
-  }, [initialFileCollection])
+  }, [generatedPageFixes, codeFiles]);
 
   return (
     <div className='h-screen'>
       <FilterModal applyFilters={setAccessibilityStandards} />
       <div className='h-full'>
         <ResizablePanelGroup direction='horizontal'>
+          {/* Panel showing accessibility violations */}
           <ResizablePanel defaultSize={25} minSize={15}>
             <AccessiblityPanel
               setGeneratedPageFixes={setGeneratedPageFixes}
@@ -167,9 +149,11 @@ export function Scan() {
               codeFiles={originalFiles}
               folderName={folderName}
               setLoadingFix={setLoadingFix}
+              accessibilityStandards={accessibilityStandards}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
+          {/* Panel for preview and code editor */}
           <ResizablePanel defaultSize={75}>
             {loadingFix ?
               <LoadingSkeleton />

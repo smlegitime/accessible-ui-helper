@@ -1,3 +1,8 @@
+/**
+ * @fileoverview shadCN Resizable component
+ * @author shadCN
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
 import { GripVertical } from "lucide-react"
 import * as ResizablePrimitive from "react-resizable-panels"
 

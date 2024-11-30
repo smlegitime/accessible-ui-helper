@@ -14,13 +14,22 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import { fixedFileCollectionToFileCollection } from './utils';
 import { ExportButton } from './ExportButton';
+import { ErrorFlag } from "./ErrorFlag";
 
 
 /**
  * The accessibility panel located on the left of scan page that displays 
  *     the accessibility evaluation results
+ * @param scanResults - results of accessibility evaluation
+ * @param framework - project framework
+ * @param viewEditor - boolean describing if editor is displayed
+ * @param folderName - name of uploaded folder
+ * @param codeFiles - code files in projects
+ * @param accessibilityStandards - accessibility standards to evaluate 
  * @param setGeneratedPageFixes - setter for generated page fixes
- * @param scanResults - AccessibilityResults object
+ * @param setOriginalFiles - setter for original code files
+ * @param setLoadingFix - setter for loadingFix state
+ * @param setViewEditor - setter for viewing editor
  * @returns a react component with all the accessibility evaluation results
  */
 export function AccessiblityPanel({
@@ -32,7 +41,8 @@ export function AccessiblityPanel({
   viewEditor,
   folderName,
   codeFiles,
-  setLoadingFix
+  setLoadingFix,
+  accessibilityStandards
 }: {
   setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
   setOriginalFiles: React.Dispatch<React.SetStateAction<FileCollection>>,
@@ -42,14 +52,18 @@ export function AccessiblityPanel({
   viewEditor: boolean,
   folderName: string,
   codeFiles: FileCollection
-  setLoadingFix: React.Dispatch<React.SetStateAction<boolean>>
+  setLoadingFix: React.Dispatch<React.SetStateAction<boolean>>,
+  accessibilityStandards: string[]
 }) {
 
   /**
    * index of violations that have been selected by user.
    */
   const [activeSelections, setActiveSelections] = useState<number[]>([]);
-
+  /**
+   * boolean state used to display error component
+   */
+  const [displayError, setDisplayError] = useState(false)
   /**
    * call api/fix on backend to get code with selected violations fixes.
    */
@@ -58,7 +72,8 @@ export function AccessiblityPanel({
     axios.post('http://localhost:8000/api/fix', {
       "framework": framework,
       "fileCollection": codeFiles,
-      "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i))
+      "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i)),
+      "accessibilityStandards": accessibilityStandards
     })
       .then((response) => {
         const data = response.data as GeneratedFilesInfo;
@@ -78,11 +93,16 @@ export function AccessiblityPanel({
         }
         setOriginalFiles(data.generatedFilesInfo.originalData);
         setGeneratedPageFixes(fixedFileCollectionToFileCollection(newStruct))
-        setLoadingFix(false) // remove loading skeletn
+        setLoadingFix(false) // remove loading skeleton
         setActiveSelections([]) // reset active selections
       })
-      .catch(error => console.error(error)); 
-  }, [framework, codeFiles, scanResults, activeSelections]);
+      .catch(error => {
+        setLoadingFix(false); // remove loading skeleton
+        setDisplayError(true);
+        console.error(error)
+      });
+  }, [framework, codeFiles, scanResults, activeSelections,
+    setGeneratedPageFixes, setLoadingFix, setOriginalFiles]);
 
   return (
     <div className="h-screen bg-black relative flex flex-col">
@@ -125,7 +145,11 @@ export function AccessiblityPanel({
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
                   <h2 className="text-white ml-2 inline-flex items-center font-bold">
-                    <FaRegSmile color="#E4FD90" style={{ marginRight: '8px' }} /> Passes </h2>
+                    <FaRegSmile
+                      color="#E4FD90"
+                      style={{ marginRight: '8px' }} />
+                    Passes
+                  </h2>
                   <h3 className="text-white"> {scanResults.passes.length}</h3>
                 </div>
               </AccordionTrigger>
@@ -134,10 +158,13 @@ export function AccessiblityPanel({
               </AccordionContent>
             </AccordionItem>
             <div className="border-b border-0 border-gray-500"></div>
-            <AccordionItem value="violations-block" className="max-h-96 overflow-y-auto">
+            <AccordionItem
+              value="violations-block"
+              className="max-h-96 overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
-                  <h2 className="text-white ml-2 inline-flex items-center font-bold">
+                  <h2
+                    className="text-white ml-2 inline-flex items-center font-bold">
                     <FaRegFrown color="#FD9090" style={{ marginRight: '8px' }} />
                     Violations
                   </h2>
@@ -158,30 +185,36 @@ export function AccessiblityPanel({
       {/* Selected violations part */}
       <div className="sticky bottom-0 flex flex-col bg-black z-10">
         <div className="border-b border-0 border-gray-500"></div>
-        {scanResults.violations.length > 0 && <div className="inline-flex justify-center w-full p-3 justify-between">
-          <h3 className="text-white self-center text-sm font-bold">
-            {activeSelections.length} / {scanResults.violations.length} selected violation(s)
-          </h3>
-          <div className="space-x-2">
-            <Button
-              variant={'outline'}
-              className="max-h-6 min-w-30 bg-black rounded-full hover:bg-slate-400 text-primary-100 p-4 font-bold border-primary-100"
-              onClick={() => setActiveSelections(() =>
-                scanResults.violations.map((violation, i) => i)
-              )}
-            >
-              SELECT ALL
-            </Button>
-            <Button 
-            disabled={activeSelections.length === 0}
-            onClick={() => {
-              generateFixes();
-            }}
-              className="max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold">
-              FIX
-            </Button>
-          </div>
-        </div>}
+        {scanResults.violations.length > 0 &&
+          <div className="inline-flex justify-center w-full p-3 justify-between">
+            <h3 className="text-white self-center text-sm font-bold">
+              {activeSelections.length} / {scanResults.violations.length}
+              selected violation(s)
+            </h3>
+            <div className="space-x-2">
+              <Button
+                variant={'outline'}
+                className={`max-h-6 min-w-30 bg-black rounded-full 
+                hover:bg-slate-400 text-primary-100 p-4 font-bold 
+                border-primary-100`}
+                onClick={() => setActiveSelections(() =>
+                  scanResults.violations.map((violation, i) => i)
+                )}
+              >
+                SELECT ALL
+              </Button>
+              <Button
+                disabled={activeSelections.length === 0}
+                onClick={() => {
+                  generateFixes();
+                }}
+                className={`max-h-6 min-w-20 bg-primary-100 rounded-full 
+                hover:bg-slate-400 text-black p-4 font-bold`}>
+                FIX
+              </Button>
+            </div>
+          </div>}
+        {displayError && <ErrorFlag setDisplayError={setDisplayError} />}
         <div className="border-b border-0 border-gray-500"></div>
         <div className="inline-flex justify-center w-full p-3 justify-between">
           <h3 className="text-white self-center text-sm font-bold">

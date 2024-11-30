@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Accessibility standard tag displayed on scan page pop-up
+ * @author Marie Baker
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 export function StandardTag({
     tagName, 
     tagId, 

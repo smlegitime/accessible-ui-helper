@@ -8,7 +8,11 @@ import { AccViolation } from "@/src/interfaces/scanInterfaces"
 import { Badge } from "../ui/badge"
 import { ImCheckmark } from "react-icons/im";
 
-
+/**
+ * Passes part of accessibility panel on scan page
+ * @param resultsToDisplay - an array of AccViolation (passes)
+ * @returns a react component with stylized rendered list of passes
+ */
 export function PassesPanel({ resultsToDisplay }: { resultsToDisplay: AccViolation[] }) {
     const passesDivs = resultsToDisplay.map((result, i) => {
         return (
@@ -33,6 +37,11 @@ export function PassesPanel({ resultsToDisplay }: { resultsToDisplay: AccViolati
     )
 }
 
+/**
+ * Maps a given impact to its badge color
+ * @param impact - the impact of a given violation
+ * @returns - color of badge
+ */
 function impactColor(impact: string | null) {
     if (impact === 'minor') {
         return "bg-yellow-500"
@@ -47,7 +56,13 @@ function impactColor(impact: string | null) {
     }
 }
 
-
+/**
+ * Violations part of accessibility panel on scan page
+ * @param resultsToDisplay - an array of AccViolation (violations)
+ * @param activeSelections - an array of numbers describing user selected violations
+ * @param setActiveSelections - setter for selected violations
+ * @returns a react component with stylized selecteable rendered list of violations
+ */
 export function ViolationsPanel({ resultsToDisplay,
     activeSelections,
     setActiveSelections }:
@@ -56,7 +71,13 @@ export function ViolationsPanel({ resultsToDisplay,
         activeSelections: number[],
         setActiveSelections: React.Dispatch<React.SetStateAction<number[]>>
     }) {
-    //handle violation method
+    
+    /**
+     * Function that adds updates activeSelections when violation is clicked in panel
+     * @param violation - selected violation
+     * @param index - index of selected violation
+     * @param active - boolean describing if violation is already selected
+     */
     function handleViolationSelect(violation: AccViolation, index: number, active: boolean) {
         setActiveSelections((oldSelections) => {
             if (active) {

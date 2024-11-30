@@ -1,4 +1,9 @@
-// Interfaces to define the structure of file data, violations, scanned results, and generated fixes
+/**
+ * @fileoverview Interfaces to define the structure of file data, violations, scanned results, and generated fixes
+ * @author YongCheng Shi, Jiecheng(Jason) Chen, Stephanie Olaiya, Marie Baker, Brandon Woodard
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 export enum FileType {
   Html = "Html",
   Css = "Css",
