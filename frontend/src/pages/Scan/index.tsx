@@ -97,6 +97,11 @@ export function Scan() {
   const [originalFiles, setOriginalFiles] = useState<FileCollection>(
     initialFileCollection
   );
+  
+  /**
+   * displays the current page being scanned
+   */
+  const [currentScannedPage, setCurrentScannedPage] = useState<string>('');
 
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
@@ -116,6 +121,11 @@ export function Scan() {
         initializedResult['inapplicable'] = returnedResults.inapplicable;
         initializedResult['incomplete'] = returnedResults.incomplete;
         setAccessibilityResults(initializedResult);
+      }
+      // set the value of current page being scanned
+      if(event.data.type === 'state') {
+        setCurrentScannedPage(event.data.state.entry);
+        console.log('>> EVENT STATE ENTRY: ', event.data.state.entry)
       }
     };
 
@@ -150,6 +160,7 @@ export function Scan() {
               folderName={folderName}
               setLoadingFix={setLoadingFix}
               accessibilityStandards={accessibilityStandards}
+              currentScannedPage={currentScannedPage}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />

@@ -55,7 +55,7 @@ export interface FileData {
 export interface FixedFileData {
     type: string;
     content: string;
-    updatedCodeBlocks: string[];
+    // updatedCodeBlocks: string[];
     htmlWithInlineScripts?: string
 
 }
@@ -70,6 +70,7 @@ export interface FixedFileCollection {
 }
 
 export interface GeneratedFilesInfo {
+    currentScannedPage: string;
     originalData: FileCollection;
     generatedCode: FixedFileCollection;
 }

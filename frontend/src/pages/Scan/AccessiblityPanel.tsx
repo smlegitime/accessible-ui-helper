@@ -26,6 +26,7 @@ import { ErrorFlag } from "./ErrorFlag";
  * @param folderName - name of uploaded folder
  * @param codeFiles - code files in projects
  * @param accessibilityStandards - accessibility standards to evaluate 
+ * @param currentScannedPage - name of the HTML page currently being scanned
  * @param setGeneratedPageFixes - setter for generated page fixes
  * @param setOriginalFiles - setter for original code files
  * @param setLoadingFix - setter for loadingFix state
@@ -42,7 +43,8 @@ export function AccessiblityPanel({
   folderName,
   codeFiles,
   setLoadingFix,
-  accessibilityStandards
+  accessibilityStandards,
+  currentScannedPage
 }: {
   setGeneratedPageFixes: React.Dispatch<React.SetStateAction<FileCollection>>,
   setOriginalFiles: React.Dispatch<React.SetStateAction<FileCollection>>,
@@ -53,7 +55,8 @@ export function AccessiblityPanel({
   folderName: string,
   codeFiles: FileCollection
   setLoadingFix: React.Dispatch<React.SetStateAction<boolean>>,
-  accessibilityStandards: string[]
+  accessibilityStandards: string[],
+  currentScannedPage: string
 }) {
 
   /**
@@ -71,6 +74,7 @@ export function AccessiblityPanel({
     setLoadingFix(true)
     axios.post('http://localhost:8000/api/fix', {
       "framework": framework,
+      "currentScannedPage": currentScannedPage,
       "fileCollection": codeFiles,
       "violations": scanResults.violations.filter((violation, i) => activeSelections.includes(i)),
       "accessibilityStandards": accessibilityStandards

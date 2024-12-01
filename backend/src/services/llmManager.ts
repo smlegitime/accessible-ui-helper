@@ -19,10 +19,11 @@ export class LLMManager {
    * @returns A GeneratedFilesInfo object that contains the original file collection information
    * as well as new, changed file collection information
    */
-  public async getFixes(fileCollection: FileCollection) : Promise<GeneratedFilesInfo >
+  public async getFixes(currentScannedPage:string, fileCollection: FileCollection) : Promise<GeneratedFilesInfo >
   { 
     // let cleanFileCollection: FileCollection = {}
     let fixedFileCollection: FixedFileCollection = {}
+    console.log(">>>>>INPUT TO LLM", fileCollection)
     
     for (const fileKey in fileCollection)
     {
@@ -72,7 +73,7 @@ export class LLMManager {
         fixedFileCollection[fileKey] = {
           type: fileData.type,
           content: outputString,
-          updatedCodeBlocks: updatedCodeBlocks,
+          // updatedCodeBlocks: updatedCodeBlocks,
         };
 
       }
@@ -84,6 +85,7 @@ export class LLMManager {
     }
 
     let generatedFileInfo : GeneratedFilesInfo = {
+      currentScannedPage: currentScannedPage,
       originalData: fileCollection,
       generatedCode: fixedFileCollection
 
@@ -128,7 +130,7 @@ export class LLMManager {
     */
   private promptBuilder(fileData: FileData) : string 
   { 
-    let content = fileData.content
+    let content = fileData.htmlWithInlineScripts
     let fileType = fileData.type
     let violationInfo = fileData.violationInfo
 
@@ -144,12 +146,12 @@ export class LLMManager {
     // Concatenate each necessary fix
     for (const nodeIndex in violationInfo)
     {
-      failureSummary += violationInfo[nodeIndex].message
+      failureSummary += '-' + violationInfo[nodeIndex].message + '\n';
     }
 
     let promptTemplate = `You are a helpful code assistant that can help a developer
-      develop accessible web applications. 
-      Using the provided context, answer the user's question 
+      build accessible web applications. 
+      Using the provided context, fix the accessibility issues listed 
       to the best of your ability using only the resources provided. 
       Don't explain the code, just generate the code. Generate the code without using any code block delimiters.
 
@@ -157,10 +159,10 @@ export class LLMManager {
       
       ${content}
 
-      Please fix the issues below:
+      Please fix the issues listed below:
       ${failureSummary}
       
-      After the code block, please print each changed code snippet separated by "*****" without any additional text.
+      If there are existing <style></style> or <script></script> tags, please edit the code inside them, as appropriate.
       `;
     
     return promptTemplate;

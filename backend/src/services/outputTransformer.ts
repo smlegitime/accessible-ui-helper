@@ -65,7 +65,7 @@
             this.generatedFilesInfo.generatedCode[formattedHref] = {
                 type: "Css",
                 content: cssContent.trim(),
-                updatedCodeBlocks: matchingElements,
+                // updatedCodeBlocks: matchingElements,
               };
 
         }
@@ -86,31 +86,31 @@
 
           //The HtmlInlineScript codd and updatedCodeBlocks
           const firstContent = this.generatedFilesInfo.generatedCode[Object.keys(this.generatedFilesInfo.generatedCode)[0]]?.content;
-          const updatedCodeBlocks = this.generatedFilesInfo.generatedCode[Object.keys(this.generatedFilesInfo.generatedCode)[0]]?.updatedCodeBlocks
+          // const updatedCodeBlocks = this.generatedFilesInfo.generatedCode[Object.keys(this.generatedFilesInfo.generatedCode)[0]]?.updatedCodeBlocks
 
           const dom = new JSDOM(firstContent);
           const document = dom.window.document;
           
           // Extract and update CSS files
-          const newBlock = this.extractAndUpdateCSS(document,updatedCodeBlocks);
+          // const newBlock = this.extractAndUpdateCSS(document,updatedCodeBlocks);
 
           // Update the HTML content and  updatedCodeBlocks 
           const firstKey = Object.keys(this.generatedFilesInfo.generatedCode)[0];
           if (firstKey) {
-            this.generatedFilesInfo.generatedCode[firstKey].updatedCodeBlocks = newBlock;
+            // this.generatedFilesInfo.generatedCode[firstKey].updatedCodeBlocks = newBlock;
             this.generatedFilesInfo.generatedCode[firstKey].content = document.documentElement.outerHTML;
           }
     
           //If the updatedCodeBlocks of an element are empty, then it will be deleted,
           //it is used to deal with the case where the violation is all css and the html is not updated.
-          for (const key in this.generatedFilesInfo.generatedCode) {
-            if (
-              Array.isArray(this.generatedFilesInfo.generatedCode[key].updatedCodeBlocks) &&
-              this.generatedFilesInfo.generatedCode[key].updatedCodeBlocks.length === 0
-            ) {
-              delete this.generatedFilesInfo.generatedCode[key]; 
-            }
-          }   
+          // for (const key in this.generatedFilesInfo.generatedCode) {
+          //   if (
+          //     Array.isArray(this.generatedFilesInfo.generatedCode[key].updatedCodeBlocks) &&
+          //     this.generatedFilesInfo.generatedCode[key].updatedCodeBlocks.length === 0
+          //   ) {
+          //     delete this.generatedFilesInfo.generatedCode[key]; 
+          //   }
+          // }   
     
           return this.generatedFilesInfo;
     

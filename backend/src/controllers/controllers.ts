@@ -1,6 +1,6 @@
 /**
  * @fileoverview Processes requests/passes them along to the service layer.
- * @author Sybille L��gitime
+ * @author Sybille Légitime
  * @copyright 2024. All rights reserved.
  */
 
@@ -30,7 +30,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
         logger.info('Generating fixes...');
         
         const llmManager = new LLMManager();
-        let generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(transformedInput);
+        let generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(scannedInput['currentScannedPage'], transformedInput);
 
         Object.entries(generatedFileInfo.originalData).forEach(([key, value]) => {
             if (value.violationInfo && Array.isArray(value.violationInfo)) {
@@ -41,17 +41,16 @@ export const handleScannedInput = async (req: Request, res: Response) => {
               });
             }
           });
-        
-        
 
         logger.info('Fixes successfully generated.');
         logger.info('Preparing generated code for evaluation...');
 
         for (const htmlPage in generatedFileInfo['generatedCode']) {
-            generatedFileInfo['generatedCode'][htmlPage]['htmlWithInlineScripts'] = inputTransformer.addInlineScriptsToHtml(
-                generatedFileInfo['originalData'],
-                generatedFileInfo['generatedCode'][htmlPage]
-            )
+            generatedFileInfo['generatedCode'][htmlPage]['htmlWithInlineScripts'] = generatedFileInfo['generatedCode'][htmlPage]['content'];
+            // inputTransformer.addInlineScriptsToHtml(
+            //     generatedFileInfo['originalData'],
+            //     generatedFileInfo['generatedCode'][htmlPage]
+            // )
         }
         
 
@@ -65,31 +64,30 @@ export const handleScannedInput = async (req: Request, res: Response) => {
             logger.info('Fixes failed to pass evaluation.');
             logger.info('Generating fixes again...');
 
-            const newTransformedInput = result.result
-            let newGeneratedFileInfo = await llmManager.getFixes(newTransformedInput);
+            const newTransformedInput = result.result;
+            let newGeneratedFileInfo = await llmManager.getFixes(scannedInput['currentScannedPage'], newTransformedInput);
 
             // Merge the initial generated code with the new generated code.
-            logger.info(' Merging two updatedCodeBlocks....');
+            // logger.info(' Merging two updatedCodeBlocks....');
 
-            Object.keys(newGeneratedFileInfo.generatedCode).forEach((fileName) => {
-            if (newGeneratedFileInfo.generatedCode[fileName] && Array.isArray(generatedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
-                if (!Array.isArray(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
-                    newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [];
-                }
+            // Object.keys(newGeneratedFileInfo.generatedCode).forEach((fileName) => {
+            // if (newGeneratedFileInfo.generatedCode[fileName] && Array.isArray(generatedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
+            //     if (!Array.isArray(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)) {
+            //         newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [];
+            //     }
 
-                // merge old updatedCodeBlocks to new updatedCodeBlocks
-                newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [
-                    ...newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks,
-                    ...generatedFileInfo.generatedCode[fileName].updatedCodeBlocks,
-                ];
+            //     // merge old updatedCodeBlocks to new updatedCodeBlocks
+            //     newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [
+            //         ...newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks,
+            //         ...generatedFileInfo.generatedCode[fileName].updatedCodeBlocks,
+            //     ];
 
-                newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [...new Set(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)];
-            }
+            //     newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks = [...new Set(newGeneratedFileInfo.generatedCode[fileName].updatedCodeBlocks)];
+            // }
 
-            generatedFileInfo = newGeneratedFileInfo
-    });
-
-
+            // generatedFileInfo = newGeneratedFileInfo
+            // });
+            generatedFileInfo = newGeneratedFileInfo;
         }
                
         logger.info('Generated code evaluation completed.');
