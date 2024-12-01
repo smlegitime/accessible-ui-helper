@@ -142,25 +142,30 @@ export class LLMManager {
     }
     
     let failureSummary = "";
+    let relatedCode = "";
 
     // Concatenate each necessary fix
     for (const nodeIndex in violationInfo)
     {
       failureSummary += '-' + violationInfo[nodeIndex].message + '\n';
+      relatedCode += '-' + violationInfo[nodeIndex].targetCode + '\n';
     }
 
     let promptTemplate = `You are a helpful code assistant that can help a developer
       build accessible web applications. 
       Using the provided context, fix the accessibility issues listed 
       to the best of your ability using only the resources provided. 
-      Don't explain the code, just generate the code. Generate the code without using any code block delimiters.
+      Don't explain the code, just generate or change the code. Generate the code without using any code block delimiters.
 
       I have a ${fileType} file below:
       
       ${content}
 
-      Please fix the issues listed below:
+      Please fix the issues listed below and related code to help you fix it:
+      ${relatedCode}
       ${failureSummary}
+
+      
       
       If there are existing <style></style> or <script></script> tags, please edit the code inside them, as appropriate.
       `;

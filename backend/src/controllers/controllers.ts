@@ -22,6 +22,8 @@ export const handleScannedInput = async (req: Request, res: Response) => {
     try {
         const scannedInput = req.body;
         logger.info('Request successfully received.');
+        
+       
 
         const inputTransformer = new InputTransformer(scannedInput);
         const transformedInput: FileCollection = inputTransformer.transformInput();
@@ -30,7 +32,9 @@ export const handleScannedInput = async (req: Request, res: Response) => {
         logger.info('Generating fixes...');
         
         const llmManager = new LLMManager();
+        
         let generatedFileInfo: GeneratedFilesInfo = await llmManager.getFixes(scannedInput['currentScannedPage'], transformedInput);
+        
 
         Object.entries(generatedFileInfo.originalData).forEach(([key, value]) => {
             if (value.violationInfo && Array.isArray(value.violationInfo)) {
@@ -56,7 +60,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
 
         logger.info('Performing accessibility evaluation of the generated code...');
 
-        const evaluator: FixedPageEvaluator = new FixedPageEvaluator(transformedInput, generatedFileInfo);
+        const evaluator: FixedPageEvaluator = new FixedPageEvaluator(transformedInput, generatedFileInfo,scannedInput.accessibilityStandards);
         const result = await evaluator.evaluatePage();
                 
         if(result.success == false){
@@ -66,6 +70,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
 
             const newTransformedInput = result.result;
             let newGeneratedFileInfo = await llmManager.getFixes(scannedInput['currentScannedPage'], newTransformedInput);
+            //console.log("generatedFileInfo111",JSON.stringify(newGeneratedFileInfo))
 
             // Merge the initial generated code with the new generated code.
             // logger.info(' Merging two updatedCodeBlocks....');
@@ -98,6 +103,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
 
         const outputTransformer  = new OutputTransformer(generatedFileInfo);
         generatedFileInfo = outputTransformer.OutputTransformer();
+        
 
         Object.entries(scannedInput.fileCollection).forEach(([key, value]) => {
           if ((value as any).type === 'Html') {
@@ -113,6 +119,7 @@ export const handleScannedInput = async (req: Request, res: Response) => {
             }
           });
 
+        
         logger.info('Transformer output completed.');
         logger.info('Returning result...');
       

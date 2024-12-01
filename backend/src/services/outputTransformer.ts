@@ -23,14 +23,34 @@
      * Extracts CSS from <style> tags and updates the corresponding CSS files
      * @param document 
      */
-    private extractAndUpdateCSS(document: Document, updatedCodeBlocks: string[]) : any {
-      const styleElements = document.getElementsByTagName('style');
-      const links = document.getElementsByTagName('link');
-      let newCodeBlocks = updatedCodeBlocks;
+    private extractCSSJS(document: Document) : any {
+
+      const originalData = this.generatedFilesInfo.originalData;
+
+       Object.keys(originalData).forEach(key => {
+        const Element = document.getElementById(key);
+
+        //extract css and js from inject code
+        if (Element != null){
+
+          const Content = Element.innerHTML;
+          this.generatedFilesInfo.generatedCode[key] = {
+            type: originalData[key].type,
+            content: Content.trim(),
+          };
+
+          Element.parentElement?.removeChild(Element);
+        }
+
+        });}
+
+
+      //const links = document.getElementsByTagName('link');
+      //let newCodeBlocks = updatedCodeBlocks;
   
       //Find all style elements
-      for (const styleElement of Array.from(styleElements)) {
-        const cssContent = styleElement.innerHTML;
+      /*for (const styleElement of Array.from(styleElements)) {
+        
         let href: string | null = null;
         let linkElement: HTMLLinkElement | null = null;
 
@@ -44,38 +64,9 @@
               break;
             }
           }
-        }
-
-        
-        //Determine if the href exists in the originalcode.
-        const formattedHref = href && href.startsWith("/") ? href : `/${href || ""}`; 
-
-
-        if (Object.keys(this.generatedFilesInfo.originalData).includes(formattedHref)){
-           const normalizeString = (str: unknown): string =>
-            String(str).replace(/\s+/g, ' ').trim();
-          
-
-           const matchingElements = updatedCodeBlocks.filter(
-            (element) => normalizeString(cssContent).includes(normalizeString(element))
-          );
-
-            newCodeBlocks = updatedCodeBlocks.filter((block) => !matchingElements.includes(block));
-
-            this.generatedFilesInfo.generatedCode[formattedHref] = {
-                type: "Css",
-                content: cssContent.trim(),
-                // updatedCodeBlocks: matchingElements,
-              };
-
-        }
-        
-        // Remove the <style> element from the document
-        styleElement.parentElement?.removeChild(styleElement);
-      }
+      */
       
-      return newCodeBlocks
-    }   
+    
 
     /**
      * Extracts CSS and JS from the updated HTML and updates the original files
@@ -92,7 +83,8 @@
           const document = dom.window.document;
           
           // Extract and update CSS files
-          // const newBlock = this.extractAndUpdateCSS(document,updatedCodeBlocks);
+          this.extractCSSJS(document);
+          //console.log("Eldocument.documentElement.outerHTMLement",document.documentElement.outerHTML)
 
           // Update the HTML content and  updatedCodeBlocks 
           const firstKey = Object.keys(this.generatedFilesInfo.generatedCode)[0];
@@ -100,7 +92,7 @@
             // this.generatedFilesInfo.generatedCode[firstKey].updatedCodeBlocks = newBlock;
             this.generatedFilesInfo.generatedCode[firstKey].content = document.documentElement.outerHTML;
           }
-    
+          
           //If the updatedCodeBlocks of an element are empty, then it will be deleted,
           //it is used to deal with the case where the violation is all css and the html is not updated.
           // for (const key in this.generatedFilesInfo.generatedCode) {

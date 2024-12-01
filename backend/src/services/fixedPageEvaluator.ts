@@ -19,9 +19,12 @@ export class FixedPageEvaluator {
     // the data which pass to the llm
     private fileCollection :FileCollection;
 
-    constructor(fileCollection: FileCollection, generatedPage: GeneratedFilesInfo) {
+    private accessibilityStandards :Array<string>
+
+    constructor(fileCollection: FileCollection, generatedPage: GeneratedFilesInfo, accessibilityStandards:Array<string>) {
         this.generatedFilesInfo = generatedPage;
         this.fileCollection = fileCollection
+        this.accessibilityStandards = accessibilityStandards
     }
 
     /**
@@ -44,8 +47,15 @@ export class FixedPageEvaluator {
             const document: Document = this.generateDOMFromHtml(generatedPage);
 
             axe.setup(document);
-            const axeResults = await axe.run(document);
-
+            const axeResults = await axe.run(document, {
+                runOnly: {
+                    type: 'tag',
+                    values: this.accessibilityStandards
+                }
+            });
+            
+            console.log(axeResults);
+            
             logger.info('Retrieved Axe Core evaluation.')
 
             return axeResults;
