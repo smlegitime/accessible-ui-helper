@@ -4,13 +4,19 @@
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
-import {GeneratedFilesInfo, FileData, AccViolation, FileCollection, FixedFileCollection } from '../models/models';
+import {
+  GeneratedFilesInfo,
+  FileData, 
+  FileCollection, 
+  FixedFileCollection 
+} from '../models/models';
+import { logging } from '../lib/logging';
 import OpenAI from "openai";
 import * as dotenv from 'dotenv';
 
+const logger = logging.getLogger('services.llmManager');
+
 export class LLMManager {
-
-
   /**
    * Main class method
    * @param fileCollection: contains information about the site files themselves as well as
@@ -19,66 +25,46 @@ export class LLMManager {
    * @returns A GeneratedFilesInfo object that contains the original file collection information
    * as well as new, changed file collection information
    */
-  public async getFixes(currentScannedPage:string, fileCollection: FileCollection) : Promise<GeneratedFilesInfo >
-  { 
-    // let cleanFileCollection: FileCollection = {}
-    let fixedFileCollection: FixedFileCollection = {}
-    console.log(">>>>>INPUT TO LLM", fileCollection)
+  public async getFixes(currentScannedPage:string, fileCollection: FileCollection) : Promise<GeneratedFilesInfo > {
+    let fixedFileCollection: FixedFileCollection = {};
     
-    for (const fileKey in fileCollection)
-    {
+    for (const fileKey in fileCollection) {
       // get each file
-      const fileData = fileCollection[fileKey]
+      const fileData = fileCollection[fileKey];
 
-      // cleanFileCollection[fileKey] = {
-      //   type: fileData.type,
-      //   content: fileData.content,
-      // };
-
-      if (fileData.violationInfo === undefined || fileData.violationInfo.length == 0)
-      {
+      if (fileData.violationInfo === undefined || fileData.violationInfo.length == 0) {
         continue;
       }
       
       // create a prompt for the violation
       const template = this.promptBuilder(fileData);
-      console.log("Generated template: "+ template)
 
       // call llm with prompt for this fix
+      logger.info("Calling LLM");
       let outputString: string = ""
       outputString = await this.callLLM(template);
-      console.log("Calling LLM")
 
       // check files validity
-      if (outputString !== "" && outputString !== undefined)
-      {
-        console.log("Called LLM successfully")
+      if (outputString !== "" && outputString !== undefined) {
+        logger.info("Called LLM successfully")
         const chunks = outputString.split("\n*****")
         
         // Getting updated code blocks
         let updatedCodeBlocks: string[] = []
         
-        for (let i = 1; i < chunks.length; i++)
-        {
+        for (let i = 1; i < chunks.length; i++) {
           updatedCodeBlocks.push(chunks[i])
         }
-        
         
         // Get cleaned entire changed code
         outputString = chunks[0];
 
-        console.log('>>>Output string returned by LLM: [', outputString, ']')
-        console.log("updatedCodeBlocks: ", updatedCodeBlocks.toString())
-
         fixedFileCollection[fileKey] = {
           type: fileData.type,
-          content: outputString,
-          // updatedCodeBlocks: updatedCodeBlocks,
+          content: outputString
         };
-
       }
-      else
-      {
+      else {
         console.log("Did not call LLM successfully")
       }
       
@@ -128,16 +114,14 @@ export class LLMManager {
     * @param fileData 
     * @returns String of the prompt that will be used when calling the LLM
     */
-  private promptBuilder(fileData: FileData) : string 
-  { 
+  private promptBuilder(fileData: FileData) : string { 
     let content = fileData.htmlWithInlineScripts
     let fileType = fileData.type
     let violationInfo = fileData.violationInfo
 
     // Additional check to see if there is violationInfo 
     // If there is no violationInfo, there is nothing to fix, so return
-    if (violationInfo === undefined  || violationInfo.length == 0)
-    {
+    if (violationInfo === undefined  || violationInfo.length == 0) {
       return "";
     }
     
@@ -145,8 +129,7 @@ export class LLMManager {
     let relatedCode = "";
 
     // Concatenate each necessary fix
-    for (const nodeIndex in violationInfo)
-    {
+    for (const nodeIndex in violationInfo) {
       failureSummary += '-' + violationInfo[nodeIndex].message + '\n';
       relatedCode += '-' + violationInfo[nodeIndex].targetCode + '\n';
     }
@@ -163,9 +146,7 @@ export class LLMManager {
 
       Please fix the issues listed below and related code to help you fix it:
       ${relatedCode}
-      ${failureSummary}
-
-      
+      ${failureSummary}      
       
       If there are existing <style></style> or <script></script> tags, please edit the code inside them, as appropriate.
       `;
@@ -179,18 +160,19 @@ export class LLMManager {
    * @param template 
    * @returns Raw LLM output
    */
-  private async callLLM(template: string) : Promise<string> 
-  { 
+  private async callLLM(template: string) : Promise<string> {
+    
     dotenv.config();
 
     const apiKey = process.env.GPT_API_TOKEN;
-    const openai = new OpenAI({apiKey: apiKey});
+    const openai = new OpenAI({ apiKey: apiKey });
     const stream = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [{ role: "user", content: template }],
       stream: true,
     });
     let ret = "" 
+
     for await (const chunk of stream) {
       process.stdout.write(chunk.choices[0]?.delta?.content || "");
       ret += chunk.choices[0]?.delta?.content || ""

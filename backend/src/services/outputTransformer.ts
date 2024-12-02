@@ -4,112 +4,92 @@
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
-  import { JSDOM } from 'jsdom';
-  import { logging } from '../lib/logging';
-  import { GeneratedFilesInfo} from '../models/models';
+import { JSDOM } from 'jsdom';
+import { logging } from '../lib/logging';
+import { GeneratedFilesInfo } from '../models/models';
 
-  
-  const logger = logging.getLogger('services.outputTransformer');
-  
-  export class OutputTransformer {
-    private generatedFilesInfo: GeneratedFilesInfo;
-  
-    constructor(generatedFilesInfo: GeneratedFilesInfo) {
-      this.generatedFilesInfo = generatedFilesInfo;
-    }
-  
+const logger = logging.getLogger('services.outputTransformer');
 
-    /**
-     * Extracts CSS from <style> tags and updates the corresponding CSS files
-     * @param document 
-     */
-    private extractCSSJS(document: Document) : any {
+export class OutputTransformer {
+  private generatedFilesInfo: GeneratedFilesInfo;
 
-      const originalData = this.generatedFilesInfo.originalData;
+  constructor(generatedFilesInfo: GeneratedFilesInfo) {
+    this.generatedFilesInfo = generatedFilesInfo;
+  }
 
-       Object.keys(originalData).forEach(key => {
-        const Element = document.getElementById(key);
+  /**
+   * Extracts CSS and JS from the updated HTML and updates the original files
+   * @returns Updated FileCollection with modified CSS and JS files
+   */
+  public transformOutput(): GeneratedFilesInfo {
+    try {
 
-        //extract css and js from inject code
-        if (Element != null){
+      const firstContent = this.generatedFilesInfo.generatedCode[Object.keys(this.generatedFilesInfo.generatedCode)[0]]?.content;
 
-          const Content = Element.innerHTML;
-          this.generatedFilesInfo.generatedCode[key] = {
-            type: originalData[key].type,
-            content: Content.trim(),
-          };
-
-          Element.parentElement?.removeChild(Element);
-        }
-
-        });}
-
-
-      //const links = document.getElementsByTagName('link');
-      //let newCodeBlocks = updatedCodeBlocks;
-  
-      //Find all style elements
-      /*for (const styleElement of Array.from(styleElements)) {
-        
-        let href: string | null = null;
-        let linkElement: HTMLLinkElement | null = null;
-
-        //Find out which link is connected to this style.
-        for (const link of Array.from(links)) {
-          if (link.rel === 'stylesheet') {
-            // Assume the <link> tag precedes the <style> tag
-            if (link.nextElementSibling === styleElement) {
-              linkElement = link;
-              href = link.href;
-              break;
-            }
-          }
-      */
+      const dom = new JSDOM(firstContent);
+      const document = dom.window.document;
       
-    
+      // Extract and update CSS files
+      this.extractCssJs(document);
 
-    /**
-     * Extracts CSS and JS from the updated HTML and updates the original files
-     * @returns Updated FileCollection with modified CSS and JS files
-     */
-    public OutputTransformer(): GeneratedFilesInfo {
-        try {
+      // Update the HTML content and  updatedCodeBlocks 
+      const firstKey = Object.keys(this.generatedFilesInfo.generatedCode)[0];
+      if (firstKey) {
+        this.generatedFilesInfo.generatedCode[firstKey].content = document.documentElement.outerHTML;
+      }
 
-          //The HtmlInlineScript codd and updatedCodeBlocks
-          const firstContent = this.generatedFilesInfo.generatedCode[Object.keys(this.generatedFilesInfo.generatedCode)[0]]?.content;
-          // const updatedCodeBlocks = this.generatedFilesInfo.generatedCode[Object.keys(this.generatedFilesInfo.generatedCode)[0]]?.updatedCodeBlocks
+      this.cleanupGeneratedFilesInfo(this.generatedFilesInfo);
 
-          const dom = new JSDOM(firstContent);
-          const document = dom.window.document;
-          
-          // Extract and update CSS files
-          this.extractCSSJS(document);
-          //console.log("Eldocument.documentElement.outerHTMLement",document.documentElement.outerHTML)
+      return this.generatedFilesInfo;
 
-          // Update the HTML content and  updatedCodeBlocks 
-          const firstKey = Object.keys(this.generatedFilesInfo.generatedCode)[0];
-          if (firstKey) {
-            // this.generatedFilesInfo.generatedCode[firstKey].updatedCodeBlocks = newBlock;
-            this.generatedFilesInfo.generatedCode[firstKey].content = document.documentElement.outerHTML;
-          }
-          
-          //If the updatedCodeBlocks of an element are empty, then it will be deleted,
-          //it is used to deal with the case where the violation is all css and the html is not updated.
-          // for (const key in this.generatedFilesInfo.generatedCode) {
-          //   if (
-          //     Array.isArray(this.generatedFilesInfo.generatedCode[key].updatedCodeBlocks) &&
-          //     this.generatedFilesInfo.generatedCode[key].updatedCodeBlocks.length === 0
-          //   ) {
-          //     delete this.generatedFilesInfo.generatedCode[key]; 
-          //   }
-          // }   
-    
-          return this.generatedFilesInfo;
-    
-        } catch (err) {
-          logger.error(`An error occurred: ${err}`);
-          throw err;
+    } catch (err) {
+      logger.error(`An error occurred: ${err}`);
+      throw err;
+    }
+  }
+
+  /**
+   * Extracts CSS from <style> tags and updates the corresponding CSS files
+   * @param document 
+   */
+  private extractCssJs(document: Document) : any {
+    const originalData = this.generatedFilesInfo.originalData;
+
+      Object.keys(originalData).forEach(key => {
+      const element = document.getElementById(key);
+
+      //extract css and js from inject code
+      if (element != null){
+
+        const content = element.innerHTML;
+        this.generatedFilesInfo.generatedCode[key] = {
+          type: originalData[key].type,
+          content: content.trim(),
+        };
+
+        element.parentElement?.removeChild(element);
+      }
+    });
+  }
+
+  /**
+   * Removes extra violationsInfo and inline HTML properties
+   * @param generatedFileInfo 
+   */
+  private cleanupGeneratedFilesInfo(generatedFileInfo: GeneratedFilesInfo): void {
+    Object.entries(generatedFileInfo.originalData).forEach(([key, value]) => {
+      if ((value as any).type === 'Html') {
+          delete (value as any).htmlWithInlineScripts;
+          delete (value as any).violationInfo;
+      }
+  });
+
+    Object.entries(generatedFileInfo.generatedCode).forEach(([key, value]) => {
+        if (value.type === 'Html') {
+        delete (value as { htmlWithInlineScripts?: string }).htmlWithInlineScripts;
         }
-      }}
+    });
+  }
+}
 
   

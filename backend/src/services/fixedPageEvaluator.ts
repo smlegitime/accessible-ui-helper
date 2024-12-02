@@ -6,7 +6,7 @@
 
 import axe, { AxeResults, Result } from 'axe-core';
 import { JSDOM } from 'jsdom';
-import { GeneratedFilesInfo, FileCollection} from '../models/models';
+import { GeneratedFilesInfo, FileCollection } from '../models/models';
 import { logging } from '../lib/logging';
 
 
@@ -25,6 +25,44 @@ export class FixedPageEvaluator {
         this.generatedFilesInfo = generatedPage;
         this.fileCollection = fileCollection
         this.accessibilityStandards = accessibilityStandards
+    }
+
+    /**
+    * Main class method
+    * @returns A boolean value to determine success or failure: if successful,
+    * return GeneratedFilesInfo; if not, return NewFileCollection to allow the LLM to run again.
+    */
+
+    public async evaluatePage(): Promise<any>  {
+        const htmlWithViolations:string = this.generatedFilesInfo.currentScannedPage;
+
+        //Extracts the originalViolation for comparison with the new one.
+        const oldViolations = this.generatedFilesInfo.originalData[htmlWithViolations]?.violationInfo?.map(violation => ({
+            target: violation.target,
+            targetCode: violation.targetCode,
+            message: violation.message
+        })) || [];
+  
+        //Put the modified htmlInlineCssJs into axecore and run it.
+        const generatedCode = this.generatedFilesInfo.generatedCode[htmlWithViolations];
+        const res = await this.getAxeResults(generatedCode.htmlWithInlineScripts?? '')
+
+        const failedViolation = this.compare(oldViolations, res.violations)
+
+        //Pass the evaluation
+        if (failedViolation == null){
+            return {
+                success: true, 
+                result: this.generatedFilesInfo
+            }
+        }
+        
+        //Generate a new filecollection to call llm again.
+        const newfileCollection = this.generateFailedInput(htmlWithViolations,failedViolation, this.fileCollection, this.generatedFilesInfo)
+        return {
+            success: false, 
+            result: newfileCollection
+        }
     }
 
     /**
@@ -53,8 +91,6 @@ export class FixedPageEvaluator {
                     values: this.accessibilityStandards
                 }
             });
-            
-            console.log(axeResults);
             
             logger.info('Retrieved Axe Core evaluation.')
 
@@ -91,103 +127,35 @@ export class FixedPageEvaluator {
                 });
             }
         });
-        
-        // mock the the process that failed the evaluation test.
-
-       /*extractedViolations.length = 0;
-
-       extractedViolations.push(
-            {
-                target: "html",
-                targetCode: "<html>",
-                message: "Fix any of the following:\n The <html> element does not have a lang attribute"
-            },
-            {
-                target: "h1",
-                targetCode: "<h1>Home Page Updated</h1>",
-                message: "Fix any of the following:\n  Some page content is not contained by landmarks"
-            }
-        );
-
-        console.log("Updated extractedViolations:", extractedViolations);*/
-
 
         // find which violation failed to fix
-        const intersection =originalViolations.filter(item1 =>
+        const intersection = originalViolations.filter(item1 =>
             extractedViolations.some(item2 => JSON.stringify(item1) === JSON.stringify(item2))
         );
 
         return intersection.length > 0 ? intersection : null;
-       
     }
 
     /**
      * generate the new fileCollection with failed violation
-     * @param Page file name
-     * @param FailedViolation Axe violations which failed to pass
+     * @param page file name
+     * @param failedViolation Axe violations which failed to pass
      * @param fileCollection which need to pass to the LLM
      * @param generatedFilesInfo The LLM output
      * @returns mnew fileCollection
      */
-    private generateFailedInput(Page: string, FailedViolation: any, fileCollection:FileCollection, generatedFilesInfo: GeneratedFilesInfo): any{
+    private generateFailedInput(page: string, failedViolation: any, fileCollection:FileCollection, generatedFilesInfo: GeneratedFilesInfo): any{
         //update fileCollection's htmlWithInlineScripts to new htmlWithInlineScripts
 
-        fileCollection[Page].htmlWithInlineScripts = generatedFilesInfo.generatedCode[Page].htmlWithInlineScripts;
-        fileCollection[Page].content = generatedFilesInfo.generatedCode[Page].content;
+        fileCollection[page].htmlWithInlineScripts = generatedFilesInfo.generatedCode[page].htmlWithInlineScripts;
+        fileCollection[page].content = generatedFilesInfo.generatedCode[page].content;
 
         //Leave only the duplicates and delete the rest.
-        if (fileCollection && fileCollection[Page]) {
-            fileCollection[Page].violationInfo = FailedViolation;
+        if (fileCollection && fileCollection[page]) {
+            fileCollection[page].violationInfo = failedViolation;
           }
 
        return fileCollection
   
     }
-
-    /**
-    * Main class method
-    * @returns A boolean value to determine success or failure: if successful,
-    * return GeneratedFilesInfo; if not, return NewFileCollection to allow the LLM to run again.
-    */
-
-    public async evaluatePage(): Promise<any>  {
-
-        //original code
-        // const originalDataCollection = this.generatedFilesInfo.originalData;
-
-        // generatedPage is file name which has violation
-        // find which file has violation    
-        // const htmlWithViolations = Object.keys(originalDataCollection).filter(key => {
-        //     const item = originalDataCollection[key];
-        //     return key.endsWith('.html') && Array.isArray(item.violationInfo) && item.violationInfo.length > 0;
-        //   });
-
-        const htmlWithViolations:string = this.generatedFilesInfo.currentScannedPage;
-
-        //Extracts the originalViolation for comparison with the new one.
-        const oldViolations = this.generatedFilesInfo.originalData[htmlWithViolations]?.violationInfo?.map(violation => ({
-            target: violation.target,
-            targetCode: violation.targetCode,
-            message: violation.message
-        })) || [];
-  
-        //Put the modified htmlInlineCssJs into axecore and run it.
-        const generatedCode = this.generatedFilesInfo.generatedCode[htmlWithViolations];
-        const res = await this.getAxeResults(generatedCode.htmlWithInlineScripts?? '')
-
-        const FailedViolation = this.compare(oldViolations, res.violations)
-
-        console.log(FailedViolation)
-
-        //Pass the evaluation
-        if (FailedViolation == null){
-            return {success: true, 
-                result: this.generatedFilesInfo}}
-        
-        //Generate a new filecollection to call llm again.
-        const NewfileCollection = this.generateFailedInput(htmlWithViolations,FailedViolation, this.fileCollection, this.generatedFilesInfo)
-        return {success: false, 
-            result: NewfileCollection}}
-
-        
-    }
+}

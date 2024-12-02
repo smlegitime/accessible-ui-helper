@@ -107,5 +107,5 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["src", "jest.config.js", "babel.config.js", "archive/ExportManager.test.js", "src/services/llama.ts"]
+  "include": ["src", "jest.config.js", "babel.config.js"]
 }

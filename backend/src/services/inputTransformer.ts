@@ -1,7 +1,7 @@
 /**
  * @fileoverview Performs standard transformations to input file for downstream processing
  * @author Sybille Légitime
- * @copyright 2024. All rights reserved.
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
 import {
@@ -44,8 +44,74 @@ export class InputTransformer {
 
     } catch (err) {
       logger.error(`An error occurred: ${err}`);
-      return err;
+      throw err;
     }
+  }
+
+  /**
+   * Organize HTML page and related violation into a single structure
+   * @param currentPage - current scanned page
+   * @param inputFiles - all input files from the uploaded project
+   * @param violations - all selected violations associated with the currenPage
+   * @returns - transformed object with embedded violations merged with unscanned original files
+   */
+  private organizeInputContent(currentPage: string, inputFiles: FileCollection, violations: Array<Result>) : any {
+    const { filteredCollection, transformedInputObj, violationNodes } = this.initializeTransformedInputStruct(inputFiles, violations);
+    
+    for (const file in filteredCollection) {
+      transformedInputObj[file]['htmlWithInlineScripts'] = this.addInlineScriptsToHtml(inputFiles, filteredCollection[file]);
+      for (const node of violationNodes) {
+        let violationInfoObj = {
+          'target': node['target'].join(', '),
+          'targetCode': node['html'],
+          'message': node['failureSummary']
+        }
+        if (currentPage !== '' && currentPage === file) {
+          transformedInputObj[file]['violationInfo'].push(violationInfoObj);
+        }
+        else if (filteredCollection[file]['content'].includes(node['html'])) {
+          transformedInputObj[file]['violationInfo'].push(violationInfoObj);
+        }
+      }
+    }
+
+    const transformedInput = this.mergeInputs(transformedInputObj, inputFiles);
+
+    return transformedInput;
+  }
+
+  /**
+   * Initialize the structures that will be used for input transformation
+   * @param inputFiles - input file collection
+   * @param violations - violations array
+   * @returns - an object with the filtered collection, initialized transformed input, and filtered violations
+   */
+  private initializeTransformedInputStruct(inputFiles: FileCollection, violations: Array<Result>): any {
+    const filteredCollection = this.getHtmlPages(inputFiles);
+
+    // Initialize the structure of the transformed input
+    const transformedInputObj: any = { ...filteredCollection };
+    Object.keys(filteredCollection).forEach(file => transformedInputObj[file]['violationInfo'] = []);
+
+    // Get violation nodes
+    const violationNodes = violations.map(violation => violation['nodes']).flat();
+
+    return { filteredCollection, transformedInputObj, violationNodes }
+  }
+
+  /**
+   * Performs an outer merge between the transformed input and original input files
+   * @param transformedInputObj - transformed object with embedded violations
+   * @param inputFiles - unscanned original files
+   * @returns - transformed object with embedded violations merged with unscanned original files
+   */
+  private mergeInputs(transformedInputObj: any, inputFiles: FileCollection) {
+    for (const originalFile in inputFiles) {
+      if(!Object.keys(transformedInputObj).includes(originalFile)) {
+        transformedInputObj[originalFile] = inputFiles[originalFile]
+      }
+    }
+    return transformedInputObj;
   }
 
   /**
@@ -120,71 +186,5 @@ export class InputTransformer {
       }
     }
     return filteredCollection;
-  }
-
-  /**
-   * Initialize the structures that will be used for input transformation
-   * @param inputFiles - input file collection
-   * @param violations - violations array
-   * @returns - an object with the filtered collection, initialized transformed input, and filtered violations
-   */
-  private initializeTransformedInputStruct(inputFiles: FileCollection, violations: Array<Result>): any {
-    const filteredCollection = this.getHtmlPages(inputFiles);
-
-    // Initialize the structure of the transformed input
-    const transformedInputObj: any = { ...filteredCollection };
-    Object.keys(filteredCollection).forEach(file => transformedInputObj[file]['violationInfo'] = []);
-
-    // Get violation nodes
-    const violationNodes = violations.map(violation => violation['nodes']).flat();
-
-    return { filteredCollection, transformedInputObj, violationNodes }
-  }
-
-  /**
-   * Performs an outer merge between the transformed input and original input files
-   * @param transformedInputObj - transformed object with embedded violations
-   * @param inputFiles - unscanned original files
-   * @returns - transformed object with embedded violations merged with unscanned original files
-   */
-  private mergeInputs(transformedInputObj: any, inputFiles: FileCollection) {
-    for (const originalFile in inputFiles) {
-      if(!Object.keys(transformedInputObj).includes(originalFile)) {
-        transformedInputObj[originalFile] = inputFiles[originalFile]
-      }
-    }
-    return transformedInputObj;
-  }
-
-  /**
-   * Organize HTML page and related violation into a single structure
-   * @param currentPage - current scanned page
-   * @param inputFiles - all input files from the uploaded project
-   * @param violations - all selected violations associated with the currenPage
-   * @returns - transformed object with embedded violations merged with unscanned original files
-   */
-  private organizeInputContent(currentPage: string, inputFiles: FileCollection, violations: Array<Result>) : any {
-    const { filteredCollection, transformedInputObj, violationNodes } = this.initializeTransformedInputStruct(inputFiles, violations);
-    
-    for (const file in filteredCollection) {
-      transformedInputObj[file]['htmlWithInlineScripts'] = this.addInlineScriptsToHtml(inputFiles, filteredCollection[file]);
-      for (const node of violationNodes) {
-        let violationInfoObj = {
-          'target': node['target'],
-          'targetCode': node['html'],
-          'message': node['failureSummary']
-        }
-        if (currentPage !== '' && currentPage === file) {
-          transformedInputObj[file]['violationInfo'].push(violationInfoObj);
-        }
-        else if (filteredCollection[file]['content'].includes(node['html'])) {
-          transformedInputObj[file]['violationInfo'].push(violationInfoObj);
-        }
-      }
-    }
-
-    const transformedInput = this.mergeInputs(transformedInputObj, inputFiles);
-
-    return transformedInput;
   }  
 }
