@@ -71,7 +71,6 @@ export function Scan() {
    */
   const [generatedPageFixes, setGeneratedPageFixes] = useState<FileCollection>(
     initialFileCollection
-    // {}
   );
   /**
    * Code files as a fileCollection object

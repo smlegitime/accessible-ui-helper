@@ -4,6 +4,2553 @@
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
+export const testingMock = {
+  passes: [
+      {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+              "cat.color",
+              "wcag2aa",
+              "wcag143",
+              "TTv5",
+              "TT13.c",
+              "EN-301-549",
+              "EN-9.1.4.3",
+              "ACT"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#ffffff",
+                              "bgColor": "#333333",
+                              "contrastRatio": 12.63,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 12.63"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"#home\">Home</a>",
+                  "target": [
+                      "a[href$=\"#home\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#ffffff",
+                              "bgColor": "#333333",
+                              "contrastRatio": 12.63,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 12.63"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"#about\">About Us</a>",
+                  "target": [
+                      "a[href$=\"#about\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#ffffff",
+                              "bgColor": "#333333",
+                              "contrastRatio": 12.63,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 12.63"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"#contact\">Contact</a>",
+                  "target": [
+                      "a[href$=\"#contact\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#ffffff",
+                              "bgColor": "#333333",
+                              "contrastRatio": 12.63,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 12.63"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>",
+                  "target": [
+                      "a[href$=\"unsplash.com\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "18.0pt (24px)",
+                              "fontWeight": "bold",
+                              "expectedContrastRatio": "3:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>About Us</h2>",
+                  "target": [
+                      "#about > h2"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>We are a group of developers focused on making the web accessible to everyone.</p>",
+                  "target": [
+                      "#about > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"no-outline\" onclick=\"alert('Clicked Project 1!')\">Project 1</div>",
+                  "target": [
+                      "div[onclick=\"alert('Clicked Project 1!')\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "14.0pt (18.72px)",
+                              "fontWeight": "bold",
+                              "expectedContrastRatio": "3:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 1</h3>",
+                  "target": [
+                      ".grid-item:nth-child(1) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>Description of Project 1.</p>",
+                  "target": [
+                      ".grid-item:nth-child(1) > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"no-outline\" onclick=\"alert('Clicked Project 2!')\">Project 2</div>",
+                  "target": [
+                      "div[onclick=\"alert('Clicked Project 2!')\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "14.0pt (18.72px)",
+                              "fontWeight": "bold",
+                              "expectedContrastRatio": "3:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 2</h3>",
+                  "target": [
+                      ".grid-item:nth-child(2) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>Description of Project 2.</p>",
+                  "target": [
+                      ".grid-item:nth-child(2) > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"no-outline\" onclick=\"alert('Clicked Project 3!')\">Project 3</div>",
+                  "target": [
+                      "div[onclick=\"alert('Clicked Project 3!')\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "14.0pt (18.72px)",
+                              "fontWeight": "bold",
+                              "expectedContrastRatio": "3:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 3</h3>",
+                  "target": [
+                      ".grid-item:nth-child(3) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "12.0pt (16px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>Description of Project 3.</p>",
+                  "target": [
+                      ".grid-item:nth-child(3) > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "18.0pt (24px)",
+                              "fontWeight": "bold",
+                              "expectedContrastRatio": "3:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>Contact Us</h2>",
+                  "target": [
+                      "#contact > h2"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "10.0pt (13.3333px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<input type=\"text\" placeholder=\"Your Name\">",
+                  "target": [
+                      "input[type=\"text\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#ffffff",
+                              "contrastRatio": 21,
+                              "fontSize": "10.0pt (13.3333px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 21"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<input type=\"email\" placeholder=\"Your Email\">",
+                  "target": [
+                      "input[type=\"email\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#efefef",
+                              "contrastRatio": 18.26,
+                              "fontSize": "10.0pt (13.3333px)",
+                              "fontWeight": "normal",
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Element has sufficient color contrast of 18.26"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<button type=\"submit\">Send Message</button>",
+                  "target": [
+                      "button[type=\"submit\"]"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "empty-heading",
+          "impact": null,
+          "tags": [
+              "cat.name-role-value",
+              "best-practice"
+          ],
+          "description": "Ensure headings have discernible text",
+          "help": "Headings should not be empty",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/empty-heading?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "has-visible-text",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has text that is visible to screen readers"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h1>Welcome to Our Complex Web Project</h1>",
+                  "target": [
+                      "h1"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "has-visible-text",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has text that is visible to screen readers"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>About Us</h2>",
+                  "target": [
+                      "#about > h2"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "has-visible-text",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has text that is visible to screen readers"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 1</h3>",
+                  "target": [
+                      ".grid-item:nth-child(1) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "has-visible-text",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has text that is visible to screen readers"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 2</h3>",
+                  "target": [
+                      ".grid-item:nth-child(2) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "has-visible-text",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has text that is visible to screen readers"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 3</h3>",
+                  "target": [
+                      ".grid-item:nth-child(3) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "has-visible-text",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has text that is visible to screen readers"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>Contact Us</h2>",
+                  "target": [
+                      "#contact > h2"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "heading-order",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the order of headings is semantically correct",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/heading-order?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "heading-order",
+                          "data": {
+                              "headingOrder": [
+                                  {
+                                      "ancestry": [
+                                          "html > body > header:nth-child(1) > h1:nth-child(1)"
+                                      ],
+                                      "level": 1
+                                  },
+                                  {
+                                      "ancestry": [
+                                          "html > body > main:nth-child(2) > section:nth-child(2) > h2:nth-child(1)"
+                                      ],
+                                      "level": 2
+                                  },
+                                  {
+                                      "ancestry": [
+                                          "html > body > main:nth-child(2) > section:nth-child(2) > div:nth-child(3) > div:nth-child(1) > h3:nth-child(3)"
+                                      ],
+                                      "level": 3
+                                  },
+                                  {
+                                      "ancestry": [
+                                          "html > body > main:nth-child(2) > section:nth-child(2) > div:nth-child(3) > div:nth-child(2) > h3:nth-child(3)"
+                                      ],
+                                      "level": 3
+                                  },
+                                  {
+                                      "ancestry": [
+                                          "html > body > main:nth-child(2) > section:nth-child(2) > div:nth-child(3) > div:nth-child(3) > h3:nth-child(3)"
+                                      ],
+                                      "level": 3
+                                  },
+                                  {
+                                      "ancestry": [
+                                          "html > body > main:nth-child(2) > section:nth-child(3) > h2:nth-child(1)"
+                                      ],
+                                      "level": 2
+                                  }
+                              ]
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Heading order valid"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h1>Welcome to Our Complex Web Project</h1>",
+                  "target": [
+                      "h1"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "heading-order",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Heading order valid"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>About Us</h2>",
+                  "target": [
+                      "#about > h2"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "heading-order",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Heading order valid"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 1</h3>",
+                  "target": [
+                      ".grid-item:nth-child(1) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "heading-order",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Heading order valid"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 2</h3>",
+                  "target": [
+                      ".grid-item:nth-child(2) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "heading-order",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Heading order valid"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 3</h3>",
+                  "target": [
+                      ".grid-item:nth-child(3) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "heading-order",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Heading order valid"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>Contact Us</h2>",
+                  "target": [
+                      "#contact > h2"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "image-redundant-alt",
+          "impact": null,
+          "tags": [
+              "cat.text-alternatives",
+              "best-practice"
+          ],
+          "description": "Ensure image alternative is not repeated as text",
+          "help": "Alternative text of images should not be repeated as text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/image-redundant-alt?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "duplicate-img-label",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element does not duplicate existing text in <img> alt text"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1563286961-9e38ba4b9da3\" alt=\"\">",
+                  "target": [
+                      "img:nth-child(1)"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "duplicate-img-label",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element does not duplicate existing text in <img> alt text"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1494790108377-93984e4b6f48\" alt=\"\">",
+                  "target": [
+                      "#carousel > img:nth-child(2)"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "duplicate-img-label",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element does not duplicate existing text in <img> alt text"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1470198993514-ecb763e5b80d\" alt=\"\">",
+                  "target": [
+                      "img:nth-child(3)"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "duplicate-img-label",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element does not duplicate existing text in <img> alt text"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1501602028823-907c5c35de65\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(1) > img"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "duplicate-img-label",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element does not duplicate existing text in <img> alt text"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1494567362563-59cf2a8adfa2\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(2) > img"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "duplicate-img-label",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element does not duplicate existing text in <img> alt text"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1461759733012-f03b0ad3d321\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(3) > img"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "label-title-only",
+          "impact": null,
+          "tags": [
+              "cat.forms",
+              "best-practice"
+          ],
+          "description": "Ensure that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
+          "help": "Form elements should have a visible label",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label-title-only?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "title-only",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Form element does not solely use title attribute for its label"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<input type=\"text\" placeholder=\"Your Name\">",
+                  "target": [
+                      "input[type=\"text\"]"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "title-only",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Form element does not solely use title attribute for its label"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<input type=\"email\" placeholder=\"Your Email\">",
+                  "target": [
+                      "input[type=\"email\"]"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "title-only",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "serious",
+                          "message": "Form element does not solely use title attribute for its label"
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<textarea placeholder=\"Your Message\"></textarea>",
+                  "target": [
+                      "textarea"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-banner-is-top-level",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the banner landmark is at top level",
+          "help": "Banner landmark should not be contained in another landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-banner-is-top-level?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-top-level",
+                          "data": {
+                              "role": "banner"
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "The banner landmark is at the top level."
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<header>\n  <h1>Welcome to Our Complex Web Project</h1>\n  <nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>\n</header>",
+                  "target": [
+                      "header"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-contentinfo-is-top-level",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the contentinfo landmark is at top level",
+          "help": "Contentinfo landmark should not be contained in another landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-contentinfo-is-top-level?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-top-level",
+                          "data": {
+                              "role": "contentinfo"
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "The contentinfo landmark is at the top level."
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<footer>\n  <p>© 2024 Complex Web Project. All Rights Reserved.</p>\n</footer>",
+                  "target": [
+                      "footer"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-main-is-top-level",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the main landmark is at top level",
+          "help": "Main landmark should not be contained in another landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-main-is-top-level?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-top-level",
+                          "data": {
+                              "role": "main"
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "The main landmark is at the top level."
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<main>",
+                  "target": [
+                      "main"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-no-duplicate-banner",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the document has at most one banner landmark",
+          "help": "Document should not have more than one banner landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-no-duplicate-banner?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "page-no-duplicate-banner",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Document does not have more than one banner landmark"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<header>\n  <h1>Welcome to Our Complex Web Project</h1>\n  <nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>\n</header>",
+                  "target": [
+                      "header"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-no-duplicate-contentinfo",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the document has at most one contentinfo landmark",
+          "help": "Document should not have more than one contentinfo landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-no-duplicate-contentinfo?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "page-no-duplicate-contentinfo",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Document does not have more than one contentinfo landmark"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<footer>\n  <p>© 2024 Complex Web Project. All Rights Reserved.</p>\n</footer>",
+                  "target": [
+                      "footer"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-no-duplicate-main",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the document has at most one main landmark",
+          "help": "Document should not have more than one main landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-no-duplicate-main?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "page-no-duplicate-main",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Document does not have more than one main landmark"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<main>",
+                  "target": [
+                      "main"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-one-main",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure the document has a main landmark",
+          "help": "Document should have one main landmark",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [],
+                  "all": [
+                      {
+                          "id": "page-has-main",
+                          "data": null,
+                          "relatedNodes": [
+                              {
+                                  "html": "<main>",
+                                  "target": [
+                                      "main"
+                                  ]
+                              }
+                          ],
+                          "impact": "moderate",
+                          "message": "Document has at least one main landmark"
+                      }
+                  ],
+                  "none": [],
+                  "impact": null,
+                  "html": "<html lang=\"en\">",
+                  "target": [
+                      "html"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "landmark-unique",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure landmarks are unique",
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-unique?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-unique",
+                          "data": {
+                              "role": "banner",
+                              "accessibleText": null
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<header>\n  <h1>Welcome to Our Complex Web Project</h1>\n  <nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>\n</header>",
+                  "target": [
+                      "header"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-unique",
+                          "data": {
+                              "role": "navigation",
+                              "accessibleText": null
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>",
+                  "target": [
+                      "nav"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-unique",
+                          "data": {
+                              "role": "main",
+                              "accessibleText": null
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<main>",
+                  "target": [
+                      "main"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "landmark-is-unique",
+                          "data": {
+                              "role": "contentinfo",
+                              "accessibleText": null
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<footer>\n  <p>© 2024 Complex Web Project. All Rights Reserved.</p>\n</footer>",
+                  "target": [
+                      "footer"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "meta-viewport-large",
+          "impact": null,
+          "tags": [
+              "cat.sensory-and-visual-cues",
+              "best-practice"
+          ],
+          "description": "Ensure <meta name=\"viewport\"> can scale a significant amount",
+          "help": "Users should be able to zoom and scale the text up to 500%",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/meta-viewport-large?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "meta-viewport-large",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "<meta> tag does not prevent significant zooming on mobile devices"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">",
+                  "target": [
+                      "meta[name=\"viewport\"]"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "meta-viewport",
+          "impact": null,
+          "tags": [
+              "cat.sensory-and-visual-cues",
+              "wcag2aa",
+              "wcag144",
+              "EN-301-549",
+              "EN-9.1.4.4",
+              "ACT"
+          ],
+          "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+          "help": "Zooming and scaling must not be disabled",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/meta-viewport?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "meta-viewport",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "critical",
+                          "message": "<meta> tag does not disable zooming on mobile devices"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">",
+                  "target": [
+                      "meta[name=\"viewport\"]"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "page-has-heading-one",
+          "impact": null,
+          "tags": [
+              "cat.semantics",
+              "best-practice"
+          ],
+          "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+          "help": "Page should contain a level-one heading",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [],
+                  "all": [
+                      {
+                          "id": "page-has-heading-one",
+                          "data": null,
+                          "relatedNodes": [
+                              {
+                                  "html": "<h1>Welcome to Our Complex Web Project</h1>",
+                                  "target": [
+                                      "h1"
+                                  ]
+                              }
+                          ],
+                          "impact": "moderate",
+                          "message": "Page has at least one level-one heading"
+                      }
+                  ],
+                  "none": [],
+                  "impact": null,
+                  "html": "<html lang=\"en\">",
+                  "target": [
+                      "html"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "presentation-role-conflict",
+          "impact": null,
+          "tags": [
+              "cat.aria",
+              "best-practice",
+              "ACT"
+          ],
+          "description": "Elements marked as presentational should not have global ARIA or tabindex to ensure all screen readers ignore them",
+          "help": "Ensure elements marked as presentational are consistently ignored",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/presentation-role-conflict?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "is-element-focusable",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element is focusable."
+                      },
+                      {
+                          "id": "has-global-aria-attribute",
+                          "data": [],
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has global ARIA attributes: "
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1563286961-9e38ba4b9da3\" alt=\"\">",
+                  "target": [
+                      "img:nth-child(1)"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "is-element-focusable",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element is focusable."
+                      },
+                      {
+                          "id": "has-global-aria-attribute",
+                          "data": [],
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has global ARIA attributes: "
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1494790108377-93984e4b6f48\" alt=\"\">",
+                  "target": [
+                      "#carousel > img:nth-child(2)"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "is-element-focusable",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element is focusable."
+                      },
+                      {
+                          "id": "has-global-aria-attribute",
+                          "data": [],
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has global ARIA attributes: "
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1470198993514-ecb763e5b80d\" alt=\"\">",
+                  "target": [
+                      "img:nth-child(3)"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "is-element-focusable",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element is focusable."
+                      },
+                      {
+                          "id": "has-global-aria-attribute",
+                          "data": [],
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has global ARIA attributes: "
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1501602028823-907c5c35de65\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(1) > img"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "is-element-focusable",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element is focusable."
+                      },
+                      {
+                          "id": "has-global-aria-attribute",
+                          "data": [],
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has global ARIA attributes: "
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1494567362563-59cf2a8adfa2\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(2) > img"
+                  ]
+              },
+              {
+                  "any": [],
+                  "all": [],
+                  "none": [
+                      {
+                          "id": "is-element-focusable",
+                          "data": null,
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element is focusable."
+                      },
+                      {
+                          "id": "has-global-aria-attribute",
+                          "data": [],
+                          "relatedNodes": [],
+                          "impact": "minor",
+                          "message": "Element has global ARIA attributes: "
+                      }
+                  ],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1461759733012-f03b0ad3d321\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(3) > img"
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "region",
+          "impact": null,
+          "tags": [
+              "cat.keyboard",
+              "best-practice"
+          ],
+          "description": "Ensure all page content is contained by landmarks",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/region?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<header>\n  <h1>Welcome to Our Complex Web Project</h1>\n  <nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>\n</header>",
+                  "target": [
+                      "header"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h1>Welcome to Our Complex Web Project</h1>",
+                  "target": [
+                      "h1"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>",
+                  "target": [
+                      "nav"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"#home\">Home</a>",
+                  "target": [
+                      "a[href$=\"#home\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"#about\">About Us</a>",
+                  "target": [
+                      "a[href$=\"#about\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"#contact\">Contact</a>",
+                  "target": [
+                      "a[href$=\"#contact\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>",
+                  "target": [
+                      "a[href$=\"unsplash.com\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<main>",
+                  "target": [
+                      "main"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"carousel-container\">",
+                  "target": [
+                      ".carousel-container"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"carousel\" id=\"carousel\">",
+                  "target": [
+                      "#carousel"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1563286961-9e38ba4b9da3\" alt=\"\">",
+                  "target": [
+                      "img:nth-child(1)"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1494790108377-93984e4b6f48\" alt=\"\">",
+                  "target": [
+                      "#carousel > img:nth-child(2)"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1470198993514-ecb763e5b80d\" alt=\"\">",
+                  "target": [
+                      "img:nth-child(3)"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"carousel-controls\">\n      <button class=\"carousel-button\" onclick=\"prevImage()\">❮</button>\n      <button class=\"carousel-button\" onclick=\"nextImage()\">❯</button>\n    </div>",
+                  "target": [
+                      ".carousel-controls"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<button class=\"carousel-button\" onclick=\"prevImage()\">❮</button>",
+                  "target": [
+                      "button[onclick=\"prevImage()\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<button class=\"carousel-button\" onclick=\"nextImage()\">❯</button>",
+                  "target": [
+                      "button[onclick=\"nextImage()\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<section class=\"content\" id=\"about\">",
+                  "target": [
+                      "#about"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>About Us</h2>",
+                  "target": [
+                      "#about > h2"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>We are a group of developers focused on making the web accessible to everyone.</p>",
+                  "target": [
+                      "#about > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"grid\">",
+                  "target": [
+                      ".grid"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"grid-item\">\n        <div class=\"no-outline\" onclick=\"alert('Clicked Project 1!')\">Project 1</div>\n        <img src=\"https://images.unsplash.com/photo-1501602028823-907c5c35de65\" alt=\"\">\n        <h3>Project 1</h3>\n        <p>Description of Project 1.</p>\n      </div>",
+                  "target": [
+                      ".grid-item:nth-child(1)"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"no-outline\" onclick=\"alert('Clicked Project 1!')\">Project 1</div>",
+                  "target": [
+                      "div[onclick=\"alert('Clicked Project 1!')\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1501602028823-907c5c35de65\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(1) > img"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 1</h3>",
+                  "target": [
+                      ".grid-item:nth-child(1) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>Description of Project 1.</p>",
+                  "target": [
+                      ".grid-item:nth-child(1) > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"grid-item\">\n        <div class=\"no-outline\" onclick=\"alert('Clicked Project 2!')\">Project 2</div>\n        <img src=\"https://images.unsplash.com/photo-1494567362563-59cf2a8adfa2\" alt=\"\">\n        <h3>Project 2</h3>\n        <p>Description of Project 2.</p>\n      </div>",
+                  "target": [
+                      ".grid-item:nth-child(2)"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"no-outline\" onclick=\"alert('Clicked Project 2!')\">Project 2</div>",
+                  "target": [
+                      "div[onclick=\"alert('Clicked Project 2!')\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1494567362563-59cf2a8adfa2\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(2) > img"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 2</h3>",
+                  "target": [
+                      ".grid-item:nth-child(2) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>Description of Project 2.</p>",
+                  "target": [
+                      ".grid-item:nth-child(2) > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"grid-item\">\n        <div class=\"no-outline\" onclick=\"alert('Clicked Project 3!')\">Project 3</div>\n        <img src=\"https://images.unsplash.com/photo-1461759733012-f03b0ad3d321\" alt=\"\">\n        <h3>Project 3</h3>\n        <p>Description of Project 3.</p>\n      </div>",
+                  "target": [
+                      ".grid-item:nth-child(3)"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<div class=\"no-outline\" onclick=\"alert('Clicked Project 3!')\">Project 3</div>",
+                  "target": [
+                      "div[onclick=\"alert('Clicked Project 3!')\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<img src=\"https://images.unsplash.com/photo-1461759733012-f03b0ad3d321\" alt=\"\">",
+                  "target": [
+                      ".grid-item:nth-child(3) > img"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h3>Project 3</h3>",
+                  "target": [
+                      ".grid-item:nth-child(3) > h3"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>Description of Project 3.</p>",
+                  "target": [
+                      ".grid-item:nth-child(3) > p"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<section class=\"content\" id=\"contact\">",
+                  "target": [
+                      "#contact"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<h2>Contact Us</h2>",
+                  "target": [
+                      "#contact > h2"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<form>\n      <input type=\"text\" placeholder=\"Your Name\">\n      <input type=\"email\" placeholder=\"Your Email\">\n      <textarea placeholder=\"Your Message\"></textarea>\n      <button type=\"submit\">Send Message</button>\n    </form>",
+                  "target": [
+                      "form"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<input type=\"text\" placeholder=\"Your Name\">",
+                  "target": [
+                      "input[type=\"text\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<input type=\"email\" placeholder=\"Your Email\">",
+                  "target": [
+                      "input[type=\"email\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<textarea placeholder=\"Your Message\"></textarea>",
+                  "target": [
+                      "textarea"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<button type=\"submit\">Send Message</button>",
+                  "target": [
+                      "button[type=\"submit\"]"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<footer>\n  <p>© 2024 Complex Web Project. All Rights Reserved.</p>\n</footer>",
+                  "target": [
+                      "footer"
+                  ]
+              },
+              {
+                  "any": [
+                      {
+                          "id": "region",
+                          "data": {
+                              "isIframe": false
+                          },
+                          "relatedNodes": [],
+                          "impact": "moderate",
+                          "message": "All page content is contained by landmarks"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": null,
+                  "html": "<p>© 2024 Complex Web Project. All Rights Reserved.</p>",
+                  "target": [
+                      "footer > p"
+                  ]
+              }
+          ]
+      }
+  ],
+  violations: [
+      {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+              "cat.color",
+              "wcag2aa",
+              "wcag143",
+              "TTv5",
+              "TT13.c",
+              "EN-301-549",
+              "EN-9.1.4.3",
+              "ACT"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+          "nodes": [
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#333333",
+                              "contrastRatio": 1.66,
+                              "fontSize": "24.0pt (32px)",
+                              "fontWeight": "bold",
+                              "messageKey": null,
+                              "expectedContrastRatio": "3:1"
+                          },
+                          "relatedNodes": [
+                              {
+                                  "html": "<header>\n  <h1>Welcome to Our Complex Web Project</h1>\n  <nav>\n    <a href=\"#home\">Home</a>\n    <a href=\"#about\">About Us</a>\n    <a href=\"#contact\">Contact</a>\n    <a href=\"https://unsplash.com\" target=\"_blank\">External Link</a>\n  </nav>\n</header>",
+                                  "target": [
+                                      "header"
+                                  ]
+                              }
+                          ],
+                          "impact": "serious",
+                          "message": "Element has insufficient color contrast of 1.66 (foreground color: #000000, background color: #333333, font size: 24.0pt (32px), font weight: bold). Expected contrast ratio of 3:1"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "serious",
+                  "html": "<h1>Welcome to Our Complex Web Project</h1>",
+                  "target": [
+                      "h1"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.66 (foreground color: #000000, background color: #333333, font size: 24.0pt (32px), font weight: bold). Expected contrast ratio of 3:1"
+              },
+              {
+                  "any": [
+                      {
+                          "id": "color-contrast",
+                          "data": {
+                              "fgColor": "#000000",
+                              "bgColor": "#333333",
+                              "contrastRatio": 1.66,
+                              "fontSize": "9.6pt (12.8px)",
+                              "fontWeight": "normal",
+                              "messageKey": null,
+                              "expectedContrastRatio": "4.5:1"
+                          },
+                          "relatedNodes": [
+                              {
+                                  "html": "<footer>\n  <p>© 2024 Complex Web Project. All Rights Reserved.</p>\n</footer>",
+                                  "target": [
+                                      "footer"
+                                  ]
+                              }
+                          ],
+                          "impact": "serious",
+                          "message": "Element has insufficient color contrast of 1.66 (foreground color: #000000, background color: #333333, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
+                      }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "serious",
+                  "html": "<p>© 2024 Complex Web Project. All Rights Reserved.</p>",
+                  "target": [
+                      "footer > p"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.66 (foreground color: #000000, background color: #333333, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+          ]
+      }
+  ],
+  inapplicable: [],
+  incomplete: []
+}
+
 export const mock1 = {
   passes: [
     {
