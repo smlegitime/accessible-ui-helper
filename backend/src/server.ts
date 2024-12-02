@@ -1,7 +1,7 @@
 /**
  * @fileoverview Express app assigment to an HTTP server
  * @author Sybille Légitime
- * @copyright 2024. All rights reserved.
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
 import app from './index';

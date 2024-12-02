@@ -1,14 +1,13 @@
-import fs from 'fs';
+/**
+ * @fileoverview InputValidator class that performs checks on file types, file sizes, and naming conventions. In addtion it perform brief check on Javascript and HTML file, but with limitation.
+ * @author Bill Que
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import path from 'path';
 import { ESLint } from 'eslint';
 
-
-
-/**
- * InputValidator class that performs checks on file types, file sizes, and naming conventions. In addtion it perform brief check on Javascript and HTML file, but with limitation.
- */
 export class InputValidator {
-
   /**
    * Validates the files provided in the payload:
    * - Checks for an equal number of HTML, CSS, and JS files.
@@ -57,8 +56,6 @@ export class InputValidator {
         throw new Error(`Invalid file name: ${fileName}. Only alphanumeric characters, underscores, dashes, and periods are allowed.`);
       }
     }
-    
-
     
     // Ensure equal count of HTML, CSS, and JS files
     if (htmlCount !== cssCount || cssCount !== jsCount) {

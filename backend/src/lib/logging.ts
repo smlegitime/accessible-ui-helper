@@ -1,7 +1,7 @@
 /**
  * @fileoverview Custom logger configuration and logger for backend server
  * @author Sybille Légitime
- * @copyright 2024. All rights reserved.
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
 import { EventEmitter } from 'events';
@@ -17,7 +17,7 @@ export class LogManager extends EventEmitter {
 
     /**
      * Main configuration method
-     * @param options
+     * @param options - log configuration options
      */
     public configure(options: LogOptions) : LogManager { 
         this.options = Object.assign({}, this.options, options);
@@ -26,7 +26,7 @@ export class LogManager extends EventEmitter {
 
     /**
      * Getter for logger instance
-     * @param module
+     * @param module - module the logger is running in
      */
     public getLogger(module: string) : Logger { 
         let minLevel = 'none';
@@ -44,8 +44,8 @@ export class LogManager extends EventEmitter {
     
     /**
      * Log listener
-     * @param listener 
-     * @returns 
+     * @param listener - listener triggered on log events
+     * @returns - log manager instance
      */
     public onLogEntry(listener: (logEntry: LogEntry) => void) : LogManager { 
         this.on('log', listener);
@@ -119,21 +119,9 @@ export class Logger {
     }
 
     /**
-     * Convert a string level into a number
-     * @param minLevel 
-     */
-    private levelToInt(minLevel: string) : number { 
-        if (minLevel.toLowerCase() in this.levels) {
-            return this.levels[minLevel.toLowerCase()];
-        } else {
-            return 99;
-        }
-     }
-
-    /**
      * Main logging method
-     * @param logLevel 
-     * @param message 
+     * @param logLevel - log level
+     * @param message - log message
      */
     public log(logLevel: string, message: string) : void {
         const level = this.levelToInt(logLevel);
@@ -164,4 +152,16 @@ export class Logger {
     public info(message: string): void { this.log('info', message); }
     public warn(message: string): void { this.log('warn', message); }
     public error(message: string): void { this.log('error', message); }
+
+    /**
+     * Convert a string level into a number
+     * @param minLevel - minimum log level
+     */
+    private levelToInt(minLevel: string) : number { 
+        if (minLevel.toLowerCase() in this.levels) {
+            return this.levels[minLevel.toLowerCase()];
+        } else {
+            return 99;
+        }
+    }
 }

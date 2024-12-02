@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Input validation middleware function
+ * @author Bill Que
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import { Request, Response, NextFunction } from 'express';
 import { InputValidator } from '../services/inputValidator';
 

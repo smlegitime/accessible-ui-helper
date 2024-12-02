@@ -4,8 +4,8 @@
   "description": "Manifest for backend tasks and dependencies for the Accessible UI Helper",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/server.js",
+    "test": "jest",
+    "start": "ts-node ./src/server",
     "dev": "ts-node-dev ./src/server"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
     "jsdom": "^25.0.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.16.0",
     "@types/archiver": "^6.0.3",
     "@types/axios": "^0.9.36",
     "@types/cors": "^2.8.17",
@@ -32,9 +33,12 @@
     "@types/pdfkit": "^0.13.5",
     "axe-core": "^4.10.2",
     "dotenv": "^16.4.5",
-    "eslint": "^9.15.0",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0",
     "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.16.0"
   }
 }
