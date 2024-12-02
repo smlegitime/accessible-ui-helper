@@ -55,8 +55,8 @@ const setup = () => {
                 setLoadingFix={mockSetLoadingFix}
                 folderName="Test Folder"
                 codeFiles={{}}
-                accessibilityStandards={['WCAG 2.1']}
-            />
+                accessibilityStandards={['WCAG 2.1']} 
+                currentScannedPage={''}            />
         </MemoryRouter>
     );
 };
