@@ -1,3 +1,22 @@
+## Date: December 3rd
+- Reviewed and merged Marie's code with filter modal
+- Fixed bug where panel not updating with filtered standards
+- Add accessibility standard tags to each pass in AccessibilityPanel component
+- Update frontend README to match backend
+- Clean up and organize frontend code
+
+
+## Date: December 1st
+- Fix violations reappearing after page switching bug
+- Add copyright to all frontend files
+- Create frontend test folder and add frontend test
+
+
+## Date: November 27th
+- Add loading skeleton on scan page while backend is generating fix
+- Add disclaimer to front page
+
+
 ## Date: November 10th 
 - Scan page updated to new UI design 
 - Add export, rescan, select all buttons
