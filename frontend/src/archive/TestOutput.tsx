@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Page } from '../../interfaces/scanInterfaces';
+import { Page } from '../interfaces/scanInterfaces';
 
 export function TestOutput() {
 	const location = useLocation();

@@ -106,7 +106,8 @@ export function AccessiblityPanel({
         console.error(error)
       });
   }, [framework, codeFiles, scanResults, activeSelections,
-    setGeneratedPageFixes, setLoadingFix, setOriginalFiles]);
+    setGeneratedPageFixes, setLoadingFix, setOriginalFiles, 
+    accessibilityStandards, currentScannedPage]);
 
   return (
     <div className="h-screen bg-black relative flex flex-col">
@@ -192,7 +193,7 @@ export function AccessiblityPanel({
         {scanResults.violations.length > 0 &&
           <div className="inline-flex justify-center w-full p-3 justify-between">
             <h3 className="text-white self-center text-sm font-bold">
-              {activeSelections.length} / {scanResults.violations.length}
+              {activeSelections.length} / {scanResults.violations.length} {' '}
               selected violation(s)
             </h3>
             <div className="space-x-2">
