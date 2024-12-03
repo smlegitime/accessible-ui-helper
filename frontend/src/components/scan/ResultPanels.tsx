@@ -22,6 +22,12 @@ export function PassesPanel({ resultsToDisplay }: { resultsToDisplay: AccViolati
                 </div>
                 <div className="flex flex-col p-3 justify-start ">
                     <h3 className="text-white text-left font-bold">{result.help}</h3>
+                    <div className="my-1 space-x-1 space-y-1">
+                        {result.tags.map((tag) => 
+                        <Badge key={tag} variant="default" className={`bg-primary-300 max-w-30 h-6`}>
+                            {tag}
+                        </Badge>)}
+                    </div>
                     <a href={result.helpUrl} target="_blank" rel="noopener noreferrer">
                         <h5 className="text-[#88AFEF] underline">Learn more</h5>
                     </a>

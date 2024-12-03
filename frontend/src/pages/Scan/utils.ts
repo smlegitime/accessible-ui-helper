@@ -222,7 +222,7 @@ export function pagesToFileCollection(
                 
                 // Run axe check
                 axe.run({
-                    runOnly: [${accessibilityStandards ? accessibilityStandards.map((standard) => `'${standard}'`).join(",") : "'wcag2aa','best-practice'"}]
+                    runOnly: [${accessibilityStandards.length > 0 ? accessibilityStandards.map((standard) => `'${standard}'`).join(",") : "'wcag2aa','best-practice'"}]
                 }).then((results) => {
                     console.log('Axe scan results:', results);
                     window.parent.postMessage({ type: 'axeResults', results }, '*')
@@ -235,7 +235,7 @@ export function pagesToFileCollection(
               "name": "html-css-js",
               "version": "1.0.0",
               "description": "",
-              "main": "index.html",
+              "main": "${entryFile}",
               "scripts": {
                 "start": "parcel index.html --open",
                 "build": "parcel build index.html"

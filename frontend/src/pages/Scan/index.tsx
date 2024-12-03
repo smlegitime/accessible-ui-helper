@@ -96,6 +96,15 @@ export function Scan() {
   const [originalFiles, setOriginalFiles] = useState<FileCollection>(
     initialFileCollection
   );
+/**
+ * Always update entry files if initialFileCollection content changes, 
+ * particularly accessibilityStandards (required for filterModal to work).
+ */
+  useEffect(() => {
+    setCodeFiles(initialFileCollection)
+    setOriginalFiles(initialFileCollection)
+    setGeneratedPageFixes(initialFileCollection)
+  }, [initialFileCollection])
   
   /**
    * displays the current page being scanned

@@ -22,59 +22,59 @@ interface Tag {
   tagDescription: string;
 }
 
+const recommendedTags: Tag[] = [
+  {
+    tagName: 'WCAG 2.0 Level AA',
+    tagId: 'wcag2aa',
+    tagType: 'recommended',
+    tagLink:
+      'https://dequeuniversity.com/rules/axe/4.10/#wcag-20-level-a--aa-rules',
+    tagDescription:
+      'The WCAG 2.0 AA rules are accessibility guidelines designed to make web content accessible to a wider range of users, including those with disabilities.',
+  },
+
+  {
+    tagName: 'WCAG 2.1 Level AA',
+    tagId: 'wcag21aa',
+    tagType: 'recommended',
+    tagLink:
+      'https://dequeuniversity.com/rules/axe/4.10/#wcag-21-level-a--aa-rules',
+    tagDescription:
+      'The WCAG 2.1 AA rules build on WCAG 2.0 and add additional guidelines to improve web accessibility, particularly for people with cognitive and learning disabilities, as well as users with low vision and mobile device users.',
+  },
+
+  {
+    tagName: 'Best Practices',
+    tagId: 'best-practice',
+    tagType: 'recommended',
+    tagLink:
+      'https://dequeuniversity.com/rules/axe/4.10/#best-practices-rules',
+    tagDescription:
+      'Industry-recognized practices that improve user experience, though they may not strictly follow WCAG success criteria. Typically used in conjunction with WCAG standards to ensure the highest level of accessibility.',
+  },
+];
+
+const otherTags: Tag[] = [
+  {
+    tagName: 'WCAG 2.2 Level AA',
+    tagId: 'wcag22aa',
+    tagType: 'other',
+    tagLink:
+      'https://dequeuniversity.com/rules/axe/4.10/#wcag-22-level-a--aa-rules',
+    tagDescription:
+      'WCAG 2.2 AA includes additional guidelines to improve accessibility. These rules are disabled by default, until WCAG 2.2 is more widely adopted and required.',
+  },
+  {
+    tagName: 'Experimental',
+    tagId: 'experimental',
+    tagType: 'other',
+    tagLink: 'https://dequeuniversity.com/rules/axe/4.10/#experimental-rules',
+    tagDescription:
+      'Experimental rules are in development and may not be fully stable. They are disabled by default in axe-core but can be enabled for testing purposes, offering developers a chance to explore and evaluate potential future accessibility guidelines. These rules should not be used in production environments.',
+  },
+];
+
 export function FilterModal({ applyFilters }: FilterModalProps) {
-  const recommendedTags: Tag[] = [
-    {
-      tagName: 'WCAG 2.0 Level AA',
-      tagId: 'wcag2aa',
-      tagType: 'recommended',
-      tagLink:
-        'https://dequeuniversity.com/rules/axe/4.10/#wcag-20-level-a--aa-rules',
-      tagDescription:
-        'The WCAG 2.0 AA rules are accessibility guidelines designed to make web content accessible to a wider range of users, including those with disabilities.',
-    },
-
-    {
-      tagName: 'WCAG 2.1 Level AA',
-      tagId: 'wcag21aa',
-      tagType: 'recommended',
-      tagLink:
-        'https://dequeuniversity.com/rules/axe/4.10/#wcag-21-level-a--aa-rules',
-      tagDescription:
-        'The WCAG 2.1 AA rules build on WCAG 2.0 and add additional guidelines to improve web accessibility, particularly for people with cognitive and learning disabilities, as well as users with low vision and mobile device users.',
-    },
-
-    {
-      tagName: 'Best Practices',
-      tagId: 'best-practice',
-      tagType: 'recommended',
-      tagLink:
-        'https://dequeuniversity.com/rules/axe/4.10/#best-practices-rules',
-      tagDescription:
-        'Industry-recognized practices that improve user experience, though they may not strictly follow WCAG success criteria. Typically used in conjunction with WCAG standards to ensure the highest level of accessibility.',
-    },
-  ];
-
-  const otherTags: Tag[] = [
-    {
-      tagName: 'WCAG 2.2 Level AA',
-      tagId: 'wcag22aa',
-      tagType: 'other',
-      tagLink:
-        'https://dequeuniversity.com/rules/axe/4.10/#wcag-22-level-a--aa-rules',
-      tagDescription:
-        'WCAG 2.2 AA includes additional guidelines to improve accessibility. These rules are disabled by default, until WCAG 2.2 is more widely adopted and required.',
-    },
-    {
-      tagName: 'Experimental',
-      tagId: 'experimental',
-      tagType: 'other',
-      tagLink: 'https://dequeuniversity.com/rules/axe/4.10/#experimental-rules',
-      tagDescription:
-        'Experimental rules are in development and may not be fully stable. They are disabled by default in axe-core but can be enabled for testing purposes, offering developers a chance to explore and evaluate potential future accessibility guidelines. These rules should not be used in production environments.',
-    },
-  ];
-
   // default selected filters ("recommended")
   const [selectedFilters, setSelectedFilters] = useState<string[]>([
     'wcag2aa',
