@@ -19,8 +19,8 @@ logging.configure({
 
 const logger = logging.getLogger('');
 const HOST = config.host;
-const PORT = config.port;
+const PORT: any = process.env.PORT || config.port;
 
-app.listen(PORT, HOST, () => {
+app.listen(PORT, () => {
     logger.info(`Server is running on port ${PORT}`)
 });
