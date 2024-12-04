@@ -146,9 +146,8 @@ export function Scan() {
 
   // always update code files with generated page fixes
   useEffect(() => {
-    setOriginalFiles(codeFiles);
     setCodeFiles(generatedPageFixes);
-  }, [generatedPageFixes, codeFiles]);
+  }, [generatedPageFixes]);
 
   return (
     <div className='h-screen'>
@@ -164,7 +163,7 @@ export function Scan() {
               framework={frameWork}
               setViewEditor={setViewEditor}
               viewEditor={viewEditor}
-              codeFiles={originalFiles}
+              codeFiles={codeFiles}
               folderName={folderName}
               setLoadingFix={setLoadingFix}
               accessibilityStandards={accessibilityStandards}

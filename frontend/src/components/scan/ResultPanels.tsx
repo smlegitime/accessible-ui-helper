@@ -129,7 +129,7 @@ export function ViolationsPanel({ resultsToDisplay,
                 <div className="flex flex-col p-3 justify-start ">
                     <h3 className="text-white text-left font-bold">{result.help}</h3>
                     <div className="my-1">
-                        <Badge variant="default" className={`${impactColor(result.impact)}  max-w-24 max-h-12`}>
+                        <Badge variant="default" className={`${impactColor(result.impact)} max-w-30 h-6`}>
                             {result.impact}
                         </Badge>
                     </div>

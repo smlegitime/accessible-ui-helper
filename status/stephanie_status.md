@@ -1,3 +1,6 @@
+## Date: December 4th 
+- Fixed disclaimer and the color diff bug on scan page
+
 ## Date: December 3rd
 - Reviewed and merged Marie's code with filter modal
 - Fixed bug where panel not updating with filtered standards
