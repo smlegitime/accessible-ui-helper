@@ -72,7 +72,7 @@ export function AccessiblityPanel({
    */
   const generateFixes = useCallback(() => {
     setLoadingFix(true)
-    axios.post('http://localhost:8080/api/fix', {
+    axios.post('http://localhost:80/api/fix', {
       "framework": framework,
       "currentScannedPage": currentScannedPage,
       "fileCollection": codeFiles,

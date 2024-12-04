@@ -9,11 +9,13 @@ Our web application allows for developers to check their website's accessibility
 - Front-End: React.js
 - Back-End: Express
 - Language: TypeScript
+- Delivery: Docker and Nginx
 
 ## ✅ Pre-requisites
 - Node.js (`v16` and up)
 - React.js
 - OpenAI API key. Add a `.env` file to the root of `accessible-ui-helper/backend/`, and inside the file add `GPT_API_TOKEN=<yourOpenAiApiKey>`. For more info on OpenAI API keys, check the [OpenAI website](https://openai.com/index/openai-api/).
+- Docker (if running via containers using `docker-compose`)
 
 ## 🗂️ Folder structure
 ```
@@ -46,11 +48,19 @@ To run this application locally, follow the installation instructions in the [fr
 
 ## 💻 Usage
 
+### Local run
+
 If running locally, run the following commands in different terminal windows to start the front-end and back-end
 ```bash
 npm start # front-end
 
 npm run dev # back-end with hot reload
+```
+### Running with Docker
+If running the application on docker, please make sure the docker daemon is running (you can check docker desktop if on a Mac or Windows PC).
+Then run
+```bash
+docker-compose up --build
 ```
 
 ## 👥 AccUI Team
