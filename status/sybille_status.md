@@ -115,3 +115,6 @@ Sample transformed output for an `about.html` page with accessibility violations
 - Preliminary refactoring of backend code to standardize and cleanup code files. (Packaged similar code into function, added file headers, removed commented code and `console.log` statements)
 - Cleaned project folder and removed unnecessary subfolders.
 - Updated `README` files for the repo.
+
+### 12/3
+- Added containerization and reverse proxy configurations for front end and backend
