@@ -18,7 +18,6 @@ logging.configure({
 }).registerConsoleLogger();
 
 const logger = logging.getLogger('');
-const HOST = config.host;
 const PORT: any = process.env.PORT || config.port;
 
 app.listen(PORT, () => {
