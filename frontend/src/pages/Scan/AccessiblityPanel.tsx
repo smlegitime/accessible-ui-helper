@@ -196,7 +196,7 @@ export function AccessiblityPanel({
               {activeSelections.length} / {scanResults.violations.length} {' '}
               selected violation(s)
             </h3>
-            <div className="space-x-2">
+            <div className="space-x-2 space-y-1">
               <Button
                 variant={'outline'}
                 className={`max-h-6 min-w-30 bg-black rounded-full 
