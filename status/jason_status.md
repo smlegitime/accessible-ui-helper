@@ -26,3 +26,11 @@ Finished high fidelity Figma protoype
 
 ## Nov 13th
 Implemented homepage styling with the Figma protoype style guide
+
+## Nov 25th
+Updated Figma high-fidelity design
+Start working on entry page selection and terms of service
+
+## Dec 6th
+Finished entry page selection and terms of service feature
+Home page style improvements
