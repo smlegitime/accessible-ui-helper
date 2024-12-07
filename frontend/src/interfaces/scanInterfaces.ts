@@ -20,6 +20,7 @@ export enum Framework {
 
 export interface Page {
   readonly pageId: string;
+  isEntry: boolean;
   filePath: string;
   viewport: {
     width: number;
