@@ -146,7 +146,7 @@ export function AccessiblityPanel({
             className="w-full mb-2 space-y-2"
             defaultValue="violations-block">
             <AccordionItem value="passes-block"
-              className="max-h-96 overflow-y-auto">
+              className="max-h-[60%] overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
                   <h2 className="text-white ml-2 inline-flex items-center font-bold">
@@ -165,7 +165,7 @@ export function AccessiblityPanel({
             <div className="border-b border-0 border-gray-500"></div>
             <AccordionItem
               value="violations-block"
-              className="max-h-96 overflow-y-auto">
+              className="max-h-[60%] overflow-y-auto">
               <AccordionTrigger>
                 <div className="inline-flex flex justify-between flex-auto">
                   <h2
