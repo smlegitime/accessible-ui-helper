@@ -77,15 +77,19 @@ export function insertAxeScriptHTML(htmlContent: string) {
 export function pagesToFileCollection(
   pages: Page[],
   accessibilityStandards: string[],
-) {
+) :  FileCollection {
   const initialFileCollection: FileCollection = {};
+  let entryFile = "index.html";
   if (pages.length === 0) {
     return initialFileCollection;
   }
   switch (pages[0].pageContent.framework) {
     case Framework.Vanilla:
-      const entryFile = "index.html";
       pages.map((page) => {
+        // if page is entry file, then update entry file
+        if (page.isEntry) {
+          entryFile = page.filePath.substring(page.filePath.indexOf("/") + 1)
+        }
         let pageCode = "";
         // update .html files to run axe-scripts
         if (page.pageContent.fileType === FileType.Html) {
