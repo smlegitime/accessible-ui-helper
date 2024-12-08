@@ -174,7 +174,7 @@ export class LLMManager {
     let ret = "" 
 
     for await (const chunk of stream) {
-      process.stdout.write(chunk.choices[0]?.delta?.content || "");
+      // process.stdout.write(chunk.choices[0]?.delta?.content || "");
       ret += chunk.choices[0]?.delta?.content || ""
     }
       return ret; 

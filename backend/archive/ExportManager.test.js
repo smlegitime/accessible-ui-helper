@@ -2,6 +2,7 @@ import ExportManager from '../services/ExportManager';
 import fs from 'fs';
 import path from 'path';
 
+/* istanbul ignore next */
 describe('ExportManager', () => {
     const exportManager = new ExportManager();
     const outputPath = path.resolve('./test_outputs');

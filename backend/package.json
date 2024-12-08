@@ -4,7 +4,7 @@
   "description": "Manifest for backend tasks and dependencies for the Accessible UI Helper",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "tsc && jest",
     "start": "ts-node ./src/server",
     "dev": "ts-node-dev ./src/server"
   },
