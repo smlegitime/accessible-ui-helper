@@ -13,6 +13,8 @@ import {
 import { logging } from '../lib/logging';
 import OpenAI from "openai";
 import * as dotenv from 'dotenv';
+import { ServerError } from './errors/customErrors';
+import { BaseCustomError } from './errors/baseCustomError';
 
 const logger = logging.getLogger('services.llmManager');
 
@@ -39,34 +41,50 @@ export class LLMManager {
       // create a prompt for the violation
       const template = this.promptBuilder(fileData);
 
-      // call llm with prompt for this fix
-      logger.info("Calling LLM");
-      let outputString: string = ""
-      outputString = await this.callLLM(template);
+      try {
+        // call llm with prompt for this fix
+        logger.info("Calling LLM");
+        let outputString: string = ""
+        outputString = await this.callLLM(template);
 
-      // check files validity
-      if (outputString !== "" && outputString !== undefined) {
-        logger.info("Called LLM successfully")
-        const chunks = outputString.split("\n*****")
-        
-        // Getting updated code blocks
-        let updatedCodeBlocks: string[] = []
-        
-        for (let i = 1; i < chunks.length; i++) {
-          updatedCodeBlocks.push(chunks[i])
+        // check files validity
+        if (outputString !== "" && outputString !== undefined) {
+          logger.info("Called LLM successfully")
+          const chunks = outputString.split("\n*****")
+          
+          // Getting updated code blocks
+          let updatedCodeBlocks: string[] = []
+          
+          for (let i = 1; i < chunks.length; i++) {
+            updatedCodeBlocks.push(chunks[i])
+          }
+          
+          // Get cleaned entire changed code
+          outputString = chunks[0];
+
+          fixedFileCollection[fileKey] = {
+            type: fileData.type,
+            content: outputString
+          };
         }
-        
-        // Get cleaned entire changed code
-        outputString = chunks[0];
-
-        fixedFileCollection[fileKey] = {
-          type: fileData.type,
-          content: outputString
-        };
-      }
-      else {
-        console.log("Did not call LLM successfully")
-      }
+        else {
+          throw new ServerError({
+            code: 503,
+            message: 'LLM was not called successfully.',
+            logging: true
+          });
+        }
+      } catch (error) {
+        if (error instanceof BaseCustomError) {
+          throw new ServerError({
+            code: 500,
+            message: 'LLM manager error occurred.',
+            logging: true,
+            context: { service: 'LlmManager' }
+          });
+        }
+        throw error;
+      } 
       
     }
 
@@ -174,7 +192,7 @@ export class LLMManager {
     let ret = "" 
 
     for await (const chunk of stream) {
-      process.stdout.write(chunk.choices[0]?.delta?.content || "");
+      // process.stdout.write(chunk.choices[0]?.delta?.content || "");
       ret += chunk.choices[0]?.delta?.content || ""
     }
       return ret; 

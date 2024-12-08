@@ -118,3 +118,8 @@ Sample transformed output for an `about.html` page with accessibility violations
 
 ### 12/3
 - Added containerization and reverse proxy configurations for front end and backend
+
+### 12/7
+- Fixed input transformer unit test
+- LLM manager and fixedPageEvaluator unit test refactoring
+- Added server error-handling logic, and integrated into all backend services

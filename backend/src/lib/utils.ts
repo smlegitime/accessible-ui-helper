@@ -11,7 +11,17 @@ import * as fs from 'fs';
  * @param filePath 
  * @returns 
  */
-export const readFile = (filePath: string): Promise<string> => {
+export const readFile = (filePath: string): string => {
+  try {
+    const file = fs.readFileSync(filePath, 'utf-8')
+    // console.log(file)
+    return file;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const readFileAsync = (filePath: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf-8', (err, data) => {
       if (err) {

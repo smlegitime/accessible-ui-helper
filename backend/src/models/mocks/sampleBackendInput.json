@@ -1,48 +1,88 @@
 {
-    "framework": "VanillaProject",
+    "framework": "Vanilla",
+    "currentScannedPage": "/about.html",
     "fileCollection": {
         "/index.html": {
-            "type": "html",
-            "content": "<!DOCTYPE html>\n  <html>\n    <head>\n      <title>Home Page Updated</title>\n      <link rel=\"stylesheet\" href=\"style.css\">\n    </head>\n    <body>\n      <h1>Home Page Updated</h1>\n      <button id=\"btn\">Click Me</button>\n      <a href=\"about.html\">Go to About</a>\n      <script src=\"node_modules/axe-core/axe.min.js\"></script>\n      <script src=\"script.js\"></script>\n      <script src=\"axe-script.js\"></script>\n    </body>\n  </html>"
-        },
-        "/style.css": {
-            "type": "css",
-            "content": "body { \n    font-family: Arial; \n  } \n  img { \n    width: 100px; \n  }"
-        },
-        "/script.js": {
-            "type": "js",
-            "content": "document.getElementById('btn').addEventListener('click', function() {\n    alert('Updated Button Clicked!');\n  });"
+            "type": "Html",
+            "content": "<html>\n        <head>\n          <link rel=\"stylesheet\" href=\"style.css\">\n        </head>\n        <body>\n          <h1>Home Page</h1>\n          <button id=\"btn\">Click Me</button>\n          <div id=\"count\"></div>\n          <a href=\"about.html\">Go to About</a>\n          <script src=\"script.js\"></script>\n        \n    <script src=\"node_modules/axe-core/axe.min.js\"></script>\n    <script src=\"axe-script.js\"></script>\n    </body>\n      </html>"
         },
         "/about.html": {
-            "type": "html",
-            "content": "<!DOCTYPE html>\n  <html>\n    <head>\n      <title>About Us</title>\n      <link rel=\"stylesheet\" href=\"about-style.css\">\n    </head>\n    <body>\n      <h1>CHANGED</h1>\n      <p>This is the about page.</p>\n      <a href=\"index.html\">Go to Home</a>\n      <script src=\"node_modules/axe-core/axe.min.js\"></script>\n      <script src=\"about-script.js\"></script>\n      <script src=\"axe-script.js\"></script>\n    </body>\n  </html>"
-        },
-        "/about-style.css": {
-            "type": "css",
-            "content": "h1 { \n    color: yellow; \n  }"
+            "type": "Html",
+            "content": "<html>\n        <head><link rel=\"stylesheet\" href=\"about-style.css\"></head>\n        <body>\n          <h1>About Us</h1>\n          <p>This is the about page.</p>\n          <a href=\"index.html\">Go to Home</a>\n          <script src=\"about-script.js\"></script>\n        \n    <script src=\"node_modules/axe-core/axe.min.js\"></script>\n    <script src=\"axe-script.js\"></script>\n    </body>\n      </html>"
         },
         "/about-script.js": {
-            "type": "js",
-            "content": "console.log('About page loaded lglg');"
+            "type": "Js",
+            "content": "console.log('About page loaded');"
         },
-        "/axe-script.js": {
-            "type": "js",
-            "content": "\n      console.log(1);\n    import axe from 'axe-core';\n      \n    axe.run().then((results) =>\n      window.parent.postMessage({ type: 'axeResults', results }, '*')\n      );\n    "
+        "/about-style.css": {
+            "type": "Css",
+            "content": "h1 { color: yellow; }"
+        },
+        "/script.js": {
+            "type": "Js",
+            "content": "document.getElementById('btn').addEventListener('click', function() {\n        alert('Button clicked!');\n        });"
         },
         "/package.json": {
-            "type": "json",
-            "content": "{\n    \"name\": \"html-css-js\",\n    \"version\": \"1.0.0\",\n    \"description\": \"\",\n    \"main\": \"index.html\",\n    \"scripts\": {\n      \"start\": \"parcel index.html --open\",\n      \"build\": \"parcel build index.html\"\n    },\n    \"dependencies\": {\"axe-core\": \"^4.10.1\"},\n    \"devDependencies\": {\n      \"@babel/core\": \"7.2.0\",\n      \"parcel-bundler\": \"^1.6.1\",\n      \"axe-core\": \"^4.10.1\"\n  \n    },\n    \"keywords\": []\n  }"
+            "type": "Json",
+            "content": "{\n              \"name\": \"html-css-js\",\n              \"version\": \"1.0.0\",\n              \"description\": \"\",\n              \"main\": \"index.html\",\n              \"scripts\": {\n                \"start\": \"parcel index.html --open\",\n                \"build\": \"parcel build index.html\"\n              },\n              \"dependencies\": {\"axe-core\": \"^4.10.1\"},\n              \"devDependencies\": {\n                \"@babel/core\": \"7.2.0\",\n                \"parcel-bundler\": \"^1.6.1\",\n                \"axe-core\": \"^4.10.1\"\n              },\n              \"keywords\": []\n            }"
         },
-        "/about_img.jpg": {
-            "type": "img",
-            "content": ""
+        "/style.css": {
+            "type": "Css",
+            "content": "body { font-family: Arial; } img { width: 100px; }"
+        },
+        "/axe-script.js": {
+            "type": "Js",
+            "content": "\n                import axe from 'axe-core';\n                \n                // Add highlight function\n                function highlightElement(selector, html, active) {\n                    console.log('Highlighting element:', { selector, html, active });\n                    try {\n                        let elements = [];\n                        \n                        // 1. Try direct selector\n                        elements = Array.from(document.querySelectorAll(selector));\n                        \n                        // 2. If not found and we have html, try to find by content\n                        if (elements.length === 0 && html) {\n                            const cleanHtml = html.replace(/['\"]/g, '');\n                            document.querySelectorAll(selector.split('>')[0]).forEach(el => {\n                                if (el.outerHTML.replace(/['\"]/g, '') === cleanHtml) {\n                                    elements.push(el);\n                                }\n                            });\n                        }\n                        \n                        // 3. If still not found, try basic tag\n                        if (elements.length === 0) {\n                            elements = Array.from(document.getElementsByTagName(selector));\n                        }\n\n                        console.log('Found elements to highlight:', elements);\n                        \n                        // Add styles if not already present\n                        if (!document.getElementById('highlight-styles')) {\n                            const style = document.createElement('style');\n                            style.id = 'highlight-styles';\n                            style.textContent = `\n                                @keyframes pulseOutline {\n                                    0% { outline-color: rgba(253, 144, 144, 0.8); }\n                                    50% { outline-color: rgba(253, 144, 144, 0.4); }\n                                    100% { outline-color: rgba(253, 144, 144, 0.8); }\n                                }\n                                \n                                @keyframes pulseBackground {\n                                    0% { background-color: rgba(253, 144, 144, 0.1); }\n                                    50% { background-color: rgba(253, 144, 144, 0.05); }\n                                    100% { background-color: rgba(253, 144, 144, 0.1); }\n                                }\n                            `;\n                            document.head.appendChild(style);\n                        }\n                        \n                        elements.forEach(el => {\n                            if (active) {\n                                // Add smooth transition\n                                el.style.transition = 'all 0.3s ease-in-out';\n                                \n                                // Main highlight effect\n                                el.style.outline = '2px solid rgba(253, 144, 144, 0.8)';\n                                el.style.outlineOffset = '4px';\n                                el.style.boxShadow = '0 0 0 4px rgba(253, 144, 144, 0.2)';\n                                \n                                // Background effect\n                                el.style.backgroundColor = 'rgba(253, 144, 144, 0.1)';\n                                \n                                // Add animations\n                                el.style.animation = 'pulseOutline 2s infinite, pulseBackground 2s infinite';\n                                \n                                // Scroll into view\n                                el.scrollIntoView({ \n                                    behavior: 'smooth', \n                                    block: 'center',\n                                    inline: 'center'\n                                });\n                            } else {\n                                // Clear all effects\n                                el.style.transition = '';\n                                el.style.outline = '';\n                                 el.style.outlineOffset = '';\n                                el.style.boxShadow = '';\n                                el.style.backgroundColor = '';\n                                el.style.animation = '';\n                            }\n                        });\n                    } catch (error) {\n                        console.error('Error highlighting element:', error);\n                    }\n                }\n\n                // Message handler\n                function handleMessage(event) {\n                    console.log('Received message in iframe:', event.data);\n                    if (event.data.type === 'highlightViolation') {\n                        const { selector, html, active } = event.data;\n                        highlightElement(selector, html, active);\n                    } else if (event.data.type === 'clearHighlights') {\n                        // Clear all highlights\n                        document.querySelectorAll('*').forEach(el => {\n                            el.style.transition = '';\n                            el.style.outline = '';\n                            el.style.outlineOffset = '';\n                            el.style.boxShadow = '';\n                            el.style.backgroundColor = '';\n                            el.style.animation = '';\n                        });\n                    }\n                }\n\n                // Initialize highlight system\n                function initializeHighlight() {\n                    console.log('Initializing highlight system');\n                    window.removeEventListener('message', handleMessage);\n                    window.addEventListener('message', handleMessage);\n                    console.log('Highlight system initialized');\n                }\n\n                // Run initialization\n                initializeHighlight();\n                \n                // Run axe check\n                axe.run({\n                    runOnly: ['wcag21aa','wcag2aa','best-practice']\n                }).then((results) => {\n                    console.log('Axe scan results:', results);\n                    window.parent.postMessage({ type: 'axeResults', results }, '*')\n                });\n            "
         }
     },
     "violations": [
         {
-            "pages": [
-                "/index.html"
+            "id": "color-contrast",
+            "impact": "serious",
+            "tags": [
+                "cat.color",
+                "wcag2aa",
+                "wcag143",
+                "TTv5",
+                "TT13.c",
+                "EN-301-549",
+                "EN-9.1.4.3",
+                "ACT"
             ],
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+                {
+                    "any": [
+                        {
+                            "id": "color-contrast",
+                            "data": {
+                                "fgColor": "#ffff00",
+                                "bgColor": "#ffffff",
+                                "contrastRatio": 1.07,
+                                "fontSize": "24.0pt (32px)",
+                                "fontWeight": "bold",
+                                "messageKey": null,
+                                "expectedContrastRatio": "3:1"
+                            },
+                            "relatedNodes": [],
+                            "impact": "serious",
+                            "message": "Element has insufficient color contrast of 1.07 (foreground color: #ffff00, background color: #ffffff, font size: 24.0pt (32px), font weight: bold). Expected contrast ratio of 3:1"
+                        }
+                    ],
+                    "all": [],
+                    "none": [],
+                    "impact": "serious",
+                    "html": "<h1>About Us</h1>",
+                    "target": [
+                        "h1"
+                    ],
+                    "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.07 (foreground color: #ffff00, background color: #ffffff, font size: 24.0pt (32px), font weight: bold). Expected contrast ratio of 3:1"
+                }
+            ]
+        },
+        {
             "id": "landmark-one-main",
             "impact": "moderate",
             "tags": [
@@ -75,10 +115,6 @@
             ]
         },
         {
-            "pages": [
-                "/index.html",
-                "/about.html"
-            ],
             "id": "region",
             "impact": "moderate",
             "tags": [
@@ -104,7 +140,7 @@
                     "all": [],
                     "none": [],
                     "impact": "moderate",
-                    "html": "<h1>Home Page Updated</h1>",
+                    "html": "<h1>About Us</h1>",
                     "target": [
                         "h1"
                     ],
@@ -125,7 +161,28 @@
                     "all": [],
                     "none": [],
                     "impact": "moderate",
-                    "html": "<a href=\"about.html\">Go to About</a>",
+                    "html": "<p>This is the about page.</p>",
+                    "target": [
+                        "p"
+                    ],
+                    "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                },
+                {
+                    "any": [
+                        {
+                            "id": "region",
+                            "data": {
+                                "isIframe": false
+                            },
+                            "relatedNodes": [],
+                            "impact": "moderate",
+                            "message": "Some page content is not contained by landmarks"
+                        }
+                    ],
+                    "all": [],
+                    "none": [],
+                    "impact": "moderate",
+                    "html": "<a href=\"index.html\">Go to Home</a>",
                     "target": [
                         "a"
                     ],
@@ -133,5 +190,10 @@
                 }
             ]
         }
+    ],
+    "accessibilityStandards": [
+        "wcag21aa",
+        "wcag2aa",
+        "best-practice"
     ]
 }

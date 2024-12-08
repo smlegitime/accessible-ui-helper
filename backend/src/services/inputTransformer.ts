@@ -4,6 +4,8 @@
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
 
+import { JSDOM } from 'jsdom';
+import { Result } from 'axe-core';
 import {
   FileCollection,
   FileType,
@@ -11,9 +13,9 @@ import {
   FileData,
   FixedFileData
 } from '../models/models';
-import { JSDOM } from 'jsdom';
 import { logging } from '../lib/logging';
-import { Result } from 'axe-core';
+import { ServerError } from './errors/customErrors';
+import { BaseCustomError } from './errors/baseCustomError';
 
 const logger = logging.getLogger('services.inputTransformer');
 
@@ -43,7 +45,14 @@ export class InputTransformer {
       return organizedInputs;
 
     } catch (err) {
-      logger.error(`An error occurred: ${err}`);
+      if (err instanceof BaseCustomError) {
+        throw new ServerError({
+          code: 500,
+          message: 'Input transformer error occurred.',
+          logging: true,
+          context: { service: 'InputTransformer' }
+        });
+      }
       throw err;
     }
   }

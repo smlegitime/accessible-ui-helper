@@ -90,7 +90,7 @@ export interface LogEntry {
     level: string;
     module: string;
     location?: string;
-    message: string;
+    message: string | Error;
 }
 
 export interface LogOptions {
@@ -123,7 +123,7 @@ export class Logger {
      * @param logLevel - log level
      * @param message - log message
      */
-    public log(logLevel: string, message: string) : void {
+    public log(logLevel: string, message: string | Error) : void {
         const level = this.levelToInt(logLevel);
         if (level < this.minLevel) return;
 
@@ -151,7 +151,7 @@ export class Logger {
     public debug(message: string): void { this.log('debug', message); }
     public info(message: string): void { this.log('info', message); }
     public warn(message: string): void { this.log('warn', message); }
-    public error(message: string): void { this.log('error', message); }
+    public error(message: string | Error): void { this.log('error', message); }
 
     /**
      * Convert a string level into a number

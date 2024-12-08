@@ -8,6 +8,8 @@ import axe, { AxeResults, Result } from 'axe-core';
 import { JSDOM } from 'jsdom';
 import { GeneratedFilesInfo, FileCollection } from '../models/models';
 import { logging } from '../lib/logging';
+import { BaseCustomError } from './errors/baseCustomError';
+import { ServerError } from './errors/customErrors';
 
 
 const logger = logging.getLogger('services.fixedPageEvaluator');
@@ -96,10 +98,16 @@ export class FixedPageEvaluator {
 
             return axeResults;
         } catch (error) {
-            logger.error(`An error occurred ${error}`);
+            if (error instanceof BaseCustomError) {
+                throw new ServerError({
+                  code: 500,
+                  message: 'Fixed page evaluator error occurred.',
+                  logging: true,
+                  context: { service: 'FixedPageEvaluator' }
+                });
+            }
             throw error;
         }
-        
     }
 
     /**
