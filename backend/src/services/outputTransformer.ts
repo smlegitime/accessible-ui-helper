@@ -7,6 +7,8 @@
 import { JSDOM } from 'jsdom';
 import { logging } from '../lib/logging';
 import { GeneratedFilesInfo } from '../models/models';
+import { BaseCustomError } from './errors/baseCustomError';
+import { ServerError } from './errors/customErrors';
 
 const logger = logging.getLogger('services.outputTransformer');
 
@@ -43,7 +45,14 @@ export class OutputTransformer {
       return this.generatedFilesInfo;
 
     } catch (err) {
-      logger.error(`An error occurred: ${err}`);
+      if (err instanceof BaseCustomError) {
+        throw new ServerError({
+          code: 500,
+          message: 'Output transformer error occurred.',
+          logging: true,
+          context: { service: 'OutputTransformer' }
+        });
+      }
       throw err;
     }
   }

@@ -7,6 +7,8 @@
 import path from 'path';
 import { ESLint } from 'eslint';
 
+import { BadRequestError } from './errors/customErrors';
+
 export class InputValidator {
   /**
    * Validates the files provided in the payload:
@@ -28,7 +30,11 @@ export class InputValidator {
 
       // Ensure the file type is valid
       if (!allowedFileTypes.includes(file.type.toLowerCase())) {
-        throw new Error(`Invalid file type detected in ${filePath}. Only HTML, CSS, and JS files are allowed.`);
+        throw new BadRequestError({
+          code: 400,
+          message: `Invalid file type detected in ${filePath}. Only HTML, CSS, and JS files are allowed.`,
+          logging: true
+        });
       }
 
       // Count each type of file
@@ -47,19 +53,31 @@ export class InputValidator {
       // Check file size (assuming `content` is a string, use Buffer.byteLength to get the size in bytes)
       const fileSizeInMB = Buffer.byteLength(file.content, 'utf8') / (1024 * 1024);
       if (fileSizeInMB > 200) {
-        throw new Error(`File ${filePath} exceeds the 200MB size limit.`);
+        throw new BadRequestError({
+          code: 400,
+          message: `File ${filePath} exceeds the 200MB size limit.`,
+          logging: true
+        });
       }
 
       // Validate file name (must only contain alphanumeric characters, dashes, underscores, and periods)
       const fileName = path.basename(filePath);
       if (!/^[a-zA-Z0-9._-]+$/.test(fileName)) {
-        throw new Error(`Invalid file name: ${fileName}. Only alphanumeric characters, underscores, dashes, and periods are allowed.`);
+        throw new BadRequestError({
+          code: 400,
+          message: `Invalid file name: ${fileName}. Only alphanumeric characters, underscores, dashes, and periods are allowed.`,
+          logging: true
+        });
       }
     }
     
     // Ensure equal count of HTML, CSS, and JS files
     if (htmlCount !== cssCount || cssCount !== jsCount) {
-      throw new Error(`File type count mismatch: HTML (${htmlCount}), CSS (${cssCount}), JS (${jsCount}). Each type must have an equal number of files.`);
+      throw new BadRequestError({
+        code: 400,
+        message: `File type count mismatch: HTML (${htmlCount}), CSS (${cssCount}), JS (${jsCount}). Each type must have an equal number of files.`,
+        logging: true
+      });
     }
   }
 
@@ -76,7 +94,11 @@ export class InputValidator {
     const results = await eslint.lintFiles([filePath]);
     
     if (results.length > 0 && results[0].messages.length > 0) {
-      throw new Error(`Issues found in ${filePath}: ${results[0].messages.map(msg => msg.message).join(', ')}`);
+      throw new BadRequestError({
+        code: 400,
+        message: `Issues found in ${filePath}: ${results[0].messages.map(msg => msg.message).join(', ')}`,
+        logging: true
+      });
     }
   }
 }

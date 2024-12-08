@@ -122,3 +122,4 @@ Sample transformed output for an `about.html` page with accessibility violations
 ### 12/7
 - Fixed input transformer unit test
 - LLM manager and fixedPageEvaluator unit test refactoring
+- Added server error-handling logic, and integrated into all backend services

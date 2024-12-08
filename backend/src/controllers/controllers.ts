@@ -23,9 +23,6 @@ export const handleScannedInput = async (req: Request, res: Response) => {
         const inputTransformer = new InputTransformer(scannedInput);
         const transformedInput: FileCollection = inputTransformer.transformInput();
 
-        // console.log('Transformed input:');
-        // console.log(JSON.stringify(transformedInput));
-
         logger.info('Request successfully transformed.');
         logger.info('Generating fixes...');
         
