@@ -43,7 +43,7 @@ export function StandardTag({
           {(tagId === 'wcag21aa' ||
             tagId === 'wcag2aa' ||
             tagId === 'wcag22aa') && (
-            <span className='bg-primary-100 text-black px-2 py-1 rounded-full text-xs'>
+            <span className='bg-accent-1000 text-black px-2 py-1 rounded-full text-xs'>
               standard
             </span>
           )}
@@ -51,9 +51,9 @@ export function StandardTag({
           <span
             className={`inline-flex rounded-full text-xs px-2 py-1 ${
               tagType === 'recommended'
-                ? 'bg-green-500 text-black'
+                ? 'bg-primary-100 text-black'
                 : tagType === 'other'
-                  ? 'bg-[#f1c40f] text-black'
+                  ? 'bg-accent-700 text-black'
                   : 'bg-gray-500 text-white'
             }`}
           >
@@ -61,7 +61,7 @@ export function StandardTag({
           </span>
 
           {tagId === 'experimental' && (
-            <span className='bg-[#7F3FBF] text-black px-2 py-1 rounded-full text-xs'>
+            <span className='bg-accent-400 text-black px-2 py-1 rounded-full text-xs'>
               experimental
             </span>
           )}
