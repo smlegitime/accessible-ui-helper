@@ -4,7 +4,6 @@
  * Created date: Oct 25, 2024 | Updated date: Dec 6, 2024 
  */
 
-import React from 'react';
 import { useState, useEffect } from 'react';
 import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +33,7 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 	let htmlFileIndex: number[] = [];
 	// Get the index of each html file in files array and store in htmlFileIndex
 	for (let i = 0; i < files.length; i++) {
-		if (files[i].type == 'text/html') {
+		if (files[i].type === 'text/html') {
 			htmlFileIndex.push(i);
 		}
 	}
@@ -51,7 +50,7 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 			path: path,
 			fileName: files[index].name,
 			value: index,
-			isIndex: files[index].name == 'index.html'
+			isIndex: files[index].name === 'index.html'
 		};
 	});
 
@@ -61,7 +60,7 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 		setSelectedEntryFile(htmlFileIndex[0]);
 		// Select the index.html as the default
 		for (let i = 0; i < htmlFileIndex.length; i++) {
-			if (files[htmlFileIndex[i]].name == 'index.html') {
+			if (files[htmlFileIndex[i]].name === 'index.html') {
 				setSelectedEntryFile(htmlFileIndex[i]);
 			}
 		}
@@ -224,7 +223,7 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 								</label>
 							</li>
 						))}
-						{entryFiles.length == 0 &&
+						{entryFiles.length === 0 &&
 							<li>Please Include
 								<span className='text-primary-100 font-bold'> HTML </span>
 								files in your uploaded folder.
@@ -239,7 +238,7 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 							</label>
 						</div>
 
-						<Button variant='outline' onClick={handleSubmit} disabled={selectedEntryFile == -1 || isChecked == false}
+						<Button variant='outline' onClick={handleSubmit} disabled={selectedEntryFile === -1 || isChecked === false}
 							className='max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold'
 						>
 							ENHANCE

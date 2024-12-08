@@ -1,39 +1,15 @@
+/**
+ * @fileoverview Test file for AccessibilityPanel Component
+ * @author Stephanie Olaiya
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
+ */
+
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AccessiblityPanel } from '../pages/Scan/AccessiblityPanel';
 import { testingMock } from '../mocks/accessibilityResultMocks';
 import { AccessibilityResults, AccViolation } from '../interfaces/scanInterfaces';
 import { MemoryRouter } from 'react-router-dom';
 
-import axios, { AxiosRequestHeaders, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-
-// Ensure that axios is mocked as a Jest function
-jest.mock('axios');
-
-// Define a type for the response data if necessary
-const mockResponse: AxiosResponse = {
-  data: {
-    generatedFilesInfo: {
-        generatedCode: {},
-        originalData: {}
-      }
-},
-  status: 200,
-  statusText: 'OK',
-  headers: {},
-  config: {
-      headers: {} as AxiosRequestHeaders
-  },
-};
-
-const mockResponseError: AxiosResponse = {
-    data: {},
-    status: 500,
-    statusText: 'error',
-    headers: {},
-    config: {
-        headers: {} as AxiosRequestHeaders
-    },
-  };
 
 // Mock the API response for the POST request
 const mockScanResults = testingMock;

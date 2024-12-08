@@ -4,6 +4,7 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
     "@babel/preset-typescript": "^7.26.0",
+    "@testing-library/react": "^16.1.0",
     "@types/pdfkit": "^0.13.5",
     "babel-jest": "^29.7.0",
     "ts-jest": "^29.2.5",

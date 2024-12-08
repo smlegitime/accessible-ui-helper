@@ -51,6 +51,8 @@ To start the local server, or run the test suite, choose one of the following op
 npm start #(prod environment)
 
 npm test #(run Jest test suite)
+
+npm test -- -- coverage #(run Jest test suite and see test coverage)
 ```
 
 ## 💻 Usage
