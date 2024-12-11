@@ -3,6 +3,7 @@
  * @author Yongcheng Shi
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import React, { useEffect } from 'react';
 import { SandpackCodeEditor } from '@codesandbox/sandpack-react';
 import { FileCollection } from '@/src/interfaces/scanInterfaces';
@@ -17,6 +18,11 @@ interface DiffHighlightEditorProps {
     showTabs?: boolean;
 }
 
+/**
+ * Noramlize code content by replacing some values with string equivalents
+ * @param content - content to be normalized
+ * @returns normalized content 
+ */
 export function normalizeContent(content: string): string {
     return content
         .replace(/\s+/g, ' ') 
@@ -27,6 +33,12 @@ export function normalizeContent(content: string): string {
         .trim();  
 }
 
+/**
+ * Compute the code changes line by line between two string contents
+ * @param oldContent - string containing old content of code file
+ * @param newContent - string containing old content of code file
+ * @returns list of boolean showing which lines have been changed
+ */
 function computeLineDiffs(oldContent: string, newContent: string): boolean[] {
     const oldLines = oldContent.split('\n');
     const newLines = newContent.split('\n');
@@ -53,6 +65,9 @@ function computeLineDiffs(oldContent: string, newContent: string): boolean[] {
     return diffs;
 }
 
+/**
+ * Code Editor component with code highlight feature
+ */
 export function DiffHighlightEditor({
     files,
     originalFiles,

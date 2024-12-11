@@ -1,5 +1,5 @@
 /**
- * @fileoverview Loading Skeleton for scap page to display when fix call 
+ * @fileoverview Loading Skeleton for scan page to display when fix call 
  * is happening
  * @author Stephanie Olaiya
  * @copyright 2024 Accessible UI Helper. All rights reserved.

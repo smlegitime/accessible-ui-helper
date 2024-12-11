@@ -4,6 +4,7 @@
  * @author Stephanie Olaiya
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import { AccessibilityResults, FileCollection, FixedFileCollection, GeneratedFilesInfo } from "@/src/interfaces/scanInterfaces";
 import { PassesPanel, ViolationsPanel } from "../../components/scan/ResultPanels";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
@@ -72,7 +73,7 @@ export function AccessiblityPanel({
    */
   const generateFixes = useCallback(() => {
     setLoadingFix(true)
-    axios.post('http://localhost:80/api/fix', {
+    axios.post('http://localhost:8000/api/fix', {
       "framework": framework,
       "currentScannedPage": currentScannedPage,
       "fileCollection": codeFiles,
@@ -108,7 +109,7 @@ export function AccessiblityPanel({
   }, [framework, codeFiles, scanResults, activeSelections,
     setGeneratedPageFixes, setLoadingFix, setOriginalFiles, 
     accessibilityStandards, currentScannedPage]);
-
+    console.log(codeFiles)
   return (
     <div className="h-screen bg-black relative flex flex-col">
       <div className="flex-grow overflow-auto"> {/* Allow content to scroll */}

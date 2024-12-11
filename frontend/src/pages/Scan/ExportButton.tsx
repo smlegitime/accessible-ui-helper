@@ -4,12 +4,20 @@
  * @author Brandon Woodard
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import jsPDF from 'jspdf';
 import JSZip from 'jszip';
 import { Button } from "../../components/ui/button";
 import { AccessibilityResults, FileCollection } from '@/src/interfaces/scanInterfaces';
 import { normalizeContent } from './DiffHighlightEditor'; // Reuse normalization logic
 
+/**
+ * Export button component in Accessibility Panel
+ * @param setGeneratedPageFixes - setter for updated (fixed) code files
+ * @param scanResults - results of accessibilituy evaluation 
+ * @param codeFiles - initial code files
+ * @returns 
+ */
 export function ExportButton({
     setGeneratedPageFixes,
     scanResults,

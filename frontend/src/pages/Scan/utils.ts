@@ -3,6 +3,7 @@
  * @author Stephanie Olaiya, YongCheng Shi
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import {
   FileCollection,
   FileData,
@@ -85,7 +86,10 @@ export function pagesToFileCollection(
   }
   switch (pages[0].pageContent.framework) {
     case Framework.Vanilla:
-      pages.map((page) => {
+      pages.filter((page) => {
+        const fileName = page.filePath.substring(page.filePath.indexOf("/") + 1) 
+        return fileName !== ".DS_Store"
+      }).map((page) => {
         // if page is entry file, then update entry file
         if (page.isEntry) {
           entryFile = page.filePath.substring(page.filePath.indexOf("/") + 1)
@@ -105,7 +109,7 @@ export function pagesToFileCollection(
           "/" + page.filePath.substring(page.filePath.indexOf("/") + 1)
         ] = pageInfo);
       });
-      //Add axe-script here and file validation
+      // Add axe-script here and file validation
       initialFileCollection["/axe-script.js"] = {
         type: FileType.Js,
         content: `
@@ -254,6 +258,7 @@ export function pagesToFileCollection(
             }`,
       };
       return initialFileCollection;
+    // TODO: script embedding for other project framework types
     case Framework.Angular:
       return {} as FileCollection;
     case Framework.React:

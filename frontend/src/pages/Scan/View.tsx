@@ -9,7 +9,13 @@ import { fileCollectionToSandPackFiles } from "./utils";
 import { useMemo } from "react";
 import { DiffHighlightEditor } from "./DiffHighlightEditor";
 
-
+/**
+ * View component (right hand side) of scan page
+ * @param files - updated code files
+ * @param viewEditor - whether the user has clicked button to view or hide editor
+ * @param originalFiles - original code files
+ * @returns React component
+ */
 export function View({
   files,
   viewEditor,
@@ -19,6 +25,7 @@ export function View({
   viewEditor: boolean,
   originalFiles: FileCollection | null
 }) {
+  // convert files to SandpackFiles to be compatible with SandpackProvider
   const organizedFiles = useMemo(() => fileCollectionToSandPackFiles(files), [files]);
   return (
     <div className="w-full h-full">

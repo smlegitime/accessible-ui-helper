@@ -1,6 +1,7 @@
 /**
- * Description: For selecting an Entry File and Terms and Services
- * Created: Jiecheng(Jason) Chen
+ * @fileoverview For selecting an Entry File and Terms and Services
+ * @author Jiecheng(Jason) Chen
+ * @copyright 2024 Accessible UI Helper. All rights reserved.
  * Created date: Oct 25, 2024 | Updated date: Dec 6, 2024 
  */
 
@@ -64,6 +65,7 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 				setSelectedEntryFile(htmlFileIndex[i]);
 			}
 		}
+		// eslint-disable-next-line
 	}, []);
 
 	// User selecting the entry file

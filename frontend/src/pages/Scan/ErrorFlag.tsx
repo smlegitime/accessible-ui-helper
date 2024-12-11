@@ -3,8 +3,14 @@
  * @author Stephanie Olaiya
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import { IoIosCloseCircle } from "react-icons/io";
 
+/**
+ * Error flag component displayed to user when /fix call returns an error
+ * @param setDisplayError - setter for displayError state (whether component is visible)
+ * @returns React component that displays error to user
+ */
 export function ErrorFlag(
     { setDisplayError }:
         { setDisplayError: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -18,6 +24,7 @@ export function ErrorFlag(
                     Error rendering fix. Please try again later.
                 </p>
                 <span className="inline-flex p-2 text-black rounded-lg shrink-0">
+                    {/* remove element when user clicks button */}
                     <button onClick={() => setDisplayError(false)}>
                         <IoIosCloseCircle />
                     </button>

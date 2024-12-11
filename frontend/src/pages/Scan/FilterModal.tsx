@@ -74,6 +74,12 @@ const otherTags: Tag[] = [
   },
 ];
 
+/**
+ * Filter component that displays provided accessibilty options for users to 
+ * choose from and updates standards that user's code is run with
+ * @param applyFilters - function to apply selected filters i.e set standards
+ * @returns 
+ */
 export function FilterModal({ applyFilters }: FilterModalProps) {
   // default selected filters ("recommended")
   const [selectedFilters, setSelectedFilters] = useState<string[]>([
@@ -82,6 +88,10 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
     'best-practice',
   ]);
 
+  /**
+   * Function to run when a checkbox is selected 
+   * @param filter - selected item to add to selectedList
+   */
   const handleCheckboxChange = (filter: string) => {
     setSelectedFilters((prev) => {
       if (prev.includes(filter)) {
@@ -95,6 +105,9 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
     });
   };
 
+  /**
+   * Apply applyFilters function (to be run after clicking on Scan My Code Button)
+   */
   const handleApply = () => {
     applyFilters(selectedFilters);
   };

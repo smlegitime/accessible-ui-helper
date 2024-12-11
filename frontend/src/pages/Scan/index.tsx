@@ -49,12 +49,17 @@ export function Scan() {
   >(['wcag21aa', 'wcag2aa', 'best-practice']);
 
   const folderName = pages.length > 0 ? pages[0].filePath.split('/')[0] : 'N/A';
-  // Convert pages: Page[] to fileCollection that we are taking
-  // as input to AccessibilityPanel and extract framework
+
+  /**
+   * Initial fileCollection created from pages sent from home page
+   */
   const initialFileCollection: FileCollection = useMemo(() => {
+    // Convert pages: Page[] to fileCollection that we are taking
+    // as input to AccessibilityPanel and extract framework
     return pagesToFileCollection(pages, accessibilityStandards);
   }, [accessibilityStandards, pages]);
 
+  // initialize accessibility results that are populated from embedded script
   const emptyResults = {
     passes: [],
     violations: [],
@@ -96,10 +101,11 @@ export function Scan() {
   const [originalFiles, setOriginalFiles] = useState<FileCollection>(
     initialFileCollection
   );
-/**
- * Always update entry files if initialFileCollection content changes, 
- * particularly accessibilityStandards (required for filterModal to work).
- */
+
+  /**
+   * Always update entry files if initialFileCollection content changes, 
+   * particularly accessibilityStandards (required for filterModal to work).
+   */
   useEffect(() => {
     setCodeFiles(initialFileCollection)
     setOriginalFiles(initialFileCollection)
@@ -114,6 +120,7 @@ export function Scan() {
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
       console.log('Scan component received message:', event.data);
+      // only listen for axeResult messages
       if (event.data.type === 'axeResults') {
         const returnedResults = event.data.results;
         console.log('Processing axe results:', returnedResults);

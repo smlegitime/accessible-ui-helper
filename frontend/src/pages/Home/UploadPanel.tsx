@@ -3,8 +3,8 @@
  * @author Jiecheng(Jason) Chen
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  * Created date: Oct 14, 2024 | Updated date: Dec 6, 2024 
-
  */
+
 import React from 'react';
 import { useState, useRef, DragEvent } from 'react';
 import { Button } from '../../components/ui/button';

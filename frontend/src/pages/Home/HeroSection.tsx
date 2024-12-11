@@ -3,6 +3,7 @@
  * @author Jiecheng(Jason) Chen
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import { UploadPanel } from './UploadPanel';
 
 export function HeroSection() {

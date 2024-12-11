@@ -3,6 +3,7 @@
  * @author Jiecheng(Jason) Chen
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import '../../styles/globals.css';
 import { DisclaimerCard } from './Disclaimer';
 import backgroundImg from '../../images/abstractBackground.webp'

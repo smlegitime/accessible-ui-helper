@@ -3,6 +3,7 @@
  * @author Stephanie Olaiya
  * @copyright 2024 Accessible UI Helper. All rights reserved.
  */
+
 import { useState } from "react";
 import { IoWarning } from "react-icons/io5";
 
@@ -27,7 +28,7 @@ export function DisclaimerCard() {
                     <button className={`text-xs w-1/2 md:w-auto font-medium 
                         bg-gray-800 rounded-lg hover:bg-gray-700 text-white px-4 
                         py-2.5 duration-300 transition-colors focus:outline-none`}
-                        onClick={()=> {setOpen(false)}}>
+                        onClick={()=> setOpen(false)}>
                         Accept
                     </button>
                 </div>
