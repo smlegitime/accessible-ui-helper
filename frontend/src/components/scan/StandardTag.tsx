@@ -27,13 +27,16 @@ export function StandardTag({
   return (
     <div className='flex bg-[#3b3b3b] p-4 border border-[#4a4a4a] rounded-md w-[310px]'>
       {/* Checkbox */}
+
       <input
         type='checkbox'
         id={tagId}
+        aria-label={tagName}
         checked={selectedFilters.includes(tagId)}
         onChange={() => handleCheckboxChange(tagId)}
         className='peer w-5 h-5 rounded-md border-2 border-gray-300 bg-gray-800 checked:bg-primary-100 focus:ring-2 focus:ring-primary-100 mr-4'
       />
+
       {/* Main Content */}
       <div className='flex flex-col'>
         {/* Tag Name */}

@@ -62,7 +62,7 @@ describe('FilterModal Component', () => {
     fireEvent.click(wcag21Checkbox);
     fireEvent.click(bestPracticeCheckbox);
 
-    // Try deselecting the last filter
+    // Try to deselect the last filter
     fireEvent.click(wcag20Checkbox);
     expect(wcag20Checkbox).toBeChecked();
   });

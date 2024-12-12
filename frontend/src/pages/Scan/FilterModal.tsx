@@ -10,6 +10,7 @@
 
 import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Button } from '../../components/ui/button';
 import { StandardTag } from '../../components/scan/StandardTag';
 import { logging } from '../../lib/logging';
@@ -33,9 +34,11 @@ interface Tag {
   tagDescription: string;
 }
 
-
 //Logger setup
 const logger = logging.getLogger('');
+
+// component to hide Dialog Title (necessary for accessibility purposes)
+export default () => <VisuallyHidden.Root />;
 
 /**
  * FilterModal component that displays accessibility options for users to choose from.
@@ -72,7 +75,7 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
    * Applies the selected filters by invoking the provided applyFilters function.
    */
   const handleApply = () => {
-    logger.info("Selected standards...")
+    logger.info('Selected standards...');
     applyFilters(selectedFilters);
   };
 
@@ -88,6 +91,10 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
                      bg-[#282828] rounded-lg w-[80%] h-[80%] max-w-6xl max-h-[90%] overflow-y-auto
                      border-2 border-[#4a4a4a] px-6 py-6'
         >
+          <Dialog.Title>
+            <VisuallyHidden.Root>Filter</VisuallyHidden.Root>
+          </Dialog.Title>
+
           <h1 className='text-white text-2xl font-bold mb-4 flex items-center justify-between'>
             Select Accessibility Standards
             <Dialog.Close
