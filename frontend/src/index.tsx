@@ -3,6 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { logging } from '../src/lib/logging';
+
+// Configuring the logger
+logging.configure({
+  minLevels: {
+      '': 'info',
+      'src': 'warn'
+  }
+}).registerConsoleLogger();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

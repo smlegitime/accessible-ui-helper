@@ -16,6 +16,9 @@ import axios from "axios";
 import { fixedFileCollectionToFileCollection } from './utils';
 import { ExportButton } from './ExportButton';
 import { ErrorFlag } from "./ErrorFlag";
+import { logging } from '../../lib/logging';
+
+const logger = logging.getLogger('src.pages.Scan');
 
 
 /**
@@ -73,7 +76,7 @@ export function AccessiblityPanel({
    */
   const generateFixes = useCallback(() => {
     setLoadingFix(true)
-    axios.post('http://localhost:8000/api/fix', {
+    axios.post('http://localhost/api/fix', {
       "framework": framework,
       "currentScannedPage": currentScannedPage,
       "fileCollection": codeFiles,
@@ -104,7 +107,7 @@ export function AccessiblityPanel({
       .catch(error => {
         setLoadingFix(false); // remove loading skeleton
         setDisplayError(true);
-        console.error(error)
+        logger.error(error)
       });
   }, [framework, codeFiles, scanResults, activeSelections,
     setGeneratedPageFixes, setLoadingFix, setOriginalFiles, 
