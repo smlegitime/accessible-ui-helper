@@ -5,7 +5,7 @@ Our web application allows for developers to check their website's accessibility
 
 Official webpage (Deployed on a VM hosted by the CS department, and open until Dec 21, 2024): [https://accui.cs.brown.edu](https://accui.cs.brown.edu)
 
-![AccUI Homepage](accui-homepage.png)
+<img width="1512" alt="Screenshot 2024-12-12 at 9 03 42 AM" src="https://github.com/user-attachments/assets/70d5809b-0f39-4a58-abdd-44c86e1ff7a6" />
 
 ## 💻⚙️ Tech Stack
 - Front-End: React.js
