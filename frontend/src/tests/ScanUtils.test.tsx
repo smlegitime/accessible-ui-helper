@@ -116,3 +116,49 @@ test("test pagesToFileCollection for mock pages", () => {
   expect(returnedFileCollecton["/package.json"].content)
   .toContain(`"main": "index.html",`);
 })
+
+test("test pagesToFileCollection for mock non-html file", () => {
+  const pages: Page[] = [{
+    pageId: "index.html",
+    isEntry: true,
+    filePath: "test-folder/index.html",
+    viewport: {
+      width: 200,
+      height: 600,
+    },
+    pageContent: {
+      fileType: FileType.Html,
+      framework: Framework.Vanilla,
+      body: {
+        originalVersion: "<h1>Home Page</h1>",
+        transpiledVersion: " <h1>Home Page</h1>",
+      }
+    }
+  }, {
+    pageId: "style.css",
+    isEntry: false,
+    filePath: "test-folder/style.css",
+    viewport: {
+      width: 200,
+      height: 600,
+    },
+    pageContent: {
+      fileType: FileType.Css,
+      framework: Framework.Vanilla,
+      body: {
+        originalVersion: "body { color: #000000}",
+        transpiledVersion: "body { color: #000000}",
+      }
+    }
+  }]
+  const accessibilityStandards = ["best-practices"]
+  const returnedFileCollecton = pagesToFileCollection(pages, accessibilityStandards)
+  expect(returnedFileCollecton.hasOwnProperty("/axe-script.js")).toBe(true);
+  expect(returnedFileCollecton.hasOwnProperty("/package.json")).toBe(true);
+  expect(returnedFileCollecton["/axe-script.js"].content)
+  .toContain("runOnly: ['best-practices']");
+  expect(returnedFileCollecton["/style.css"].content)
+  .not.toContain(`<script src="axe-script.js"></script>`);
+  expect(returnedFileCollecton["/package.json"].content)
+  .toContain(`"main": "index.html",`);
+})

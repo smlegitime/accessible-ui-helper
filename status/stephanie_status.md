@@ -1,5 +1,18 @@
+## Date: December 11th
+- Added logging to frontend
+- Fixed bug that allowed DS.Store file to be passed to backend
+- Added more unit tests for scan page
+- Updated code style document for project
+- Updated JSDocs for main frontend component functions
+
+## Date: Decemeber 7th
+- Reviewed and merged code for home page updates
+- Updated Scan page pages[] processing to obtain entry file specified by home page
+
+
 ## Date: December 4th 
 - Fixed disclaimer and the color diff bug on scan page
+
 
 ## Date: December 3rd
 - Reviewed and merged Marie's code with filter modal

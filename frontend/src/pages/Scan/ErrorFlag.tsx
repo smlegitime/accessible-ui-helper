@@ -18,14 +18,15 @@ export function ErrorFlag(
         <section className={`fixed max-w-2xl p-4 mx-auto bg-secondary-200 
         border border-gray-200 md:gap-x-4 place-self-center top-16 
         dark:bg-gray-900 md:flex md:items-center dark:border-gray-700 
-        rounded-2xl`}>
+        rounded-2xl`} data-testid="error-flag">
             <div className="flex items-center gap-x-4">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                     Error rendering fix. Please try again later.
                 </p>
                 <span className="inline-flex p-2 text-black rounded-lg shrink-0">
                     {/* remove element when user clicks button */}
-                    <button onClick={() => setDisplayError(false)}>
+                    <button data-testid="error-flag-close-button" 
+                    onClick={() => setDisplayError(false)}>
                         <IoIosCloseCircle />
                     </button>
                 </span>

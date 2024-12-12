@@ -163,6 +163,7 @@ export function ExportButton({
 
     return (
         <Button onClick={handleDoneClick}
+            data-testid="export-button" 
             className="max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold">
             DONE
         </Button>

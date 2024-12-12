@@ -9,6 +9,7 @@ import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../../components/ui/button';
 import { StandardTag } from '../../components/scan/StandardTag';
+import { logging } from '../../lib/logging';
 
 interface FilterModalProps {
   applyFilters: (filters: string[]) => void;
@@ -74,6 +75,9 @@ const otherTags: Tag[] = [
   },
 ];
 
+//Logger setup
+const logger = logging.getLogger('');
+
 /**
  * Filter component that displays provided accessibilty options for users to 
  * choose from and updates standards that user's code is run with
@@ -109,6 +113,7 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
    * Apply applyFilters function (to be run after clicking on Scan My Code Button)
    */
   const handleApply = () => {
+    logger.info("Selected standards...")
     applyFilters(selectedFilters);
   };
 

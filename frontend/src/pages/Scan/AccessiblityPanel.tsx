@@ -18,7 +18,7 @@ import { ExportButton } from './ExportButton';
 import { ErrorFlag } from "./ErrorFlag";
 import { logging } from '../../lib/logging';
 
-const logger = logging.getLogger('src.pages.Scan');
+
 
 
 /**
@@ -63,6 +63,9 @@ export function AccessiblityPanel({
   currentScannedPage: string
 }) {
 
+  // Logger setup
+  const logger = logging.getLogger('src.pages.Scan');
+  
   /**
    * index of violations that have been selected by user.
    */
@@ -75,6 +78,7 @@ export function AccessiblityPanel({
    * call api/fix on backend to get code with selected violations fixes.
    */
   const generateFixes = useCallback(() => {
+    logger.info("Sending fix request to backend...")
     setLoadingFix(true)
     axios.post('http://localhost/api/fix', {
       "framework": framework,
@@ -105,14 +109,14 @@ export function AccessiblityPanel({
         setActiveSelections([]) // reset active selections
       })
       .catch(error => {
+        logger.error(error as string);
         setLoadingFix(false); // remove loading skeleton
         setDisplayError(true);
         logger.error(error)
       });
   }, [framework, codeFiles, scanResults, activeSelections,
     setGeneratedPageFixes, setLoadingFix, setOriginalFiles, 
-    accessibilityStandards, currentScannedPage]);
-    console.log(codeFiles)
+    accessibilityStandards, currentScannedPage, logger]);
   return (
     <div className="h-screen bg-black relative flex flex-col">
       <div className="flex-grow overflow-auto"> {/* Allow content to scroll */}
@@ -213,6 +217,7 @@ export function AccessiblityPanel({
                 SELECT ALL
               </Button>
               <Button
+                data-testid="fix-button" 
                 disabled={activeSelections.length === 0}
                 onClick={() => {
                   generateFixes();

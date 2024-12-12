@@ -32,7 +32,6 @@ export function PassesPanel({ resultsToDisplay }: { resultsToDisplay: AccViolati
                         <h5 className="text-[#88AFEF] underline">Learn more</h5>
                     </a>
                 </div>
-
             </div>
         )
     })
@@ -118,6 +117,7 @@ export function ViolationsPanel({ resultsToDisplay,
                             active:bg-gray-700 focus:outline-none 
                                focus:ring focus:ring-gray-300 rounded
                                `}
+                               data-testid={`violation-click-${i}`}
                         onClick={() => {
                             const isCurrentlySelected = activeSelections.includes(i);
                             handleViolationSelect(result, i, !isCurrentlySelected);
