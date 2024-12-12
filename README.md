@@ -3,8 +3,6 @@ Repository for the Accessible UI (AccUI) Helper Project - [CSCI2340](https://sit
 
 Our web application allows for developers to check their website's accessibility as they develop, and generates automated fixes for any accessibility violation the user wants to correct. For more information about the accessibility guidelines we follow, you can refer to the [W3C Accessibility Standards](https://www.w3.org/WAI/standards-guidelines/) page.
 
-Official webpage (Deployed on a VM hosted by the CS department, and open until Dec 21, 2024): [https://accui.cs.brown.edu](https://accui.cs.brown.edu)
-
 ![AccUI Homepage](accui-homepage.png)
 
 ## 💻⚙️ Tech Stack
