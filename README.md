@@ -23,6 +23,7 @@ Official webpage (Deployed on a VM hosted by the CS department, and open until D
 ```
 .
 ├── .github                  # Old unused code
+├── accui-test-folder        # Sample project users can use to test AccUI
 ├── backend                  # Contains back-end code
 │   ├── ...                 
 │   └── Dockerfile                                
@@ -64,21 +65,23 @@ Then run
 ```bash
 docker-compose up --build
 ```
+### Test folder
+If you want to test AccUI's capabilities, we have the accui-test-folder in the root of this repo you can feel free to upload into the web app. It is a simple Vanilla HTML/CSS/JS project with an `index.html` an and `about.html` page.
 
 ## 👥 AccUI Team
 
 Front-End
-- [Marie Baker](https://github.com/)
-- [Yongcheng Shi](https://github.com/)
-- [Stephanie Olaiya](https://github.com/)
-- [Jiecheng Chen](https://github.com/)
-- [Brandon Woodard](https://github.com/)
+- [Marie Baker](https://github.com/mbakersf)
+- [Yongcheng Shi](https://github.com/ZdioLex)
+- [Stephanie Olaiya](https://github.com/stephanieolaiya)
+- [Jiecheng Chen](https://github.com/JasonARong)
+- [Brandon Woodard](https://github.com/BJWOODS)
 
 Back-End
-- [Sybille Légitime](https://github.com/)
-- [Rio Young](https://github.com/)
-- [Ruoqian Zhang](https://github.com/)
-- [Zheng Que](https://github.com/)
+- [Sybille Légitime](https://github.com/smlegitime)
+- [Rio Young](https://github.com/rio-young)
+- [Ruoqian Zhang](https://github.com/ruoqianz)
+- [Zheng Que](https://github.com/qz1127)
 
 ## License
 
