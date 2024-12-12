@@ -1,8 +1,10 @@
 /**
- * @fileoverview Accessibility standard tag displayed on scan page pop-up
+ * @fileoverview A component that displays an accessibility standard tag in the filter modal.
+ * This component renders an individual accessibility standard tag, including its name, description,
+ * type (e.g., recommended, other, experimental), and a checkbox for selecting the filter.
  * @author Marie Baker
  * @copyright 2024 Accessible UI Helper. All rights reserved.
- * @lastupdated Dec 1, 2024
+ * @lastupdated Dec 11, 2024
  */
 
 export function StandardTag({
@@ -32,12 +34,10 @@ export function StandardTag({
         onChange={() => handleCheckboxChange(tagId)}
         className='peer w-5 h-5 rounded-md border-2 border-gray-300 bg-gray-800 checked:bg-primary-100 focus:ring-2 focus:ring-primary-100 mr-4'
       />
-
       {/* Main Content */}
       <div className='flex flex-col'>
         {/* Tag Name */}
         <h3 className='text-white text-left font-bold'>{tagName}</h3>
-
         {/* Tags (Standard and TagType) */}
         <div className='flex items-center space-x-2 my-1'>
           {(tagId === 'wcag21aa' ||
@@ -47,7 +47,6 @@ export function StandardTag({
               standard
             </span>
           )}
-
           <span
             className={`inline-flex rounded-full text-xs px-2 py-1 ${
               tagType === 'recommended'
@@ -59,19 +58,16 @@ export function StandardTag({
           >
             {tagType}
           </span>
-
           {tagId === 'experimental' && (
             <span className='bg-accent-400 text-black px-2 py-1 rounded-full text-xs'>
               experimental
             </span>
           )}
         </div>
-
         {/* Description and Link */}
         {tagDescription && (
           <p className='text-gray-300 text-sm mt-2'>{tagDescription}</p>
         )}
-
         <a
           href={tagLink}
           target='_blank'
