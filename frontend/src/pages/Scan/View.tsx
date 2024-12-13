@@ -14,7 +14,7 @@ import { DiffHighlightEditor } from "./DiffHighlightEditor";
  * @param files - updated code files
  * @param viewEditor - whether the user has clicked button to view or hide editor
  * @param originalFiles - original code files
- * @returns React component
+ * @returns React component that contains Sandpack preview and editor
  */
 export function View({
   files,

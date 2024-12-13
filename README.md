@@ -1,7 +1,9 @@
 # `accessible-ui-helper`
 Repository for the Accessible UI (AccUI) Helper Project - [CSCI2340](https://sites.google.com/brown.edu/csci2340/home) Software Engineering Course.
 
-Our web application allows for developers to check their website's accessibility as they develop, and generates automated fixes for any accessibility violation the user wants to correct. For more information about the accessibility guidelines we follow, you can refer to the [W3C Accessibility Standards](https://www.w3.org/WAI/standards-guidelines/) page.
+Our web application allows for developers to check their website's accessibility as they develop, and generates automated fixes for any accessibility violation the user wants to correct. For more information about the accessibility guidelines we follow, you can refer to the [W3C Accessibility Standards](https://www.w3.org/WAI/standards-guidelines/) page. 
+Unlike many other accessibility evaluatora, the site is able to the analyze dynamic webpages
+with multiple pages. 
 
 Official webpage (Deployed on a VM hosted by the CS department, and open until Dec 21, 2024): [https://accui.cs.brown.edu](https://accui.cs.brown.edu)
 
@@ -67,6 +69,11 @@ docker-compose up --build
 ```
 ### Test folder
 If you want to test AccUI's capabilities, we have the accui-test-folder in the root of this repo you can feel free to upload into the web app. It is a simple Vanilla HTML/CSS/JS project with an `index.html` an and `about.html` page.
+
+### Example project to run
+You can run an example project located in the frontend public directory. Download
+the zip file and unzip it. Then simply upload the unzipped file into specified upload
+box on the home page. 
 
 ## 👥 AccUI Team
 
