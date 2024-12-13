@@ -17,7 +17,10 @@ declare module "react" {
   }
 }
 
-
+/**
+ * Panel for uploading code files 
+ * @returns React component that allows file upload and drag and drop
+ */
 export function UploadPanel() {
   const [files, setFiles] = useState<File[]>([]);// Array of uploaded files
   const [isDragging, setIsDragging] = useState<boolean>(false); // State for tracking if user is dragging files
@@ -73,6 +76,7 @@ export function UploadPanel() {
       }
     }
 
+    // extract name of folder uploaded
     const folderName = files.length > 0 ? files[0].webkitRelativePath.split('/')[0] : 'No-Uploaded-Folder';
     setUploadedFolderName(folderName);
     return files;

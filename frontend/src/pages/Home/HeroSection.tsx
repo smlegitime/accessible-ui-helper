@@ -6,6 +6,10 @@
 
 import { UploadPanel } from './UploadPanel';
 
+/**
+ * Hero section component that has information at the center of the page
+ * @returns React component of the Hero section
+ */
 export function HeroSection() {
   return (
     <section id='HeroSection'  className='flex justify-evenly items-center gap-20 max-w-7xl min-h-[50rem] mx-4 z-10'>

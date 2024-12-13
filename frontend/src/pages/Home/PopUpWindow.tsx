@@ -22,6 +22,12 @@ interface Props {
 	setIsVisible: (visability: boolean) => void;
 }
 
+/**
+ * PopUp window for user to specify their entry html file for compiling and bundling project
+ * @param files - project code files
+ * @param setIsVisible - setter to set pop-up as visible or not
+ * @returns 
+ */
 export function PopUpWindow({ files, setIsVisible }: Props) {
 	const [selectedEntryFile, setSelectedEntryFile] = useState<number>(-1);
 	const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -190,7 +196,6 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 					</svg>
 				</button>
 
-
 				<section 
 					id='selectEntryFile'
 					className={`
@@ -239,7 +244,6 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 								<button className='text-[#88AFEF] underline' onClick={handleViewTermOfServices}> terms and services</button>
 							</label>
 						</div>
-
 						<Button variant='outline' onClick={handleSubmit} disabled={selectedEntryFile === -1 || isChecked === false}
 							className='max-h-6 min-w-20 bg-primary-100 rounded-full hover:bg-slate-400 text-black p-4 font-bold'
 						>
@@ -250,7 +254,6 @@ export function PopUpWindow({ files, setIsVisible }: Props) {
 						</Button>
 					</div>
 				</section>
-
 
 				<section 
 					id='termsOfServices' 
