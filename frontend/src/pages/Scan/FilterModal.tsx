@@ -17,7 +17,7 @@ import { logging } from '../../lib/logging';
 import {
   recommendedTags,
   otherTags,
-} from '../../components/scan/AccessibilityTags'; // Adjust path accordingly
+} from '../../components/scan/AccessibilityTags';
 
 /**
  * Props for the FilterModal component.
@@ -84,7 +84,8 @@ export function FilterModal({ applyFilters }: FilterModalProps) {
       <Dialog.Portal>
         <Dialog.Overlay className='fixed inset-0 bg-black/50 backdrop-blur-sm' />
         <Dialog.Content
-          // Correctly typed event handlers
+          aria-labelledby='filter-modal'
+          aria-describedby='pop up window for selecting accessibility standards'
           onInteractOutside={(event) => event.preventDefault()}
           onEscapeKeyDown={(event) => event.preventDefault()}
           className='z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
